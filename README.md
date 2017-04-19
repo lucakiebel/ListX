@@ -86,7 +86,6 @@ We use [GitHub](https://github.com) for versioning. For the versions available, 
 ## Authors
 
 - **Luca Kiebel** - *Initial work, API, Index* - [Website](https://luca-kiebel.de)
-- **Luca Hartmann** - *Design & UX* - [Website](https://luca-hartmann.com)
 
 ## License
 

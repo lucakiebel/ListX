@@ -1,0 +1,57 @@
+{
+  "htmlLang": "en",
+  "SiteName": "ListX",
+  "SiteTitle": "ListX - Shopping Lists on another level",
+  "Title1": "Shopping Lists <br> on another <br> level",
+  "Shopping List": "Shopping List",
+  "Shopping-List": "Shopping-List",
+  "Howdy": "Howdy, %s",
+  "Welcome": "Welcome to your Shopping List!",
+  "dashboard": "Dashboard",
+  "home": "Home",
+  "learnMore": "Learn More",
+  "demo": "Demo",
+  "signUp": "Sign Up",
+  "logIn": "Log In",
+  "username": "Username",
+  "enterEmail": "Enter Email-Address",
+  "password": "Password",
+  "enterPassword": "Enter Password",
+  "imprint": "Imprint",
+  "privacy": "Privacy",
+  "terms": "Terms",
+  "item": {
+    "one": "%s Item",
+    "other": "%s Items"
+  },
+  "list": {
+    "one": "%s List",
+    "other": "%s Lists"
+  },
+  "invitation": {
+    "one": "%s Invitation",
+    "other": "%s Invitations"
+  },
+  "user": {
+    "one": "%s User",
+    "other": "%s Users"
+  },
+  "name": "Name",
+  "amount": "Amount",
+  "count": "Count",
+  "art": "Art",
+  "country": "Country",
+  "language": "Language",
+  "change-lang": "Change the Language",
+  "error": "Error",
+  "settings": "Settings",
+  "profile": "Profile",
+  "developers": "Developers",
+  "resources": "Resources",
+  "docs": "Documentation",
+  "guide": {
+    "one": "Guide",
+    "other": "Guides"
+  },
+  "sourceCode": "Source Code"
+}

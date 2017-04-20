@@ -30,7 +30,7 @@
     <link href="https://fonts.googleapis.com/css?family=Raleway:400,700" rel="stylesheet" type="text/css">
 
     <!-- Theme CSS -->
-    <link href="/stylesheets/grayscale.css" rel="stylesheet">
+    <link href="/stylesheets/index.css" rel="stylesheet">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -88,31 +88,8 @@
                     <a href="/signup" class="navbar-nav color-visible <%if(user){%><%="username-invisible u-invisible"%><%} else {%><%="username-visible u-visible"%><%}%>"><%= __("/ListX/UI/Index/signUp") %> </a>
                 </li>
                 <li class="dropdown">
-                    <a href="" class="color-visible <%if(user){%><%="username-visible u-visible"%><%} else {%><%="username-invisible u-invisible"%><%}%>" id="login-ready"><%= __("/ListX/UI/Howdy")%><%if(user){%><%=", "+user.name %><%}%></a>
-                    <a href="" class="dropdown-toggle color-visible <%if(user){%><%="username-invisible u-invisible"%><%} else {%><%="username-visible u-visible"%><%}%>" data-toggle="dropdown" id="login-dropdown-link"><%= __("/ListX/UI/Index/logIn") %> <span class="caret"></span></a>
-                    <ul class="dropdown-menu dropdown-lr animated slideInRight" role="menu">
-                        <div class="col-lg-12">
-                            <form id="ajax-login-form" role="form" autocomplete="on" onsubmit="return loginValidation(this)">
-                                <div class="form-group">
-                                    <label for="username">Username</label>
-                                    <input type="email" name="email" id="username" tabindex="1" class="form-control" placeholder="Username" value="" autocomplete="off">
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="password">Password</label>
-                                    <input type="password" name="password" id="password" tabindex="2" class="form-control" placeholder="Password" autocomplete="off">
-                                </div>
-
-                                <div class="form-group">
-                                    <div class="row">
-                                        <div class="col-lg-10">
-                                            <a id="login-submit" onclick='$("#ajax-login-form").submit()' class="btn btn-default btn-lg" tabindex="3" >Log In</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </ul>
+                    <a href="/dashboard/user" class="color-visible <%if(user){%><%="username-visible u-visible"%><%} else {%><%="username-invisible u-invisible"%><%}%>" id="login-ready"><%= __("/ListX/UI/Howdy")%><%if(user){%><%=", "+user.name %><%}%></a>
+                    <a href="/login" class="color-visible <%if(user){%><%="username-invisible u-invisible"%><%} else {%><%="username-visible u-visible"%><%}%>" id="login-dropdown-link"><%= __("/ListX/UI/Index/logIn") %> <i class="fa fa-sign-in" aria-hidden="true"></i></a>
                 </li>
             </ul>
         </div>
@@ -237,9 +214,6 @@
 
 <!-- Theme JavaScript -->
 <script src="/javascripts/grayscale.js"></script>
-
-<!-- Response JavaScript -->
-<script src="/javascripts/response.js"></script>
 
 </body>
 

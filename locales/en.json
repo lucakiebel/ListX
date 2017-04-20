@@ -61,5 +61,6 @@
   "/ListX/UI/Index/blog": "Blog",
   "/ListX/UI/Index/Cookieconsent/Message": "This website uses cookies to provide you with the best possible functionality.",
   "/ListX/UI/Index/Cookieconsent/Dismiss": "Got it!",
-  "/ListX/UI/Index/Cookieconsent/learnMore": "More Info"
+  "/ListX/UI/Index/Cookieconsent/learnMore": "More Info",
+  "/ListX/UI/Dashboard/Login/loginErrorMessage": "Wrong Email-Address or wrong Password!"
 }

@@ -61,5 +61,6 @@
   "/ListX/UI/Index/blog": "Blog",
   "/ListX/UI/Index/Cookieconsent/Message": "Diese Website nutzt Cookies, um dir die bestmögliche Funktionalität bieten zu können.",
   "/ListX/UI/Index/Cookieconsent/Dismiss": "Verstanden!",
-  "/ListX/UI/Index/Cookieconsent/learnMore": "Mehr Infos"
+  "/ListX/UI/Index/Cookieconsent/learnMore": "Mehr Infos",
+  "/ListX/UI/Dashboard/Login/loginErrorMessage": "Falsche Email-Adresse oder falsches Passwort!"
 }

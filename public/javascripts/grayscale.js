@@ -38,26 +38,3 @@ $('.navbar-collapse ul li a').click(function() {
 });
 
 
-function loginValidation(form) {
-    if (form.elements["email"].value != "" && form.elements["password"].value != ""){
-        var formData = $(form).serialize();
-        $.ajax({
-            type: "POST",
-            url: "/login",
-            data: formData,
-            dataType: "json",
-            success: function(data) {
-                if (data.correct === true){
-                    $(".u-visible").addClass("username-invisible")
-						.removeClass("username-visible");
-					$(".u-invisible").addClass("username-visible")
-						.removeClass("username-invisible");
-					$("#login-ready").html($("#login-ready").html() + ", "+data.username);
-					$("body").click();
-				}
-				else alert("Username or Password wrong!");
-            }
-        });
-    }
-    else console.error("Login Form not Valid"); return false;
-}

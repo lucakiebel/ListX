@@ -101,6 +101,11 @@ var DemoList = mongoose.model('DemoList', {
   expiry:{type:Date, default:Date.now()+8*60*60*1000}
 });
 
+var ShortDomain = mongoose.model('ShortDomain', {
+  short:String,
+  long:String
+});
+
 /**
  * UI CONTROLLER
  */
@@ -128,6 +133,18 @@ app.post('/login', function(req, res) {
       }
     }
   });
+});
+
+app.get('/login', function (req, res) {
+  if(req.session.user){
+    res.redirect("/dashboard");
+  }
+  res.render("login");
+});
+
+app.get('/logout', function (req, res) {
+  req.session.destroy();
+  res.redirect("/");
 });
 
 /**
@@ -173,8 +190,13 @@ app.get('/list/:id', requireLogin, function(req, res) {
 
 
 app.get('/dashboard', requireLogin, function(req, res) {
-  res.render('dashboard', {translate : res });
+  if(req.session.user){
+    res.render('dashboard', {user: req.session.user});
+  }
+  res.render('dashboard', {user:false});
 });
+
+
 
 // Invitations page for invited users to join a family and "sign up"
 app.get('/list/:id/invitations/:invId/:email/:name', function (req, res) {
@@ -528,12 +550,12 @@ app.use(function(req, res, next) {
 
 // error handler
 app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
+  /*// set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
   // render the error page
-  res.render('error');
+  return res.render('error');*/
 });
 
 

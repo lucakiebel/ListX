@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="<%=__("/ListX/UI/htmlLang") %>">
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="<%=__("/ListX/UI/Index/SiteTitle") %>">
+    <meta name="author" content="Klequex Software & UX">
+    <meta name="keywords" content="List, Shopping List, Free, Grocery List, Holidays, Planing, Food, ListX">
+    <link rel="alternate" href="/language/en" hreflang="en-uk">
+    <link rel="alternate" href="/language/en" hreflang="en-us">
+    <link rel="alternate" href="/language/de" hreflang="de">
+    <link rel="alternate" href="/language/fr" hreflang="fr">
+    <link rel="alternate" href="/language/nl" hreflang="nl">
+
+    <title><%=__("/ListX/UI/Index/SiteTitle") %></title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Animate CSS -->
+    <link rel="stylesheet" href="/stylesheets/animate.css">
+
+    <!-- Custom Fonts -->
+    <link href="/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Raleway:400,700" rel="stylesheet" type="text/css">
+
+    <!-- Theme CSS -->
+    <link href="/stylesheets/dashboard.css" rel="stylesheet">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body class="login-bg">
+<div class="header">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <!-- Logo -->
+                <div class="logo" style="color: white">
+                    <h1><a href="/"><img src="/images/favicon.png" alt="<%=__("/ListX/UI/SiteName") %>" height="40px" style="margin-top: -12px">&nbsp;&nbsp;List<span class="x">X</span></a></h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="page-content container">
+    <div class="row">
+        <div class="col-md-4 col-md-offset-4">
+            <div class="login-wrapper">
+                <div class="box">
+                    <div class="content-wrap">
+                        <h6>Sign In</h6>
+                        <div class="alert alert-danger" id="login-error" style="display: none">
+                            <strong><%= __("/ListX/UI/Index/error")%>: </strong> <%= __("/ListX/UI/Dashboard/Login/loginErrorMessage") %>
+                        </div>
+                        <form onsubmit="return loginValidation(this)">
+                            <input class="form-control" type="text" name="email" placeholder="E-mail address">
+                            <input class="form-control" type="password" name="password" placeholder="Password">
+                            <input type="submit" class="form-control btn btn-primary signup" value="Login">
+                        </form>
+                    </div>
+                </div>
+
+                <div class="already">
+                    <p>Don't have an account yet?</p>
+                    <a href="/signup">Sign Up</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- jQuery -->
+<script src="/vendor/jquery/jquery.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/vendor/bootstrap/js/bootstrap.min.js"></script>
+
+<!-- Plugin JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
+
+<!-- Theme JavaScript -->
+<script src="/javascripts/dashboard.js"></script>
+<script src="/javascripts/login.js"></script>
+
+</body>
+</html>

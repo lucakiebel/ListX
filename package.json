@@ -1,7 +1,7 @@
 {
-  "name": "einkaufsliste",
-  "version": "0.0.0",
-  "private": true,
+  "name": "listx",
+  "version": "0.0.1",
+  "private": false,
   "scripts": {
     "start": "node ./bin/www"
   },
@@ -18,5 +18,21 @@
     "mongoose": "~4.9.4",
     "morgan": "~1.7.0",
     "serve-favicon": "~2.3.2"
-  }
+  },
+  "description": "<h1>List<span style=\"color: red;\">X</span> - Shopping Lists on another level </h1>",
+  "main": "bin/www",
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/klequex/ListX.git"
+  },
+  "keywords": [
+    "Lists"
+  ],
+  "author": "Klequex Software (Klequex.com)",
+  "license": "LGPL-3.0",
+  "bugs": {
+    "url": "https://github.com/klequex/ListX/issues"
+  },
+  "homepage": "https://github.com/klequex/ListX#readme"
 }

@@ -14,7 +14,7 @@ These instructions will get you a copy of the project up and running on your loc
 What things you need to install the software and how to install them:
 
  - [NodeJS](https://nodejs.org) A JavaScript runtime, in this case used as the Server side
- - [NPM](https://npmjs.org) _The_ Node Package Manager, you will need it to install all the Modules required to run the App
+ - [NPM](https://www.npmjs.com/package/listx/tutorial) _The_ Node Package Manager, you will need it to install all the Modules required to run the App
  - A Webserver, even if it's just your Laptop, you need something to run Node with
  - [MongoDB](https://mongodb.org) A JSON based NoSQL Database, which I happen to like alot
 

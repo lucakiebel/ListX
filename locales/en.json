@@ -53,5 +53,8 @@
     "one": "Guide",
     "other": "Guides"
   },
-  "sourceCode": "Source Code"
+  "sourceCode": "Source Code",
+  "aboutProjectName":"About List<span class='color-red'>X</span>",
+  "aboutProjectLongText":"List<span class='color-red'>X</span> is a free tool to create and maintain Lists for every occasion. Whether it's for your monthly groceries or for the next big vacation - we got you covered!",
+  "aboutProjectShortText":"Give it a try now and plan your next shopping trip on the <a href='/demo'>Demo Page</a>!"
 }

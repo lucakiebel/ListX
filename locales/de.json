@@ -53,5 +53,8 @@
     "one": "Anleitung",
     "other": "Anleitungen"
   },
-  "sourceCode": "Quellcode"
+  "sourceCode": "Quellcode",
+  "aboutProjectName":"Über List<span class='color-red'>X</span>",
+  "aboutProjectLongText":"List<span class='color-red'>X</span> ist ein kostenloses Werkzeug zum Erstellen und Verwalten von Listen für jeden Anlass. Ob für die monatlichen Lebensmitteleinkäufe doer für den nächsten großen Urlaub - wir haben was ihr braucht!",
+  "aboutProjectShortText":"Probiert es jetzt aus und plant euren nächsten Shopping-Trip auf der <a href='/demo'>Demo Seite</a>!"
 }

@@ -31,11 +31,6 @@ $(function() {
     });
 });
 
-$('ul.dropdown-menu.dropdown-lr').on('click', function(event){
-    //The event won't be propagated to the document NODE and
-    // therefore events delegated to document won't be fired
-    event.stopPropagation();
-});
 
 // Closes the Responsive Menu on Menu Item Click
 $('.navbar-collapse ul li a').click(function() {
@@ -51,11 +46,16 @@ function loginValidation(form) {
             url: "/login",
             data: formData,
             dataType: "json",
-            success: function(data, textStatus) {
-                if (data.redirect) {
-                    // data.redirect contains the string URL to redirect to
-                    window.location.replace(data.redirect);
-                }
+            success: function(data) {
+                if (data.correct === true){
+                    $(".u-visible").addClass("username-invisible")
+						.removeClass("username-visible");
+					$(".u-invisible").addClass("username-visible")
+						.removeClass("username-invisible");
+					$("#login-ready").html($("#login-ready").html() + ", "+data.username);
+					$("body").click();
+				}
+				else alert("Username or Password wrong!");
             }
         });
     }

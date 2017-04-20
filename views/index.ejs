@@ -1,15 +1,21 @@
 <!DOCTYPE html>
-<html lang="<%=__("htmlLang") %>">
+<html lang="<%=__("/ListX/UI/htmlLang") %>">
 
 <head>
 
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="<%=__("SiteTitle") %>">
+    <meta name="description" content="<%=__("/ListX/UI/Index/SiteTitle") %>">
     <meta name="author" content="Klequex Software & UX">
+    <meta name="keywords" content="List, Shopping List, Free, Grocery List, Holidays, Planing, Food, ListX">
+    <link rel="alternate" href="/language/en" hreflang="en-uk">
+    <link rel="alternate" href="/language/en" hreflang="en-us">
+    <link rel="alternate" href="/language/de" hreflang="de">
+    <link rel="alternate" href="/language/fr" hreflang="fr">
+    <link rel="alternate" href="/language/nl" hreflang="nl">
 
-    <title><%=__("SiteTitle") %></title>
+    <title><%=__("/ListX/UI/Index/SiteTitle") %></title>
 
     <!-- Bootstrap Core CSS -->
     <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -32,10 +38,23 @@
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+    
+    <!-- Cookieconsent for everyone!!! -->
+    <script type="text/javascript">
+        window.cookieconsent_options = {
+            "message": "<%=__("/ListX/UI/Index/Cookieconsent/Message") %>",
+            "dismiss": "<%=__("/ListX/UI/Index/Cookieconsent/Dismiss") %>",
+            "learnMore": "<%=__("/ListX/UI/Index/Cookieconsent/learnMore") %>",
+            "link": "/privacy",
+            "theme": "light-floating"
+        };
+    </script>
 
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent2/1.0.9/cookieconsent.min.js"></script>
+    
 </head>
 
-<body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top">
+<body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top" data-responsejs='{"create": [{"prop": "width", "prefix": "min-width- r src", "breakpoints": [0, 320, 481, 641, 961, 1025, 1281]}]}'>
 
 <!-- Navigation -->
 <nav class="navbar navbar-custom navbar-fixed-top" role="navigation">
@@ -45,7 +64,7 @@
                 Menu <i class="fa fa-bars"></i>
             </button>
             <a class="navbar-brand page-scroll color-visible" href="#page-top">
-                <img src="/images/favicon.png" alt="<%=__("SiteName") %>" class="navbar-brand-image"> &nbsp;&nbsp; List<span class="x">X</span>
+                <img src="/images/favicon.png" alt="<%=__("/ListX/UI/SiteName") %>" class="navbar-brand-image"> &nbsp;&nbsp; List<span class="x">X</span>
             </a>
         </div>
 
@@ -57,18 +76,20 @@
                     <a href="#page-top"></a>
                 </li>
                 <li>
-                    <a class="page-scroll color-visible" href="#about"><%= __("learnMore") %></a>
+                    <a class="page-scroll color-visible" href="#about"><%= __("/ListX/UI/Index/learnMore") %></a>
                 </li>
                 <li>
-                    <a class="color-visible" href="/demo"><%= __("demo") %> </a>
+                    <a class="color-visible" href="/demo"><%= __("/ListX/UI/Index/demo") %> </a>
                 </li>
             </ul>
             <ul class="nav navbar-nav navbar-right" style="float: right">
                 <li>
-                    <a href="/signup" class="navbar-nav color-visible"><%= __("signUp") %> </a>
+                    <a href="/dashboard" class="navbar-nav color-visible <%if(user){%><%="username-visible u-visible"%><%} else {%><%="username-invisible u-invisible"%><%}%>"><%= __("/ListX/UI/Index/dashboard") %></a>
+                    <a href="/signup" class="navbar-nav color-visible <%if(user){%><%="username-invisible u-invisible"%><%} else {%><%="username-visible u-visible"%><%}%>"><%= __("/ListX/UI/Index/signUp") %> </a>
                 </li>
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle color-visible" data-toggle="dropdown"><%= __("logIn") %> <span class="caret"></span></a>
+                    <a href="" class="color-visible <%if(user){%><%="username-visible u-visible"%><%} else {%><%="username-invisible u-invisible"%><%}%>" id="login-ready"><%= __("/ListX/UI/Howdy")%><%if(user){%><%=", "+user.name %><%}%></a>
+                    <a href="" class="dropdown-toggle color-visible <%if(user){%><%="username-invisible u-invisible"%><%} else {%><%="username-visible u-visible"%><%}%>" data-toggle="dropdown" id="login-dropdown-link"><%= __("/ListX/UI/Index/logIn") %> <span class="caret"></span></a>
                     <ul class="dropdown-menu dropdown-lr animated slideInRight" role="menu">
                         <div class="col-lg-12">
                             <form id="ajax-login-form" role="form" autocomplete="on" onsubmit="return loginValidation(this)">
@@ -106,7 +127,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-8 col-md-offset-1">
-                    <h1 class="brand-heading" style="text-align: left !important;"><%- __("Title1") %> </h1>
+                    <h1 class="brand-heading" style="text-align: left !important;"><%- __("/ListX/UI/Index/Title1") %> </h1>
                 </div>
                 <div class="col-md-8 col-md-offset-2">
                     <a href="#about" class="btn btn-circle page-scroll">
@@ -122,9 +143,9 @@
 <section id="about" class="container content-section text-center">
     <div class="row">
         <div class="col-lg-8 col-lg-offset-2">
-            <h2 class="brand-name"><%- __("aboutProjectName")%></h2>
-            <p><%- __("aboutProjectLongText")%></p>
-            <p><%- __("aboutProjectShortText")%></p>
+            <h2 class="brand-name"><%- __("/ListX/UI/Index/aboutProjectName")%></h2>
+            <p><%- __("/ListX/UI/Index/aboutProjectLongText")%></p>
+            <p><%- __("/ListX/UI/Index/aboutProjectShortText")%></p>
         </div>
     </div>
 </section>
@@ -134,7 +155,6 @@
     <div class="showcase-section">
         <div class="container">
             <div class="col-lg-8 col-lg-offset-2">
-                <h2>Download Grayscale</h2>
                 <p>You can download Grayscale for free on the preview page at Start Bootstrap.</p>
                 <a href="http://startbootstrap.com/template-overviews/grayscale/" class="btn btn-default btn-lg">Visit Download Page</a>
             </div>
@@ -167,37 +187,37 @@
 
 
 <!-- Footer -->
-<footer>
+<footer class="footer">
     <div class="col-md-2 text-left">
         <a class="navbar-brand page-scroll color-visible brand-name" href="#page-top">
-            <img src="/images/favicon.png" alt="<%=__("SiteName") %>" class="navbar-brand-image">&nbsp;&nbsp;List<span class="x">X</span>
+            <img src="/images/favicon.png" alt="<%=__("/ListX/UI/Index/SiteName") %>" class="navbar-brand-image">&nbsp;&nbsp;List<span class="x">X</span>
         </a>
     </div>
     <div class="col-md-2 vertical-divider-left">
-        <a class="footer-link" href="/imprint"><h5><%=__("imprint") %></h5></a>
-        <a class="footer-link" href="/privacy"><h5><%=__("privacy") %></h5></a>
-        <a class="footer-link" href="/terms"><h5><%=__("terms") %></h5></a>
+        <a class="footer-link" href="/imprint"><h5><%=__("/ListX/UI/Index/imprint") %></h5></a>
+        <a class="footer-link" href="/privacy"><h5><%=__("/ListX/UI/Index/privacy") %></h5></a>
+        <a class="footer-link" href="/terms"><h5><%=__("/ListX/UI/Index/terms") %></h5></a>
         <div class="inline">
             <a href="/language/de" class="btn btn-default">DE</a><a href="/language/en" class="btn btn-default">EN</a>
         </div>
     </div>
     <div class="col-md-2">
-        <h5 class="footer-heading"><a href="/developer" class="color-red"><%=__("developers") %></a></h5>
-        <h6><a class="footer-link" href="/docs">API-<%=__("docs") %></a></h6>
-        <h6><a class="footer-link" href="https://github.com/klequex/ListX"><%=__("sourceCode") %></a></h6>
+        <h5 class="footer-heading"><a href="/developer" class="color-red"><%=__("/ListX/UI/Index/developers") %></a></h5>
+        <h6><a class="footer-link" href="/docs">API-<%=__("/ListX/UI/Index/docs") %></a></h6>
+        <h6><a class="footer-link" href="https://github.com/klequex/ListX"><%=__("/ListX/UI/Index/sourceCode") %></a></h6>
         <h6><a href="https://npmjs.com/package/listx" class="footer-link">NPM</a></h6>
     </div>
     <div class="col-md-2">
-        <h5 class="footer-heading"><%=__("resources") %></h5>
-        <h6><a class="footer-link" href="/support">Support</a></h6>
-        <h6><a class="footer-link" href="/blog">Blog</a></h6>
+        <h5 class="footer-heading"><%=__("/ListX/UI/Index/resources") %></h5>
+        <h6><a class="footer-link" href="/support"><%=__("/ListX/UI/Index/support") %></a></h6>
+        <h6><a class="footer-link" href="/blog"><%=__("/ListX/UI/Index/blog") %></a></h6>
         <h6><a class="footer-link" href="/guides"><%=__n("guide", 0) %></a></h6>
     </div>
     <div class="col-md-2">
         <h5 class="footer-heading">Links</h5>
         <h6><a href="https://twitter.com/listx.io" class="footer-link">Twitter</a></h6>
-        <h6><a href="/signup" class="footer-link"><%=__("signUp") %></a></h6>
-        <h6><a href="/demo" class="footer-link"><%=__("demo") %></a></h6>
+        <h6><a href="/signup" class="footer-link"><%=__("/ListX/UI/Index/signUp") %></a></h6>
+        <h6><a href="/demo" class="footer-link"><%=__("/ListX/UI/Index/demo") %></a></h6>
         <h6><a href="" class="footer-link"></a></h6>
     </div>
     <div class="col-md-2"></div>
@@ -217,6 +237,9 @@
 
 <!-- Theme JavaScript -->
 <script src="/javascripts/grayscale.js"></script>
+
+<!-- Response JavaScript -->
+<script src="/javascripts/response.js"></script>
 
 </body>
 

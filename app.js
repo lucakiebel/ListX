@@ -59,7 +59,7 @@ app.use(session({
 
 app.use(i18n.init);
 
-console.info(i18n.__("Welcome"));
+console.info(i18n.__("/ListX/UI/Welcome"));
 
 // database setup
 mongoose.connect('mongodb://localhost:27070');
@@ -115,23 +115,19 @@ app.post('/login', function(req, res) {
   User.findOne({ email: req.body.email }, function(err, user) {
     if (!user) {
       console.error("No User with Email \"" + req.body.email + "\" found.");
-      res.render('index', { error: 'Invalid email or password.' });
+      res.json({"correct":false});
     } else {
       if (bcrypt.compareSync(req.body.password, user.password)) {
         // sets a cookie with the user's info
         req.session.user = user;
         console.info("User "+ user.email + " successfully logged in!");
-        res.redirect('/dashboard');
+        res.json({"correct":true, "username":user.name});
       } else {
         console.error("Wrong Password for " + user.name);
-        res.render('index', { error: 'Invalid email or password.' });
+        res.json({"correct":false});
       }
     }
   });
-});
-
-app.post('/api/password', function (req, res) {
-  res.send(bcrypt.hashSync(req.body.password));
 });
 
 /**
@@ -159,7 +155,7 @@ app.get("/dev", function (req, res) {
 app.get('/list/:id', requireLogin, function(req, res) {
   List.findOne({_id : req.params.id}, function(err, list) {
     var user = req.session.user;
-    if(err){res.render('index', { error: 'List not found!' , translate : res });}
+    if(err){res.render('index', { error: 'List not found!'});}
     if (user.lists.indexOf(list._id)){
       res.render('list', {
         famId:list._id,
@@ -170,7 +166,7 @@ app.get('/list/:id', requireLogin, function(req, res) {
     }
     else {
       console.log("User "+user.name+" is not member of List "+list.name);
-      res.render('index', { error: 'User not part of List!' , translate : res });
+      res.render('index', { error: 'User not part of List!'});
     }
   });
 });
@@ -225,8 +221,10 @@ app.get("/language/:lang", function (req, res) {
  */
 
 app.all('/', function (req, res) {
-  // Later on this will send the welcome page and ability to sign up and login
-  res.render('index');
+  if(req.session.user){
+    res.render('index', {user: req.session.user});
+  }
+  res.render('index', {user:false});
 });
 
 
@@ -535,7 +533,6 @@ app.use(function(err, req, res, next) {
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
   // render the error page
-  res.status(err.status || 500);
   res.render('error');
 });
 

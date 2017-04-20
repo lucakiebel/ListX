@@ -384,6 +384,17 @@ ul.dropdown-lr {
   background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5));
 }
 
+a#login-submit {
+  color: #FF4C4C;
+}
+a#login-submit:hover,
+a#login-submit:focus {
+  border: 1px solid #FF4C4C;
+  outline: none;
+  color: white;
+  background-color: #FF4C4C;
+}
+
 /* mobile fix */
 @media (max-width: 768px) {
   .dropdown-lr {
@@ -395,4 +406,11 @@ ul.dropdown-lr {
   background: transparent !important;
 }
 
+.username-invisible {
+  display: none !important;
+}
+
+.username-visible {
+  display: block;
+}
 /*

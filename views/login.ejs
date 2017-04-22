@@ -45,7 +45,7 @@
             <div class="col-md-12">
                 <!-- Logo -->
                 <div class="logo" style="color: white">
-                    <h1><a href="/"><img src="/images/favicon.png" alt="<%=__("/ListX/UI/SiteName") %>" height="40px" style="margin-top: -12px">&nbsp;&nbsp;List<span class="x">X</span></a></h1>
+                    <h1><a href="/"><img src="/images/favicon.png" alt="<%=__("/ListX/UI/SiteName") %>" height="40px" style="margin-top: -12px">&nbsp;&nbsp;List<span class="x">X</span> <%= __("/ListX/UI/Index/logIn") %></a></h1>
                 </div>
             </div>
         </div>
@@ -58,21 +58,21 @@
             <div class="login-wrapper">
                 <div class="box">
                     <div class="content-wrap">
-                        <h6>Sign In</h6>
+                        <h6><%= __("/ListX/UI/Index/logIn") %></h6>
                         <div class="alert alert-danger" id="login-error" style="display: none">
                             <strong><%= __("/ListX/UI/Index/error")%>: </strong> <%= __("/ListX/UI/Dashboard/Login/loginErrorMessage") %>
                         </div>
                         <form onsubmit="return loginValidation(this)">
-                            <input class="form-control" type="text" name="email" placeholder="E-mail address">
-                            <input class="form-control" type="password" name="password" placeholder="Password">
-                            <input type="submit" class="form-control btn btn-primary signup" value="Login">
+                            <input class="form-control" type="email" name="email" placeholder="<%= __("/ListX/UI/Index/enterEmail") %>" required>
+                            <input class="form-control" type="password" name="password" placeholder="<%= __("/ListX/UI/Index/enterPassword") %>" required>
+                            <input type="submit" class="form-control btn btn-primary signup" value="<%= __("/ListX/UI/Index/logIn") %>">
                         </form>
                     </div>
                 </div>
 
                 <div class="already">
-                    <p>Don't have an account yet?</p>
-                    <a href="/signup">Sign Up</a>
+                    <p><%= __("/ListX/UI/Dashboard/Login/noAccountYet") %> </p>
+                    <a href="/signup"><%= __("/ListX/UI/Index/signUp") %></a>
                 </div>
             </div>
         </div>

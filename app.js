@@ -8,6 +8,7 @@ var   express = require('express')                        // Express as a Webser
     , methodOverride = require('method-override')         // Method Override to use delete method for elemets
     , i18n = require('i18n')                              // i18n for translations (German/English)
     , session = require('client-sessions')                // Client-Sessions to be able to access the session variables
+	, async = require('async')
     , bcrypt = require('bcrypt-nodejs')                   // bcrypt for secure Password hashing (on the server side)
     , app = express();
 
@@ -16,7 +17,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
 app.use(favicon(path.join(__dirname, 'public', 'images', 'favicon.png')));
-app.use(logger('dev'));
+app.use(logger('short'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
@@ -62,7 +63,7 @@ app.use(i18n.init);
 console.info(i18n.__("/ListX/UI/Welcome"));
 
 // database setup
-mongoose.connect('mongodb://localhost:27070');
+mongoose.connect('mongodb://localhost:27070');	// mongod --dbpath=/var/data --port=27070
 
 var Item = mongoose.model('Item', {
   list:mongoose.Schema.Types.ObjectId,
@@ -110,7 +111,19 @@ var ShortDomain = mongoose.model('ShortDomain', {
  * UI CONTROLLER
  */
 
-// signup page for users + family creator
+app.post('/signup', function (req, res) {
+  var hash = bcrypt.hashSync(req.body.password);
+  User.create({
+    name: req.body.name,
+    email: req.body.email,
+    password: hash
+  }, function(err) {
+    if(err){res.json({ success: false});}
+    res.json({success: true});
+  });
+});
+
+// signup page for users
 app.get('/signup', function(req, res) {
   res.render('signup');
 });
@@ -135,6 +148,7 @@ app.post('/login', function(req, res) {
   });
 });
 
+
 app.get('/login', function (req, res) {
   if(req.session.user){
     res.redirect("/dashboard");
@@ -144,6 +158,7 @@ app.get('/login', function (req, res) {
 
 app.get('/logout', function (req, res) {
   req.session.destroy();
+
   res.redirect("/");
 });
 
@@ -190,10 +205,7 @@ app.get('/list/:id', requireLogin, function(req, res) {
 
 
 app.get('/dashboard', requireLogin, function(req, res) {
-  if(req.session.user){
-    res.render('dashboard', {user: req.session.user});
-  }
-  res.render('dashboard', {user:false});
+  res.render('dashboard', {user: req.session.user});
 });
 
 
@@ -285,6 +297,7 @@ app.get('/api/lists/:id', function(req, res) {
     console.log(list);
   });
 });
+
 
 // create list
 app.post('/api/lists', function(req, res) {
@@ -400,6 +413,33 @@ app.get('/api/users/:id', function(req, res) {
     console.log(user);
   });
 });
+
+// get all lists per user
+app.get('/api/users/:id/lists', function (req, res) {
+  User.findOne({_id : req.params.id}, function(err, user) {
+
+	// if there is an error retrieving, send the error. nothing after res.send(err) will execute
+	if(err){res.json({ error: 'User not found'});}
+
+	var lists = user.lists;
+	var answer = {
+	  error: "",
+	  lists: []
+	};
+	for (var i = 0; i < lists.length; i++){
+	  List.findOne({_id : lists[i]._id}, function (err, list) {
+		if(err){answer.error += list._id;}
+		answer.lists[i] = list;
+	  });
+	}
+
+	  // TODO: über jquery beim nutzer dasselbe implementieren, also nur die listen als array zurückgeben und dann damit jeweil getList benutzen
+
+	res.json(answer);
+
+  });
+});
+
 
 // create user
 app.post('/api/users', function(req, res) {
@@ -549,13 +589,13 @@ app.use(function(req, res, next) {
 });
 
 // error handler
-app.use(function(err, req, res, next) {
-  /*// set locals, only providing error in development
+app.use(function(err, req, res) {
+  // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
   // render the error page
-  return res.render('error');*/
+  res.render('error');
 });
 
 
@@ -567,8 +607,8 @@ app.use(function(err, req, res, next) {
  */
 function requireLogin (req, res, next) {
   if (!req.session.user) {
-    // redirect to homepage with login form
-    res.redirect('/');
+    // redirect to login page
+    res.redirect('/login');
   } else {
     next();
   }

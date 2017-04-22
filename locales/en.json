@@ -11,7 +11,7 @@
   "/ListX/UI/Index/home": "Home",
   "/ListX/UI/Index/learnMore": "Learn More",
   "/ListX/UI/Index/demo": "Demo",
-  "/ListX/UI/Index/signUp": "Sign Up",
+  "/ListX/UI/Index/signUp": "Register",
   "/ListX/UI/Index/logIn": "Log In",
   "/ListX/UI/Index/username": "Username",
   "/ListX/UI/Index/enterEmail": "Enter Email-Address",
@@ -62,5 +62,18 @@
   "/ListX/UI/Index/Cookieconsent/Message": "This website uses cookies to provide you with the best possible functionality.",
   "/ListX/UI/Index/Cookieconsent/Dismiss": "Got it!",
   "/ListX/UI/Index/Cookieconsent/learnMore": "More Info",
-  "/ListX/UI/Dashboard/Login/loginErrorMessage": "Wrong Email-Address or wrong Password!"
+  "/ListX/UI/Dashboard/Login/loginErrorMessage": "Wrong Email-Address or wrong Password!",
+  "/ListX/UI/Dashboard/Login/noAccountYet": "Don't have an account yet?",
+  "/ListX/UI/SignUp/enterPasswordAgain": "Enter Password again",
+  "/ListX/UI/SignUp/ErrorMessageEmail": "Please enter a valid Email-Address",
+  "/ListX/UI/SignUp/ErrorMessageServer": "The Server encountered an Error while processing your SignUp, please <a href='/support'>Contact us!</a>",
+  "/ListX/UI/SignUp/enterYourName": "Your Name",
+  "/ListX/UI/SignUp/enterYourEmail": "Your Email",
+  "/ListX/UI/SignUp/enterYourPassword": "Your Password",
+  "/ListX/UI/SignUp/alreadyAccount": "Already have an Account?",
+  "/ListX/UI/SignUp/ErrorMessagePasswordMatch": "Password must match Requirements below!",
+  "/ListX/UI/PasswordRequirements/CharMin": "8 Characters Long",
+  "/ListX/UI/PasswordRequirements/Uppercase": "One Uppercase Letter",
+  "/ListX/UI/PasswordRequirements/Lowercase": "One Lowercase Letter",
+  "/ListX/UI/PasswordRequirements/Number": "One Number"
 }

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="<%=__("/ListX/UI/htmlLang") %>">
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="<%=__("/ListX/UI/Index/SiteTitle") %>">
+    <meta name="author" content="Klequex Software & UX">
+    <meta name="keywords" content="List, Shopping List, Free, Grocery List, Holidays, Planing, Food, ListX">
+    <link rel="alternate" href="/language/en" hreflang="en-uk">
+    <link rel="alternate" href="/language/en" hreflang="en-us">
+    <link rel="alternate" href="/language/de" hreflang="de">
+    <link rel="alternate" href="/language/fr" hreflang="fr">
+    <link rel="alternate" href="/language/nl" hreflang="nl">
+
+    <title><%=__("/ListX/UI/Index/SiteTitle") %></title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Animate CSS -->
+    <link rel="stylesheet" href="/stylesheets/animate.css">
+
+    <!-- Custom Fonts -->
+    <link href="/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Raleway:400,700" rel="stylesheet" type="text/css">
+
+    <!-- Theme CSS -->
+    <link href="/stylesheets/dashboard.css" rel="stylesheet">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body class="login-bg">
+<div class="header">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <!-- Logo -->
+                <div class="logo" style="color: white">
+                    <h1><a href="/"><img src="/images/favicon.png" alt="<%=__("/ListX/UI/SiteName") %>" height="40px" style="margin-top: -12px">&nbsp;&nbsp;List<span class="x">X</span> <%= __("/ListX/UI/Index/signUp") %></a></h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="page-content container">
+    <div class="row">
+        <div class="col-md-4 col-md-offset-4">
+            <div class="login-wrapper">
+                <div class="box">
+                    <div class="content-wrap">
+                        <h6><%= __("/ListX/UI/Index/signUp") %></h6>
+                        <div class="alert alert-danger" id="signup-error" style="display: none">
+                            <strong><%= __("/ListX/UI/Index/error")%>: </strong> <%- __("/ListX/UI/SignUp/ErrorMessageServer") %>
+                        </div>
+                        <div class="alert alert-danger" id="email-error" style="display: none">
+                            <strong><%= __("/ListX/UI/Index/error")%>: </strong> <%= __("/ListX/UI/SignUp/ErrorMessageEmail") %>
+                        </div>
+                        <div class="alert alert-danger" id="password-error" style="display: none">
+                            <strong><%= __("/ListX/UI/Index/error")%>: </strong> <%= __("/ListX/UI/SignUp/ErrorMessagePasswordMatch") %>
+                        </div>
+                        <form onsubmit="return signupValidation(this);" method="post" class="form-horizontal" style="text-align: left !important;">
+                            <label for="form_name"><%= __("/ListX/UI/SignUp/enterYourName") %></label>
+                            <input type="text" class="form-control" name="name" id="form_name" required>
+
+                            <label for="form_email"><%= __("/ListX/UI/SignUp/enterYourEmail") %></label>
+                            <input class="form-control" type="email" name="email" id="form_email" required><br>
+
+                            <label for="form_password"><%= __("/ListX/UI/SignUp/enterYourPassword") %></label>
+                            <div class="pull-right" id="show-password"><i id="show-password-i" class="fa fa-eye-slash fa-lg" aria-hidden="true"></i></div>
+                            <input class="form-control" type="text" name="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" id="form_password" required>
+                            <div class="row" style="padding-bottom: 15px">
+                                <div class="col-sm-6">
+                                    <span id="8char" class="glyphicon glyphicon-remove" style="color:#FF0004;"></span> <%= __("/ListX/UI/PasswordRequirements/CharMin") %><br>
+                                    <span id="ucase" class="glyphicon glyphicon-remove" style="color:#FF0004;"></span> <%= __("/ListX/UI/PasswordRequirements/Uppercase") %>
+                                </div>
+                                <div class="col-sm-6">
+                                    <span id="lcase" class="glyphicon glyphicon-remove" style="color:#FF0004;"></span> <%= __("/ListX/UI/PasswordRequirements/Lowercase") %><br>
+                                    <span id="num" class="glyphicon glyphicon-remove" style="color:#FF0004;"></span> <%= __("/ListX/UI/PasswordRequirements/Number") %>
+                                </div>
+                            </div>
+
+                            <input type="submit" class="form-control btn btn-primary signup" value="<%= __("/ListX/UI/Index/signUp") %>">
+                        </form>
+                    </div>
+                </div>
+
+                <div class="already">
+                    <p><%= __("/ListX/UI/SignUp/alreadyAccount") %> </p>
+                    <a href="/login"><%= __("/ListX/UI/Index/logIn") %></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+
+<!-- jQuery -->
+<script src="/vendor/jquery/jquery.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/vendor/bootstrap/js/bootstrap.min.js"></script>
+
+<!-- Plugin JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
+
+<!-- Theme JavaScript -->
+<script src="/javascripts/dashboard.js"></script>
+<script src="/javascripts/signup.js"></script>
+
+</html>

@@ -62,9 +62,13 @@
                         <div class="alert alert-danger" id="login-error" style="display: none">
                             <strong><%= __("/ListX/UI/Index/error")%>: </strong> <%= __("/ListX/UI/Dashboard/Login/loginErrorMessage") %>
                         </div>
-                        <form onsubmit="return loginValidation(this)">
-                            <input class="form-control" type="email" name="email" placeholder="<%= __("/ListX/UI/Index/enterEmail") %>" required>
-                            <input class="form-control" type="password" name="password" placeholder="<%= __("/ListX/UI/Index/enterPassword") %>" required>
+                        <form onsubmit="return loginValidation(this)" class="form-horizontal" style="text-align: left !important;">
+                            <label for="form_email"><%= __("/ListX/UI/Index/enterEmail") %></label>
+                            <input class="form-control" id="form_email" type="email" name="email" placeholder="" required>
+
+                            <label for="form_password"><%= __("/ListX/UI/Index/enterPassword") %></label>
+                            <div class="pull-right" id="show-password"><i id="show-password-i" class="fa fa-eye-slash fa-lg" aria-hidden="true"></i></div>
+                            <input class="form-control" type="text" name="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" id="form_password" required>
                             <input type="submit" class="form-control btn btn-primary signup" value="<%= __("/ListX/UI/Index/logIn") %>">
                         </form>
                     </div>

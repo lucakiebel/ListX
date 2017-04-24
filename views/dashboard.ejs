@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="<%=__("/ListX/UI/htmlLang") %>">
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="<%=__("/ListX/UI/Index/SiteTitle") %>">
+    <meta name="author" content="Klequex Software & UX">
+    <meta name="keywords" content="List, Shopping List, Free, Grocery List, Holidays, Planing, Food, ListX">
+    <link rel="alternate" href="/language/en" hreflang="en-uk">
+    <link rel="alternate" href="/language/en" hreflang="en-us">
+    <link rel="alternate" href="/language/de" hreflang="de">
+    <link rel="alternate" href="/language/fr" hreflang="fr">
+    <link rel="alternate" href="/language/nl" hreflang="nl">
+
+    <title><%=__("/ListX/UI/Index/SiteTitle") %></title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Animate CSS -->
+    <link rel="stylesheet" href="/stylesheets/animate.css">
+
+    <!-- Custom Fonts -->
+    <link href="/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Raleway:400,700" rel="stylesheet" type="text/css">
+
+    <!-- Theme CSS -->
+    <link href="/stylesheets/dashboard.css" rel="stylesheet">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- jQuery -->
+    <script src="/vendor/jquery/jquery.js"></script>
+</head>
+<body>
+
+<div class="header">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-5">
+                <!-- Logo -->
+                <div class="logo" style="color: white">
+                    <h1><a href="/"><img src="/images/favicon.png" alt="<%=__("/ListX/UI/SiteName") %>" height="40px" style="margin-top: -12px">&nbsp;&nbsp;List<span class="x">X</span> <%= __("/ListX/UI/Index/dashboard") %></a></h1>
+                </div>
+            </div>
+            <div class="col-md-5">
+            </div>
+            <div class="col-md-2">
+                <div class="navbar navbar-inverse" role="banner">
+                    <nav class="collapse navbar-collapse bs-navbar-collapse navbar-right" role="navigation">
+                        <ul class="nav navbar-nav">
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><%= __("/ListX/UI/Dashboard/myAccount") %> <b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="/user/settings"><%= __("/ListX/UI/Dashboard/Settings") %> <i class="fa fa-cog fa-lg" aria-hidden="true"></i></a></li>
+                                    <li><a href="/feedback"><%= __("/ListX/UI/Dashboard/Feedback") %> <i class="fa fa-commenting fa-lg" aria-hidden="true"></i></a></li>
+                                    <li><a href="/logout"><%= __("/ListX/UI/Dashboard/Logout") %> <i class="fa fa-sign-out fa-lg" aria-hidden="true"></i></a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="page-content">
+    <div class="row">
+        <div class="col-md-2">
+            <div class="sidebar content-box" style="display: block;">
+                <ul class="nav">
+                    <!-- Main menu -->
+                    <li><a href="/"><i class="glyphicon glyphicon-home"></i> <%= __("/ListX/UI/Index/home") %></a></li>
+                    <li class="current"><a href="/dashboard"><i class="glyphicon glyphicon-list-alt"></i> <%= __("/ListX/UI/Dashboard/Lists") %></a></li>
+                    <li><a href="/user"><i class="glyphicon glyphicon-user"></i> <%= user.name %></a></li>
+                    <li><a href="/support"><i class="glyphicon glyphicon-question-sign"></i> <%= __("/ListX/UI/Index/support") %></a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-md-10">
+            <div class="row">
+                <h2 class="col-sm-1"><%= __("/ListX/UI/Dashboard/Lists") %></h2>
+                <form class="col-sm-3" style="margin-top: 20px">
+                    <input type="text" class="form-control" id="search-input" placeholder="<%= __("/ListX/UI/Dashboard/Search") %>">
+                </form>
+
+                <h2 class="col-sm-2 pull-right" data-toggle="modal" data-target="#new-list-modal"><i class="fa fa-plus-circle fa-lg" aria-hidden="true"></i> <%= __("/ListX/UI/Dashboard/NewList") %></h2>
+            </div>
+
+            <div class="modal fade" id="new-list-modal" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button class="close" type="button" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title"> <%= __("/ListX/UI/Dashboard/ListModal/HeaderText") %></h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="col-md-10 col-md-offset-1">
+                                <form role="form" class="form-horizontal" onsubmit="return false;">
+                                    <div class="form-group">
+                                        <label for="new-name"><%= __("/ListX/UI/Dashboard/ListModal/Form/Name") %></label>
+                                        <input class="form-control" type="text" id="new-name" name="name" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="new-users"><a href="javascript:void(0)" data-toggle="popover" data-content="<%= __("/ListX/UI/Dashboard/ListModal/Form/UsersHelper") %>"><%= __("/ListX/UI/Dashboard/ListModal/Form/Users") %> <i class="fa fa-info-circle"></i></a></label>
+                                        <textarea class="form-control" rows="5" id="new-users" name="users" autocorrect="off" autocapitalize="off" spellcheck="false"></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="new-country"><%= __("/ListX/UI/Dashboard/ListModal/Form/Country") %></label>
+                                        <select class="input-medium bfh-countries form-control" id="new-country" data-country="DE" required></select>
+                                    </div>
+                                    <input type="hidden" value="<%= user._id %>" id="new-admin">
+                                    <input type="submit" id="new-submit" class="btn btn-default btn-block" value="<%= __("/ListX/UI/Dashboard/ListModal/Form/Submit") %>">
+                                </form>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="row">
+                        <% if (user.lists.length > 0) { %>
+                        <% for (var i = 0; i <= user.lists.length -1; i++) { %>
+                        <%= user.lists[i]._id %>
+                        <!-- /list/ -->
+                        <div class="col-md-6">
+                            <div class="content-box-header">
+                                <div class="panel-title"><a href="/lists/<%= user.lists[i]._id %>"><%= i._id %></a></div>
+
+                                <div class="panel-options">
+                                    <a href="/lists/<%= user.lists[i]._id %>/settings"><i class="glyphicon glyphicon-cog"></i></a>
+                                    <a href="#" ><i class="glyphicon glyphicon-remove-circle"></i></a>
+                                </div>
+                            </div>
+                            <div class="content-box-large box-with-header">
+                                <h4>Items: <span id="itemCount-<%= user.lists[i]._id %>"></span></h4>
+                                <h4>User: {USERS*4}</h4>
+                                <br>
+                            </div>
+                            <script>
+                                $.get("/api/lists/<%= user.lists[i]._id %>/itemCount", function (data) {
+                                    $("#itemCount-<%= user.lists[i]._id %>").html(data);
+                                });
+                            </script>
+                        </div>
+                        <!-- ./list/ -->
+                        <% }} else { %>
+                            <%- "<div class=\"col-md-6\"><h3>No Lists found, create one!</h3></div>"%>
+                        <% }%>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12 panel-warning">
+                    <div class="content-box-header panel-heading">
+                        <div class="panel-title ">New vs Returning Visitors</div>
+
+                        <div class="panel-options">
+                            <a href="#" data-rel="collapse"><i class="glyphicon glyphicon-refresh"></i></a>
+                            <a href="#" data-rel="reload"><i class="glyphicon glyphicon-cog"></i></a>
+                        </div>
+                    </div>
+                    <div class="content-box-large box-with-header">
+                        <% for (var i in user.lists) { %>
+                        <%= i %>
+                        <% } %>
+                        <br /><br />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/vendor/bootstrap/js/bootstrap.min.js"></script>
+
+<!-- Plugin JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
+<script src="/vendor/bs-form-helpers/js/bootstrap-formhelpers-countries.js"></script>
+<script src="/vendor/bs-form-helpers/js/lang/<%=__("/ListX/UI/Links/JS/CountryPicker")%>"></script>
+
+<!-- Theme JavaScript -->
+<script src="/javascripts/dashboard.js"></script>
+
+
+</body>
+</html>

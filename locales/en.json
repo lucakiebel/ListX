@@ -75,5 +75,20 @@
   "/ListX/UI/PasswordRequirements/CharMin": "8 Characters Long",
   "/ListX/UI/PasswordRequirements/Uppercase": "One Uppercase Letter",
   "/ListX/UI/PasswordRequirements/Lowercase": "One Lowercase Letter",
-  "/ListX/UI/PasswordRequirements/Number": "One Number"
+  "/ListX/UI/PasswordRequirements/Number": "One Number",
+  "/ListX/UI/Dashboard/myAccount": "My Account",
+  "/ListX/UI/Dashboard/Settings": "Settings",
+  "/ListX/UI/Dashboard/Feedback": "Feedback",
+  "/ListX/UI/Dashboard/Logout": "Logout",
+  "/ListX/UI/Dashboard/Lists": "Lists",
+  "/ListX/UI/Dashboard/Search": "Search",
+  "/ListX/UI/Dashboard/NewList": "New",
+  "/ListX/UI/Dashboard/ListModal/HeaderText": "Create a new List",
+  "/ListX/UI/Dashboard/ListModal/Form/Name":"Name",
+  "/ListX/UI/Dashboard/ListModal/Form/Users":"Add Users",
+  "/ListX/UI/Dashboard/ListModal/Form/UsersHelper":"Insert a comma-separated list of their Email-Addresses",
+  "/ListX/UI/Dashboard/ListModal/Form/Country":"Country",
+  "/ListX/UI/Dashboard/ListModal/Form/Submit":"Create List",
+  "/ListX/UI/Links/JS/CountryPicker": "en_US/bootstrap-formhelpers-countries.en_US.js"
+
 }

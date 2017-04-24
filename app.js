@@ -128,6 +128,10 @@ app.get('/signup', function(req, res) {
   res.render('signup');
 });
 
+app.post('/api/password', function (req, res) {
+	var hash = bcrypt.hashSync(req.body.password);
+	res.send(hash);
+});
 
 app.post('/login', function(req, res) {
   User.findOne({ email: req.body.email }, function(err, user) {
@@ -158,7 +162,6 @@ app.get('/login', function (req, res) {
 
 app.get('/logout', function (req, res) {
   req.session.destroy();
-
   res.redirect("/");
 });
 
@@ -205,6 +208,7 @@ app.get('/list/:id', requireLogin, function(req, res) {
 
 
 app.get('/dashboard', requireLogin, function(req, res) {
+	console.log(req.session.user.lists);
   res.render('dashboard', {user: req.session.user});
 });
 
@@ -242,12 +246,12 @@ app.get('/list/:id/invite', requireLogin, function (req, res) {
 });
 
 /**
- * Basic Routes to change the used language
+ * Basic Route to change the used language
  */
 
 app.get("/language/:lang", function (req, res) {
   res.cookie("preferredLang", req.params.lang, { maxAge: 900000, httpOnly: true });
-  res.redirect('back');
+  res.send('<script>window.history.back();</script>')
 });
 
 /**
@@ -298,17 +302,35 @@ app.get('/api/lists/:id', function(req, res) {
   });
 });
 
+// get item-count of a list
+app.get('/api/lists/:id/itemCount', function (req, res) {
+	List.findOne({_id : req.params.id}, function(err, list) {
+		if(err){res.json({ error: 'List not found'})}
+		Item.find({list : list._id}, function (err, items) {
+			if(err){res.json({ error: 'List not found'})}
+			res.json(items.length);
+		});
+	});
+});
+
+// get all invitaions for a list
+app.get('/api/lists/:id/invitations', function (req, res) {
+	Invitation.find({list: req.params.id} ,function (err, invitations) {
+		if(err){res.json({ error: 'No Invitation found'});}
+		res.json(invitations);
+	});
+});
 
 // create list
 app.post('/api/lists', function(req, res) {
   List.create({
     name: req.body.name,
     country: req.body.country,
-    language: req.body.language,
+  	admin: req.body.admin,
     invitations: req.body.invitations
   }, function(err, list) {
-    if(err){res.json({ error: 'List not created'});}
-    res.json(list);
+    if(err){res.json({ success: false});}
+    res.json({success: true, id : list._id});
   });
 });
 
@@ -325,8 +347,8 @@ app.delete('/api/lists/:id', function(req, res) {
 app.post('/api/lists/:id', function (req, res) {
   var update = req.body;
   Item.findOneAndUpdate({_id : req.params.id}, update, function (err, list) {
-    if(err){res.json({ error: 'List not updated'});}
-    res.json(list);
+    if(err){res.json({ error: 'List not updated', success: false});}
+    res.json({success: true, list: list});
   });
 });
 
@@ -500,8 +522,8 @@ app.get('/api/invitations/:id', function (req, res) {
   });
 });
 
-// create invitation
-app.post('/api/invitations', function (req, res) {
+// create invitation from array
+app.post('/api/invitations/array', function (req, res) {
   var inv = {} // invitation
       , e // element
       , i=0; // incrementer
@@ -516,17 +538,27 @@ app.post('/api/invitations', function (req, res) {
   else {
     createInvite(req.body.email, i);
   }
-  res.json(inv);
-
+	res.json(inv);
   function createInvite(email, no) {
     Invitation.create({
       email: email
     }, function (err, invitation) {
-      res.json({ error: 'Invitation not created'});
       inv[no] = invitation;
     });
   }
 });
+
+// create a single invitation
+app.post("/api/invitations", function (req, res) {
+	Invitation.create({
+		email: req.body.email,
+		name: req.body.name != "" ? req.body.name : false,
+		list: req.body.list
+	}, function (err, inv) {
+		res.json(inv);
+	});
+});
+
 
 // Delete an invitation
 app.delete('/api/invitations/:id', function (req, res) {

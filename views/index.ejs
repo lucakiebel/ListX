@@ -88,7 +88,7 @@
                     <a href="/signup" class="navbar-nav color-visible <%if(user){%><%="username-invisible u-invisible"%><%} else {%><%="username-visible u-visible"%><%}%>"><%= __("/ListX/UI/Index/signUp") %> </a>
                 </li>
                 <li class="dropdown">
-                    <a href="/dashboard/user" class="color-visible <%if(user){%><%="username-visible u-visible"%><%} else {%><%="username-invisible u-invisible"%><%}%>" id="login-ready"><%= __("/ListX/UI/Howdy")%><%if(user){%><%=", "+user.name %><%}%></a>
+                    <a href="/user/settings" class="color-visible <%if(user){%><%="username-visible u-visible"%><%} else {%><%="username-invisible u-invisible"%><%}%>" id="login-ready"><%= __("/ListX/UI/Howdy")%><%if(user){%><%=", "+user.name %><%}%></a>
                     <a href="/login" class="color-visible <%if(user){%><%="username-invisible u-invisible"%><%} else {%><%="username-visible u-visible"%><%}%>" id="login-dropdown-link"><%= __("/ListX/UI/Index/logIn") %> <i class="fa fa-sign-in" aria-hidden="true"></i></a>
                 </li>
             </ul>
@@ -132,7 +132,7 @@
     <div class="showcase-section">
         <div class="container">
             <div class="col-lg-8 col-lg-offset-2">
-                <p>You can download Grayscale for free on the preview page at Start Bootstrap.</p>
+                <p></p>
                 <a href="http://startbootstrap.com/template-overviews/grayscale/" class="btn btn-default btn-lg">Visit Download Page</a>
             </div>
         </div>

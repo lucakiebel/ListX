@@ -206,12 +206,17 @@ app.get('/list/:id', requireLogin, function(req, res) {
   });
 });
 
-
+// Users Dashboard
 app.get('/dashboard', requireLogin, function(req, res) {
 	console.log(req.session.user.lists);
   res.render('dashboard', {user: req.session.user});
 });
 
+
+// User Profile
+app.get('/user', requireLogin, function (req, res) {
+	
+});
 
 
 // Invitations page for invited users to join a family and "sign up"

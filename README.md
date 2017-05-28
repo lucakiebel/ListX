@@ -89,7 +89,7 @@ We use [GitHub](https://github.com) for versioning. For the versions available, 
 
 ## License
 
-This project is licensed under the CreativeCommons BY-NC-ND - see the [LICENSE.md](LICENSE.md) file for details
+[![License: CC BY-NC-ND 4.0](https://licensebuttons.net/l/by-nc-nd/4.0/80x15.png)](http://creativecommons.org/licenses/by-nc-nd/4.0/)
 
 ## Copyright
 

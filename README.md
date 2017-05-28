@@ -89,7 +89,7 @@ We use [GitHub](https://github.com) for versioning. For the versions available, 
 
 ## License
 
-This project is licensed under the GNU Lesser General Public License v3.0 - see the [LICENSE.md](LICENSE.md) file for details
+This project is licensed under the CreativeCommons BY-NC-ND - see the [LICENSE.md](LICENSE.md) file for details
 
 ## Copyright
 
@@ -98,6 +98,6 @@ ListX is digital property of Klequex Software, Copyright © 2017
 ## Acknowledgments
 
 * Hat tip to anyone who's code was used, especially to all the NPM Package authors
-* Inspiration
-* etc
+* Feedback from my family and friends who tested the app in Alpha stage
+* Special Thanks to [@julianuphoff](https://github.com/julianuphoff)
 

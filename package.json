@@ -19,20 +19,20 @@
     "morgan": "~1.7.0",
     "serve-favicon": "~2.3.2"
   },
-  "description": "<h1>List<span style=\"color: red;\">X</span> - Shopping Lists on another level </h1>",
+  "description": "ListX - Shopping Lists on another level",
   "main": "bin/www",
   "devDependencies": {},
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/klequex/ListX.git"
+    "url": "git+https://github.com/lucakiebel/ListX.git"
   },
   "keywords": [
     "Lists"
   ],
   "author": "Klequex Software (Klequex.com)",
-  "license": "LGPL-3.0",
+  "license": "CC Attribution-NonCommmercial-ShareAlike 4.0",
   "bugs": {
-    "url": "https://github.com/klequex/ListX/issues"
+    "url": "https://github.com/lucakiebel/ListX/issues"
   },
-  "homepage": "https://github.com/klequex/ListX#readme"
+  "homepage": "https://github.com/lucakiebel/ListX#readme"
 }

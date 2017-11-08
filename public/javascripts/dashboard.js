@@ -18,46 +18,71 @@ $(document).ready(function(){
 	});
 
 	$('[data-toggle="popover"]').popover();
+
 	
 	// Form Validation
 	// First, make the list without invitations, we are going to need the lists ID to insert invitations
 	$("#new-submit").click(function () {
 		var name = $("#new-name").val();
-		var users = $("#new-users").val();
+		var users = $("#new-users").val().split(",");
 		var country = $("#new-country").val();
 		var admin = $("#new-admin").val();
-		users = users.split(",");
+		console.log("Name: "+ name + " Nutzer: " + users + " Land: " + country + " Admin: " +admin);
 		if(name != ""){
 			$.post("/api/lists", {
 				name: name,
 				country: country,
 				admin: admin
 			}, function (data) {
+				console.log(data);
 				if (data.success === true){
 					var id = data.id;
-					var ids = [{_id: ""}];
-					var i = 0;
+					var inv_ids = [];
 					// Then post to the API with every Invitation
-					users.forEach(function (user) {
+					users.forEach(function (mail) {
 						$.post("/api/invitations", {
-							email: user,
+							email: mail,
 							list: id
 						}, function (listData) {
-							ids[i]._id = listData._id;
+							inv_ids.push({id:listData._id});
 						});
 					});
 					$.post("/api/lists/"+id, {
-						invitations: ids
+						invitations: inv_ids
 					}, function (updateData) {
+						console.log(updateData);
 						if (updateData.success === true){
 							// Then add the List to the Users Lists Array
-							$.post("/api/users/"+admin, {
-								$push: {lists: {_id: id}}
-							}, {safe: true, upsert: true, new : true},
-								function (err, user) {
-									if (!err && (user._id === admin)) 
+							$.get('/api/users/'+admin+'/lists', function (data) {
+								//data.lists.push(id);
+								console.log("get admin lists ");
+								console.log(data);
+								$.post("/api/users/"+admin+"/newList", {
+									lists: data.lists
+								}, function(data){
+									if (data.success === true && data.id === admin){
 										$("#new-list-modal").modal("hide");
+										users.forEach(function (mail) {
+											$.get("/api/users/byMail/"+mail, function (data) {
+												if (data.success == true && data.email == mail){
+													// user already exists
+												}
+												else {
+													// user does not exist, so send mail
+													
+												}
+											});
+										});
+									}
+									else {
+										console.error("User not Admin or not successful");
+									}
+								});
 							});
+							
+
+							// TODO Nutzer zu der Liste hinzufügen und bei bedarf einladen
+
 						}
 					});
 				}

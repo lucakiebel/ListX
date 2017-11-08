@@ -1,12 +1,13 @@
 {
   "name": "listx",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "private": false,
   "scripts": {
     "start": "node ./bin/www"
   },
   "dependencies": {
     "bcrypt-nodejs": "0.0.3",
+    "bluebird": "^3.5.0",
     "body-parser": "~1.16.0",
     "client-sessions": "^0.7.0",
     "cookie-parser": "~1.4.3",
@@ -19,20 +20,20 @@
     "morgan": "~1.7.0",
     "serve-favicon": "~2.3.2"
   },
-  "description": "<h1>List<span style=\"color: red;\">X</span> - Shopping Lists on another level </h1>",
+  "description": "ListX - Shopping Lists on another level",
   "main": "bin/www",
   "devDependencies": {},
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/klequex/ListX.git"
+    "url": "git+https://github.com/lucakiebel/ListX.git"
   },
   "keywords": [
     "Lists"
   ],
-  "author": "Klequex Software (Klequex.com)",
+  "author": "SoluKitchen UG (solukitchen.com)",
   "license": "LGPL-3.0",
   "bugs": {
-    "url": "https://github.com/klequex/ListX/issues"
+    "url": "https://github.com/lucakiebek/ListX/issues"
   },
-  "homepage": "https://github.com/klequex/ListX#readme"
+  "homepage": "https://listx.io"
 }

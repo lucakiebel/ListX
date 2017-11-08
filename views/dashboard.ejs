@@ -82,7 +82,7 @@
                     <!-- Main menu -->
                     <li><a href="/"><i class="glyphicon glyphicon-home"></i> <%= __("/ListX/UI/Index/home") %></a></li>
                     <li class="current"><a href="/dashboard"><i class="glyphicon glyphicon-list-alt"></i> <%= __("/ListX/UI/Dashboard/Lists") %></a></li>
-                    <li><a href="/user"><i class="glyphicon glyphicon-user"></i> <%= user.name %></a></li>
+                    <li><a userId="<%= user._id %>" id="userIDLink" href="/user"><i class="glyphicon glyphicon-user"></i> <%= user.name %></a></li>
                     <li><a href="/support"><i class="glyphicon glyphicon-question-sign"></i> <%= __("/ListX/UI/Index/support") %></a></li>
                 </ul>
             </div>
@@ -117,7 +117,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="new-country"><%= __("/ListX/UI/Dashboard/ListModal/Form/Country") %></label>
-                                        <select class="input-medium bfh-countries form-control" id="new-country" data-country="DE" required></select>
+                                        <select class="input-medium bfh-countries form-control" id="new-country" data-country="<%= __("/ListX/UI/htmlLang") %>" required></select>
                                     </div>
                                     <input type="hidden" value="<%= user._id %>" id="new-admin">
                                     <input type="submit" id="new-submit" class="btn btn-default btn-block" value="<%= __("/ListX/UI/Dashboard/ListModal/Form/Submit") %>">
@@ -133,35 +133,35 @@
 
             <div class="row">
                 <div class="col-md-12">
-                    <div class="row">
-                        <% if (user.lists.length > 0) { %>
-                        <% for (var i = 0; i <= user.lists.length -1; i++) { %>
-                        <%= user.lists[i]._id %>
-                        <!-- /list/ -->
-                        <div class="col-md-6">
-                            <div class="content-box-header">
-                                <div class="panel-title"><a href="/lists/<%= user.lists[i]._id %>"><%= i._id %></a></div>
+                    <script>
+                        var userId = "<%= user._id %>";
 
-                                <div class="panel-options">
-                                    <a href="/lists/<%= user.lists[i]._id %>/settings"><i class="glyphicon glyphicon-cog"></i></a>
-                                    <a href="#" ><i class="glyphicon glyphicon-remove-circle"></i></a>
-                                </div>
-                            </div>
-                            <div class="content-box-large box-with-header">
-                                <h4>Items: <span id="itemCount-<%= user.lists[i]._id %>"></span></h4>
-                                <h4>User: {USERS*4}</h4>
-                                <br>
-                            </div>
-                            <script>
-                                $.get("/api/lists/<%= user.lists[i]._id %>/itemCount", function (data) {
-                                    $("#itemCount-<%= user.lists[i]._id %>").html(data);
+                        $.get("/api/users/"+userId+"/lists", function (data) {
+                            console.log(data);
+                            var listsDiv = $('#listsDiv');
+                            if (data.success == true){
+                                console.log("Lists found!");
+                                listsDiv.html(null);
+                                data.lists.forEach(function (list) {
+                                    if(!list || list.length == 0){
+                                        listsDiv.html('<div class="nolist" style="text-align: center; align-items: center; padding-top: 30px; padding-bottom: 30px"><h2>No Lists found, create one!</h2></div>')
+                                    }
+                                    $.get("/api/lists/"+list._id+"/itemCount", function (itemCount) {
+                                        let html = '<div class="col-md-6"><div class="content-box-header"><div class="panel-title"><a href="/list/'+list._id+'">'+list.name+'</a></div><div class="panel-options"><a href="/list/'+list._id+'/settings"><i class="glyphicon glyphicon-cog"></i></a> <a href="#" ><i class="glyphicon glyphicon-remove-circle"></i></a> </div> </div> <div class="content-box-large box-with-header"> <h4>Items: '+itemCount+'</h4><br> </div> </div>';
+                                        listsDiv.html(listsDiv.html() +"\n"+ html);
+                                    });
                                 });
-                            </script>
+                            }
+                            else {
+                                console.log("No Lists found!");
+                                listsDiv.html('<div class="nolist" style="text-align: center; align-items: center; padding-top: 30px; padding-bottom: 30px"><h2>No Lists found, create one!</h2></div>')
+                            }
+                        });
+                    </script>
+                    <div class="row" id="listsDiv">
+                        <div class="loading" style="text-align: center; align-items: center; padding-top: 30px; padding-bottom: 30px">
+                            <h2>Loading.....</h2>
                         </div>
-                        <!-- ./list/ -->
-                        <% }} else { %>
-                            <%- "<div class=\"col-md-6\"><h3>No Lists found, create one!</h3></div>"%>
-                        <% }%>
                     </div>
                 </div>
             </div>
@@ -169,18 +169,12 @@
             <div class="row">
                 <div class="col-md-12 panel-warning">
                     <div class="content-box-header panel-heading">
-                        <div class="panel-title ">New vs Returning Visitors</div>
+                        <div class="panel-title ">Really important information!!</div>
 
                         <div class="panel-options">
                             <a href="#" data-rel="collapse"><i class="glyphicon glyphicon-refresh"></i></a>
                             <a href="#" data-rel="reload"><i class="glyphicon glyphicon-cog"></i></a>
                         </div>
-                    </div>
-                    <div class="content-box-large box-with-header">
-                        <% for (var i in user.lists) { %>
-                        <%= i %>
-                        <% } %>
-                        <br /><br />
                     </div>
                 </div>
             </div>

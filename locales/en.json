@@ -1,5 +1,5 @@
 {
-  "/ListX/UI/htmlLang": "en",
+  "/ListX/UI/htmlLang": "EN",
   "/ListX/UI/SiteName": "ListX",
   "/ListX/UI/Index/SiteTitle": "ListX - Shopping Lists on another level",
   "/ListX/UI/Index/Title1": "Shopping Lists <br> on another <br> level",
@@ -66,7 +66,7 @@
   "/ListX/UI/Dashboard/Login/noAccountYet": "Don't have an account yet?",
   "/ListX/UI/SignUp/enterPasswordAgain": "Enter Password again",
   "/ListX/UI/SignUp/ErrorMessageEmail": "Please enter a valid Email-Address",
-  "/ListX/UI/SignUp/ErrorMessageServer": "The Server encountered an Error while processing your SignUp, please <a href='/support'>Contact us!</a>",
+  "/ListX/UI/SignUp/ErrorMessageServer": "The Server encountered an Error while processing your Sign-Up, please <a href='/support'>Contact us!</a>",
   "/ListX/UI/SignUp/enterYourName": "Your Name",
   "/ListX/UI/SignUp/enterYourEmail": "Your Email",
   "/ListX/UI/SignUp/enterYourPassword": "Your Password",
@@ -89,6 +89,15 @@
   "/ListX/UI/Dashboard/ListModal/Form/UsersHelper":"Insert a comma-separated list of their Email-Addresses",
   "/ListX/UI/Dashboard/ListModal/Form/Country":"Country",
   "/ListX/UI/Dashboard/ListModal/Form/Submit":"Create List",
-  "/ListX/UI/Links/JS/CountryPicker": "en_US/bootstrap-formhelpers-countries.en_US.js"
-
+  "/ListX/UI/Links/JS/CountryPicker": "en_US/bootstrap-formhelpers-countries.en_US.js",
+  "/ListX/UI/extras/easterEggs/listNameIsList": "Very funny, please choose a more suitable name for your list!",
+  "/ListX/UI/Index/about/DashboardAd": "Easy-to-use Dashboard",
+  "/ListX/UI/Index/about/DashboardAdLong": "Our Users love our responsive and easy-to-use Dashboard, see for yourself!",
+  "/ListX/UI/List/Elements": "Elements",
+  "/ListX/UI/List/Amount": "Amount",
+  "/ListX/UI/List/Art": "Type",
+  "/ListX/UI/List/NameSetter": "Articlename",
+  "/ListX/UI/List/AmountSetter": "Amount",
+  "/ListX/UI/List/ArtSetter": "Art / Type",
+  "/ListX/UI/List/AddElement": "Add Element"
 }

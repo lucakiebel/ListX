@@ -1,5 +1,5 @@
 {
-  "/ListX/UI/htmlLang": "de",
+  "/ListX/UI/htmlLang": "DE",
   "/ListX/UI/SiteName": "ListX",
   "/ListX/UI/Index/SiteTitle": "ListX - Einkaufslisten auf einem anderen Level",
   "/ListX/UI/Index/Title1": "Einkaufslisten <br> auf einem anderen <br> Level",
@@ -89,5 +89,15 @@
   "/ListX/UI/Dashboard/ListModal/Form/UsersHelper":"Eine durch Kommas getrennte Liste der E-Mail-Adressen eintragen",
   "/ListX/UI/Dashboard/ListModal/Form/Country":"Land",
   "/ListX/UI/Dashboard/ListModal/Form/Submit":"Liste erstellen",
-  "/ListX/UI/Links/JS/CountryPicker": "de_DE/bootstrap-formhelpers-countries.de_DE.js"
+  "/ListX/UI/Links/JS/CountryPicker": "de_DE/bootstrap-formhelpers-countries.de_DE.js",
+  "/ListX/UI/extras/easterEggs/listNameIsList": "Sehr lustig, bitte suche dir einen passenderen Namen für deine Liste aus!",
+  "/ListX/UI/Index/about/DashboardAd": "Intuitives Dashboard",
+  "/ListX/UI/Index/about/DashboardAdLong": "Unsere Nutzer lieben unser responsives und intuitives Dashboard, seht selbst!",
+  "/ListX/UI/List/Elements": "Elemente",
+  "/ListX/UI/List/Amount": "Menge",
+  "/ListX/UI/List/Art": "Art",
+  "/ListX/UI/List/NameSetter": "Artikelname",
+  "/ListX/UI/List/AmountSetter": "Menge",
+  "/ListX/UI/List/ArtSetter": "Art / Typ",
+  "/ListX/UI/List/AddElement": "Element hinzufügen"
 }

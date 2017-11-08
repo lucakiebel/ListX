@@ -363,6 +363,14 @@ footer {
   border-left: 1px solid black;
 }
 
+@media (max-width: 767px) {
+  .vertical-divider-left {
+    border-left: none;
+    display: block;
+    right: 0 !important;
+  }
+}
+
 .vertical-divider-right {
   border-right: 1px solid black;
 }
@@ -413,4 +421,8 @@ a#login-submit:focus {
 .username-visible {
   display: block;
 }
-/*
+@media (max-width: 767px) {
+  .legal-logo {
+    display: inline-flex;
+  }
+}

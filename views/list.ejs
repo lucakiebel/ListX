@@ -1,17 +1,13 @@
 <!doctype html>
 
-<!-- ASSIGN OUR ANGULAR MODULE -->
 <html ng-app="ShoppingList">
 <head>
-    <!-- META -->
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Optimize mobile viewport -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
 
-    <title>Shopping List</title>
+    <title><%=list.name%> | <%= __("/ListX/UI/SiteName")%></title>
 
-    <!-- SCROLLS -->
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css"><!-- load bootstrap -->
-    <link rel="icon" href="https://lh3.googleusercontent.com/twOma0PzclgQNrKYY0_HUR_Y53XS0oUQkVc0QupYm60umKTe5vR-HKPK6NX41Qc4h0Q"><!-- favicon -->
+    <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <style>
         html                    { overflow-y:scroll; }
         body                    { padding-top:2%; }
@@ -20,51 +16,49 @@
         input.form-control	    { margin-top:2%; }
     </style>
 
-    <!-- SPELLS -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script><!-- load jquery -->
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script><!-- load angular -->
-    <script src="https://cdn.radon.cloud/listx.io/core.js.php?l=<%=famId%>"></script><!-- load core script -->
+    <!-- jQuery -->
+    <script src="/vendor/jquery/jquery.js"></script>
+    <!-- AngularJS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script>
+    <!-- Angular App -->
+    <script src="https://sk-cdn.net/websites/listx.io/core.js.php?l=<%=list._id%>"></script>
 </head>
-<!-- SET THE CONTROLLER AND GET ALL items -->
 <body ng-controller="mainController">
 <div class="container">
 
-    <!-- HEADER AND TODO COUNT -->
     <div class="jumbotron text-center">
-        <h1><%=famName%>'s Shopping List</h1>
-        <h2>Elements: <span class="label label-info">{{ items.length }}</span></h2>
+        <h1><%=list.name%></h1>
+        <h2><%= __("/ListX/UI/List/Elements")%>: <span class="label label-danger">{{ items.length }}</span></h2>
     </div>
 
-    <!-- TODO LIST -->
     <div id="todo-list" class="row">
         <div class="col-sm-4 col-sm-offset-4">
-            <div class="checkbox" ng-repeat="todo in items">
+            <div class="checkbox ng-scope" ng-repeat="item in items">
                 <label>
-                    <input type="checkbox" ng-click="deleteTodo(todo._id)"> <h3> {{ todo.name }} </h3>
-                    <ul><li ng-show="todo.amount"><h4>Amount: {{ todo.amount }}</h4></li><li ng-show="todo.count"><h4>Count: {{ todo.count }}</h4></li><li ng-show="todo.art"><h4>Type: {{ todo.art }}</h4></li></ul>
+                    <label>
+                        <input type="checkbox" ng-click="deleteTodo(item._id)">
+                        <h3> {{ item.name }} </h3>
+                    </label>
+
+                    <ul><li ng-show="item.amount"><h4><%= __("/ListX/UI/List/Amount")%>: {{ item.amount }}</h4></li><li ng-show="item.art"><h4><%= __("/ListX/UI/List/Art") %>: {{ item.art }}</h4></li></ul>
                 </label>
             </div>
         </div>
     </div>
 
-    <!-- FORM TO CREATE items -->
     <div id="todo-form" class="row">
         <div class="col-sm-8 col-sm-offset-2 text-center">
             <form>
                 <div class="form-group">
-                    <!-- BIND THIS VALUE TO formData.text IN ANGULAR -->
-                    <input type="text" class="form-control input-lg" placeholder="Articlename" ng-model="formData.name">
-                    <input type="text" class="form-control input-lg" placeholder="Amount" ng-model="formData.amount">
-                    <input type="number" min="1" max="100" placeholder="Count" class="form-control input-lg" ng-model="formData.count">
-                    <input type="text" class="form-control input-lg" placeholder="Art / Type" ng-model="formData.art" />
+                    <input type="text" class="form-control input-lg" placeholder="<%= __("/ListX/UI/List/NameSetter")%>" ng-model="formData.name">
+                    <input type="text" class="form-control input-lg" placeholder="<%= __("/ListX/UI/List/AmountSetter")%>" ng-model="formData.amount">
+                    <input type="text" class="form-control input-lg" placeholder="<%= __("/ListX/UI/List/ArtSetter")%>" ng-model="formData.art" />
                 </div>
 
-                <!-- createToDo() WILL CREATE NEW items -->
-                <button type="submit" id="insert-button" class="btn btn-primary btn-lg" ng-click="createTodo()">Add Element</button>
+                <button type="submit" id="insert-button" class="btn btn-danger btn-lg" ng-click="createTodo()"><%= __("/ListX/UI/List/AddElement")%></button>
             </form>
         </div>
     </div>
-    <h3>User: <%=userName%></h3>
 </div>
 
 </body>

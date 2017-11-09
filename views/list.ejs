@@ -36,14 +36,24 @@
             <div class="checkbox ng-scope" ng-repeat="item in items">
                 <label>
                     <label>
-                        <input type="checkbox" ng-click="deleteTodo(item._id)">
-                        <h3> {{ item.name }} </h3>
+                        <input type="checkbox" ng-click="deleteTodo(item._id)"> <h3 style="margin-top: 0"> {{ item.name }} </h3>
+                        <ul><li ng-show="item.amount"><h4><%= __("/ListX/UI/List/Amount")%>: {{ item.amount }}</h4></li><li ng-show="item.art"><h4><%= __("/ListX/UI/List/Art") %>: {{ item.art }}</h4></li></ul>
                     </label>
 
-                    <ul><li ng-show="item.amount"><h4><%= __("/ListX/UI/List/Amount")%>: {{ item.amount }}</h4></li><li ng-show="item.art"><h4><%= __("/ListX/UI/List/Art") %>: {{ item.art }}</h4></li></ul>
+
                 </label>
             </div>
-        </div>
+
+            <!--
+            <div class="checkbox" ng-repeat="item in items">
+                                <label>
+                                        <input type="checkbox" ng-click="deleteTodo(item._id)"> <h3> {{ item.name }} </h3>
+                                        <ul><li ng-show="todo.amount"><h4>Menge: {{ todo.amount }}</h4></li><li ng-show="todo.count"><h4>Anzahl: {{ todo.count }}</h4></li><li ng-show="todo.art"><h4>Art: {{ todo.art }}</h4></li></ul>
+                                </label>
+                </div>
+            -->
+
+
     </div>
 
     <div id="todo-form" class="row">

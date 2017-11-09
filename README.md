@@ -93,11 +93,11 @@ This project is licensed under the GNU Lesser General Public License v3.0 - see 
 
 ## Copyright
 
-ListX is digital property of Klequex Software, Copyright © 2017
+ListX is digital property of Luca Kiebel, Copyright © 2017
 
 ## Acknowledgments
 
 * Hat tip to anyone who's code was used, especially to all the NPM Package authors
 * Inspiration
-* etc
+* defaultAcks.md
 

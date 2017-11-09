@@ -1,0 +1,24 @@
+2017-11-09T21:48:32.900+0100 [initandlisten] MongoDB starting : pid=185 port=27070 dbpath=/var/data 64-bit host=PC
+2017-11-09T21:48:32.912+0100 [initandlisten] db version v2.6.10
+2017-11-09T21:48:32.913+0100 [initandlisten] git version: nogitversion
+2017-11-09T21:48:32.913+0100 [initandlisten] OpenSSL version: OpenSSL 1.0.2g  1 Mar 2016
+2017-11-09T21:48:32.913+0100 [initandlisten] build info: Linux lgw01-12 3.19.0-25-generic #26~14.04.1-Ubuntu SMP Fri Jul 24 21:16:20 UTC 2015 x86_64 BOOST_LIB_VERSION=1_58
+2017-11-09T21:48:32.913+0100 [initandlisten] allocator: tcmalloc
+2017-11-09T21:48:32.913+0100 [initandlisten] options: { net: { port: 27070 }, processManagement: { fork: true }, storage: { dbPath: "/var/data" }, systemLog: { destination: "file", path: "./log.txt" } }
+2017-11-09T21:48:32.927+0100 [initandlisten] exception in initAndListen: 10296 
+*********************************************************************
+ ERROR: dbpath (/var/data) does not exist.
+ Create this directory or give existing directory in --dbpath.
+ See http://dochub.mongodb.org/core/startingandstoppingmongo
+*********************************************************************
+, terminating
+2017-11-09T21:48:32.927+0100 [initandlisten] dbexit: 
+2017-11-09T21:48:32.927+0100 [initandlisten] shutdown: going to close listening sockets...
+2017-11-09T21:48:32.934+0100 [initandlisten] shutdown: going to flush diaglog...
+2017-11-09T21:48:32.935+0100 [initandlisten] shutdown: going to close sockets...
+2017-11-09T21:48:32.935+0100 [initandlisten] shutdown: waiting for fs preallocator...
+2017-11-09T21:48:32.935+0100 [initandlisten] shutdown: lock for final commit...
+2017-11-09T21:48:32.935+0100 [initandlisten] shutdown: final commit...
+2017-11-09T21:48:32.935+0100 [initandlisten] shutdown: closing all files...
+2017-11-09T21:48:32.935+0100 [initandlisten] closeAllFiles() finished
+2017-11-09T21:48:32.936+0100 [initandlisten] dbexit: really exiting now

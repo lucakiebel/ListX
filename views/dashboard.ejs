@@ -134,28 +134,60 @@
             <div class="row">
                 <div class="col-md-12">
                     <script>
-                        var userId = "<%= user._id %>";
+                        const userId = "<%= user._id %>";
 
-                        $.get("/api/users/"+userId+"/lists", function (data) {
-                            console.log(data);
-                            var listsDiv = $('#listsDiv');
-                            if (data.success == true){
-                                console.log("Lists found!");
-                                listsDiv.html(null);
-                                data.lists.forEach(function (list) {
-                                    if(!list || list.length == 0){
-                                        listsDiv.html('<div class="nolist" style="text-align: center; align-items: center; padding-top: 30px; padding-bottom: 30px"><h2>No Lists found, create one!</h2></div>')
+                        function removeList(list) {
+
+                            list = JSON.parse(list);
+                            let delURL,r;
+                            if(list.admin === userId) {
+                                r = confirm("<%= __("/ListX/UI/Dashboard/ConfirmListDeleteAdmin") %>")
+                                delURL = "/api/lists/"+list._id+"/admin";
+                            } else {
+                                r = confirm("<%= __("/ListX/UI/Dashboard/ConfirmListDelete") %>")
+                                delURL = "/api/lists/"+list._id;
+                            }
+
+                            if (r === true) {
+                                $.ajax({
+                                    url: delURL,
+                                    type: 'DELETE',
+                                    success: function(result) {
+                                        getLists();
                                     }
-                                    $.get("/api/lists/"+list._id+"/itemCount", function (itemCount) {
-                                        let html = '<div class="col-md-6"><div class="content-box-header"><div class="panel-title"><a href="/list/'+list._id+'">'+list.name+'</a></div><div class="panel-options"><a href="/list/'+list._id+'/settings"><i class="glyphicon glyphicon-cog"></i></a> <a href="#" ><i class="glyphicon glyphicon-remove-circle"></i></a> </div> </div> <div class="content-box-large box-with-header"> <h4>Items: '+itemCount+'</h4><br> </div> </div>';
-                                        listsDiv.html(listsDiv.html() +"\n"+ html);
-                                    });
                                 });
+                            } else {
+                                // do nothing
                             }
-                            else {
-                                console.log("No Lists found!");
-                                listsDiv.html('<div class="nolist" style="text-align: center; align-items: center; padding-top: 30px; padding-bottom: 30px"><h2>No Lists found, create one!</h2></div>')
-                            }
+
+                        }
+
+                        function getLists() {
+                            $.get("/api/users/" + userId + "/lists", function (data) {
+                                console.log(data);
+                                const listsDiv = $('#listsDiv');
+                                if (data.success === true) {
+                                    console.log("Lists found!");
+                                    listsDiv.html(null);
+                                    data.lists.forEach(function (list) {
+                                        if (!list || list.length === 0) {
+                                            listsDiv.html('<div class="nolist" style="text-align: center; align-items: center; padding-top: 30px; padding-bottom: 30px"><h2>No Lists found, create one!</h2></div>')
+                                        }
+                                        $.get("/api/lists/" + list._id + "/itemCount", function (itemCount) {
+                                            let html = '<div class="col-md-6"><div class="content-box-header"><div class="panel-title"><a href="/list/' + list._id + '">' + list.name + '</a></div><div class="panel-options"><a href="/list/' + list._id + '/settings"><i class="glyphicon glyphicon-cog"></i></a> <a href="#" onclick="removeList('+JSON.stringify(list)+')" ><i class="glyphicon glyphicon-remove-circle"></i></a> </div> </div> <div class="content-box-large box-with-header"> <h4>Items: ' + itemCount + '</h4><br> </div> </div>';
+                                            listsDiv.html(listsDiv.html() + "\n" + html);
+                                        });
+                                    });
+                                }
+                                else {
+                                    console.log("No Lists found!");
+                                    listsDiv.html('<div class="nolist" style="text-align: center; align-items: center; padding-top: 30px; padding-bottom: 30px"><h2>No Lists found, create one!</h2></div>')
+                                }
+                            });
+                        }
+
+                        $(function () {
+                           getLists();
                         });
                     </script>
                     <div class="row" id="listsDiv">

@@ -86,7 +86,7 @@
   "/ListX/UI/Dashboard/ListModal/HeaderText": "Erstelle eine neue Liste",
   "/ListX/UI/Dashboard/ListModal/Form/Name":"Name",
   "/ListX/UI/Dashboard/ListModal/Form/Users":"Nutzer Hinzufügen",
-  "/ListX/UI/Dashboard/ListModal/Form/UsersHelper":"Eine durch Kommas getrennte Liste der E-Mail-Adressen eintragen",
+  "/ListX/UI/Dashboard/ListModal/Form/UsersHelper":"Eine durch Kommata getrennte Liste der E-Mail-Adressen eintragen",
   "/ListX/UI/Dashboard/ListModal/Form/Country":"Land",
   "/ListX/UI/Dashboard/ListModal/Form/Submit":"Liste erstellen",
   "/ListX/UI/Links/JS/CountryPicker": "de_DE/bootstrap-formhelpers-countries.de_DE.js",
@@ -99,5 +99,7 @@
   "/ListX/UI/List/NameSetter": "Artikelname",
   "/ListX/UI/List/AmountSetter": "Menge",
   "/ListX/UI/List/ArtSetter": "Art / Typ",
-  "/ListX/UI/List/AddElement": "Element hinzufügen"
+  "/ListX/UI/List/AddElement": "Element hinzufügen",
+  "/ListX/UI/Dashboard/ConfirmListDelete": "Willst Du diese Liste wirklich entfernen?",
+  "/ListX/UI/Dashboard/ConfirmListDeleteAdmin": "Willst Du diese Liste wirklich entfernen? Dies wird sämtliche, mit der Liste in Verbindung stehenden Daten löschen!"
 }

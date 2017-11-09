@@ -1,4 +1,4 @@
-var   express = require('express')                        // Express as a Webserver
+const   express = require('express')                        // Express as a Webserver
     , path = require('path')                              // path used for local file access
     , favicon = require('serve-favicon')                  // Serve favicons for every request
     , logger = require('morgan')                          // Morgan to log requests to the console
@@ -31,6 +31,8 @@ app.use(session({
   activeDuration: 30 * 60000, // 30 minutes
   httpOnly: true // prevent cookies from being intercepted
 }));
+
+const mailgun = mg({apiKey: 'key-7a2e1c0248d4728c528b5f8859ad2f46', domain: 'mail.listx.io'});
 
 i18n.configure({
 
@@ -65,9 +67,9 @@ console.info(i18n.__("/ListX/UI/Welcome"));
 
 // database setup
 mongoose.Promise = Promise;
-mongoose.connect('mongodb://localhost:27070/listx');	// mongod --dbpath=/var/data --port=27070
+mongoose.connect('mongodb://localhost:27070/listx');	// sudo mongod --dbpath=/var/data --port=27070 --fork --logpath=./log.txt
 
-var Item = mongoose.model('Item', {
+const Item = mongoose.model('Item', {
   list:mongoose.Schema.Types.ObjectId,
   name:String,
   amount:String,
@@ -76,14 +78,14 @@ var Item = mongoose.model('Item', {
   date:{type:Date, default:Date.now}
 });
 
-var User = mongoose.model('User', {
+const User = mongoose.model('User', {
   name:String,
   email:String,
   password:String,
   lists: [] // 1 User => 0+ Lists
 });
 
-var List = mongoose.model('List', {
+const List = mongoose.model('List', {
   name:String,
   country:String,
   language:String,
@@ -91,34 +93,30 @@ var List = mongoose.model('List', {
   invitations: [] // 1 List => 0+ Open Invitations
 });
 
-var Invitation = mongoose.model('Invitation', {
+const Invitation = mongoose.model('Invitation', {
   name:String,
   email:String,
   list:mongoose.Schema.Types.ObjectId
 });
 
 
-var DemoList = mongoose.model('DemoList', {
+const DemoList = mongoose.model('DemoList', {
   name:String,
   language:String,
   expiry:{type:Date, default:Date.now()+12*60*60*1000}
 });
 
-var ShortDomain = mongoose.model('ShortDomain', {
+const ShortDomain = mongoose.model('ShortDomain', {
   short:String,
   long:String
 });
-
-var api_key = 'key-7a2e1c0248d4728c528b5f8859ad2f46';
-var DOMAIN = 'mail.listx.io';
-var mailgun = mg({apiKey: api_key, domain: DOMAIN});
 
 /**
  * UI CONTROLLER
  */
 
-app.post('/signup', function (req, res) {
-  var hash = bCrypt.hashSync(req.body.password);
+app.post('/signup', (req, res) => {
+  let hash = bCrypt.hashSync(req.body.password);
   User.create({
     name: req.body.name,
     email: req.body.email,
@@ -134,7 +132,7 @@ app.get('/signup', function(req, res) {
   res.render('signup');
 });
 
-app.post('/api/password', function (req, res) {
+app.post('/api/password', (req, res) => {
   res.send(bCrypt.hashSync(req.body.password));
 });
 
@@ -142,30 +140,30 @@ app.post('/login', function(req, res) {
   User.findOne({ email: req.body.email }, function(err, user) {
     if (!user) {
       console.error("No User with Email \"" + req.body.email + "\" found.");
-      res.json({"correct":false});
+      res.json({correct:false});
     } else {
       if (bCrypt.compareSync(req.body.password, user.password)) {
         // sets a cookie with the user's info
         req.session.user = user;
         console.info("User "+ user.email + " successfully logged in!");
-        res.json({"correct":true, "username":user.name});
+        res.json({correct:true, username:user.name});
       } else {
         console.error("Wrong Password for " + user.name);
-        res.json({"correct":false});
+        res.json({correct:false});
       }
     }
   });
 });
 
 
-app.get('/login', function (req, res) {
+app.get('/login', (req, res) => {
   if(req.session.user){
     res.redirect("/dashboard");
   }
   res.render("login");
 });
 
-app.get('/logout', function (req, res) {
+app.get('/logout', (req, res) => {
   req.session.destroy();
   res.redirect("/");
 });
@@ -177,7 +175,7 @@ app.get('/logout', function (req, res) {
 
 
 // Demo Page
-app.get("/demo", function (req, res) {
+app.get("/demo", (req, res) => {
   res.render("demo");
 });
 
@@ -185,7 +183,7 @@ app.get("/demo", function (req, res) {
 
 
 // Developer Page
-app.get("/dev", function (req, res) {
+app.get("/dev", (req, res) => {
   res.render("index-dev");
 });
 
@@ -193,9 +191,9 @@ app.get("/dev", function (req, res) {
  * Stuff which needs authentication
  */
 // List index per List if $user is part of it
-app.get('/list/:id', requireLogin, function(req, res) {
-  List.findOne({_id : req.params.id}, function(err, list) {
-    var user = req.session.user;
+app.get('/list/:id', requireLogin, (req, res) => {
+  List.findOne({_id : req.params.id}, (err, list) => {
+    let user = req.session.user;
     if(err){res.render('index', { error: 'List not found!'});}
     if (user.lists.indexOf(list._id)){
       res.render('list', {
@@ -212,10 +210,10 @@ app.get('/list/:id', requireLogin, function(req, res) {
 // List Settings. If $user is list.admin render admin settings
 app.get('/list/:id/settings', requireLogin, function(req, res) {
 	List.findOne({_id : req.params.id}, function(err, list) {
-		var user = req.session.user;
+		let user = req.session.user;
 		if(err){res.render('index', { error: 'List not found!'});}
 		if (user.lists.indexOf(list._id)){
-			if (list.admin == user._id) {
+			if (list.admin === user._id) {
 				res.render('list-settings-admin', {
 					list:list, user:user
 				});
@@ -237,22 +235,23 @@ app.get('/list/:id/settings', requireLogin, function(req, res) {
 
 
 // Users Dashboard
-app.get('/dashboard', requireLogin, function(req, res) {
+app.get('/dashboard', requireLogin, (req, res) => {
 	console.log(req.session.user.lists);
   res.render('dashboard', {user: req.session.user});
 });
 
 
 // User Profile
-app.get('/user', requireLogin, function (req, res) {
+app.get('/user', requireLogin, (req, res) => {
 	res.render('settings-user', {user: req.session.user});
 });
 
 
 // Invitations page for invited users to join a family and "sign up"
-app.get('/list/:id/invitations/:invId/:email/:name', function (req, res) {
+app.get('/list/:id/invitations/:invId/:email/:name', (req, res) => {
   List.findOne({_id : req.params.id}, function(err, list) {
     if(err){res.render('index', { error: 'List not found!', translate : res  });}
+
     Invitation.findOne({_id : req.params.invId}, function (err, inv) {
       if(err){res.render('index', { error: 'Invitation not found!', translate : res  });}
       if (list.invitations.map(function(e) { return e._id; }).indexOf(inv._id)){
@@ -265,7 +264,7 @@ app.get('/list/:id/invitations/:invId/:email/:name', function (req, res) {
 });
 
 // page for family members to invite new ppl
-app.get('/list/:id/invite', requireLogin, function (req, res) {
+app.get('/list/:id/invite', requireLogin, (req, res) => {
   List.findOne({_id: req.params.id}, function (err, list) {
     if(err){res.render('index', { error: 'List not found!', translate : res });}
     res.render('invite', {list: list._id, translate : res})
@@ -276,9 +275,9 @@ app.get('/list/:id/invite', requireLogin, function (req, res) {
  * Basic Route to change the used language
  */
 
-app.get("/language/:lang", function (req, res) {
+app.get("/language/:lang", (req, res) => {
   res.cookie("preferredLang", req.params.lang, { maxAge: 900000, httpOnly: true });
-  var url = req.headers.referer != undefined ? req.headers.referer : "/";
+  let url = req.headers.referer !== undefined ? req.headers.referer : "/";
   res.redirect(url);
 });
 
@@ -286,11 +285,9 @@ app.get("/language/:lang", function (req, res) {
  * Standard User Route
  */
 
-app.all('/', function (req, res) {
-  if(req.session.user){
-    res.render('index', {user: req.session.user});
-  }
-  res.render('index', {user:false}); //TODO don't set headers after they are sent!
+app.all('/', (req, res) => {
+  if(req.session.user) res.render('index', {user: req.session.user});
+  else res.render('index', {user:false});
 });
 
 
@@ -304,13 +301,13 @@ app.all('/', function (req, res) {
  */
 
 // get all lists
-app.get('/api/lists', function(req, res) {
+app.get('/api/lists', (req, res) => {
 	if (req.app.get('env') === 'development') {
 		// use mongoose to get all lists in the database
 		List.find(function(err, list) {
 
 			// if there is an error retrieving, send the error
-			if(err){res.json({success: false, error: 'No Lists Found!' })}
+			if(err){res.json({success: false, error: 'No Lists Found!', code:400 })}
 
 
 			res.json(list); // return all lists in JSON format
@@ -320,64 +317,83 @@ app.get('/api/lists', function(req, res) {
 });
 
 // get single list
-app.get('/api/lists/:id', function(req, res) {
+app.get('/api/lists/:id', (req, res) => {
   List.findOne({_id : req.params.id}, function(err, list) {
 
     // if there is an error retrieving, send the error, nothing after res.send(err) will execute
-    if(err){res.json({success: false, error: 'List not found'})}
+    if(err){res.json({success: false, error: 'List not found', code:401})}
 
 
-    res.json(list); // return the family in JSON format
+    res.json(list); // return the List in JSON format
     console.log(list);
   });
 });
 
 // get item-count of a list
-app.get('/api/lists/:id/itemCount', function (req, res) {
+app.get('/api/lists/:id/itemCount', (req, res) => {
 	List.findOne({_id : req.params.id}, function(err, list) {
-		if(err){res.json({success: false, error: 'List not found'})}
+		if(err){res.json({success: false, error: 'List not found', code:401})}
 		Item.find({list : list._id}, function (err, items) {
-			if(err){res.json({success: false, error: 'Items not found'})}
+			if(err){res.json({success: false, error: 'Items not found', code:300})}
 			res.json(items.length);
 		});
 	});
 });
 
 // get all invitaions for a list
-app.get('/api/lists/:id/invitations', function (req, res) {
+app.get('/api/lists/:id/invitations', (req, res) => {
 	Invitation.find({list: req.params.id} ,function (err, invitations) {
-		if(err){res.json({success: false, error: 'No Invitationds found for this List'});}
+		if(err){res.json({success: false, error: 'No Invitations found for this List', code:402});}
 		res.json(invitations);
 	});
 });
 
 // create list
-app.post('/api/lists', function(req, res) {
+app.post('/api/lists', (req, res) => {
   List.create({
     name: req.body.name,
     country: req.body.country,
   	admin: req.body.admin,
     invitations: req.body.invitations
   }, function(err, list) {
-    if(err){res.json({ success: false});}
+    if(err){res.json({success: false, error: 'List not created!', code:403});}
     res.json({success: true, id : list._id.toString()});
   });
 });
 
 // remove a list
-app.delete('/api/lists/:id', function(req, res) {
-  List.remove({_id : req.params.id}, function(err, list) {
-    if(err){res.json({success: false, error: 'List not removed'});}
-    res.json({success: true, list: list});
-  })
+app.delete('/api/lists/:id/admin', (req, res) => {
+    let user = req.body.user;
+    List.findOne({_id: req.params.id}, (err, l) => {
+        if (l.admin === user) {
+            List.remove({_id : req.params.id}, function(err, list) {
+                if(err){res.json({success: false, error: 'List not removed', code:404});}
+                res.json({success: true, list: list});
+            });
+        }
+        else res.json({success:false, error: 'User not List Admin'});
+    });
+});
+
+app.delete('/api/lists/:id', (req, res) => {
+    let user = req.body.user;
+    let list = req.body.list;
+    User.findOne({_id: user}, (err, u) => {
+        if (err) res.json({success: false}); // user not found
+       u.lists = u.lists.filter(e => e.id !== list);
+       User.findOneAndUpdate({_id: u._id}, {$set:{lists: u.lists}}, (err, u2) => {
+          if (err) res.json({success:false}); //user not updated
+           res.json({success:true});
+       });
+    });
 });
 
 
 // update a list
-app.post('/api/lists/:id', function (req, res) {
-  var update = req.body;
-  Item.findOneAndUpdate({_id : req.params.id}, update, function (err, list) {
-    if(err){res.json({error: 'List not updated', success: false});}
+app.post('/api/lists/:id', (req, res) => {
+  let update = req.body;
+  List.findOneAndUpdate({_id : req.params.id}, update, function (err, list) {
+    if(err){res.json({error: 'List not updated', success: false, code:405});}
     res.json({success: true, list: list});
   });
 });
@@ -388,12 +404,12 @@ app.post('/api/lists/:id', function (req, res) {
  */
 
 // get all items per list
-app.get('/api/items/:id', function(req, res) {
+app.get('/api/items/:id', (req, res) => {
   // use mongoose to get all items in the database
   Item.find({list : req.params.id}, function(err, items) {
 
     // if there is an error retrieving, send the error. nothing after res.send(err) will execute
-    if(err){res.json({success: false, error: 'Items not found'});}
+    if(err){res.json({success: false, error: 'Items not found', code:300});}
 
 
     res.json({success: true, items : items}); // return all items in JSON format
@@ -402,31 +418,31 @@ app.get('/api/items/:id', function(req, res) {
 });
 
 // create item
-app.post('/api/items', function(req, res) {
+app.post('/api/items', (req, res) => {
   Item.create({
     list: req.body.list,
     name: req.body.name,
     amount: req.body.amount,
     art: req.body.art
   }, function(err, item) {
-    if(err){res.json({success: false, error: 'Item not created'});}
+    if(err){res.json({success: false, error: 'Item not created', code:301});}
     res.json(item);
   });
 });
 
 // remove an item
-app.delete('/api/items/:id', function(req, res) {
+app.delete('/api/items/:id', (req, res) => {
   Item.remove({_id : req.params.id}, function(err, item) {
-    if(err){res.json({success: false, error: 'Item not removed'});}
+    if(err){res.json({success: false, error: 'Item not removed', code:302});}
     res.json(item);
   });
 });
 
 // update an item
-app.post('/api/items/:id', function (req, res) {
-  var update = req.body;
+app.post('/api/items/:id', (req, res) => {
+  let update = req.body;
   Item.findOneAndUpdate({_id : req.params.id}, update, function (err, item) {
-    if(err){res.json({success: false, error: 'Item not updated'});}
+    if(err){res.json({success: false, error: 'Item not updated', code:303});}
     res.json(item);
   });
 });
@@ -439,13 +455,13 @@ app.post('/api/items/:id', function (req, res) {
  */
 
 // get all users
-app.get('/api/users', function(req, res) {
+app.get('/api/users', (req, res) => {
 	if (req.app.get('env') === 'development') {
 		// use mongoose to get all users in the database
 		User.find(function(err, users) {
 
 			// if there is an error retrieving, send the error. nothing after res.send(err) will execute
-			if(err){res.json({success: false, error: 'No user found'});}
+			if(err){res.json({success: false, error: 'No users found', code:200});}
 
 
 
@@ -456,11 +472,11 @@ app.get('/api/users', function(req, res) {
 });
 
 // get single user
-app.get('/api/users/:id', function(req, res) {
+app.get('/api/users/:id', (req, res) => {
   User.findOne({_id : req.params.id}, function(err, user) {
 
     // if there is an error retrieving, send the error. nothing after res.send(err) will execute
-    if(err){res.json({success: false, error: 'User not found'});}
+    if(err){res.json({success: false, error: 'User not found', code:201});}
 
 
     res.json(user); // return the user in JSON format
@@ -469,9 +485,9 @@ app.get('/api/users/:id', function(req, res) {
 });
 
 // get single user per mail
-app.get('/api/users/byMail/:mail', function (req, res) {
+app.get('/api/users/byMail/:mail', (req, res) => {
 	User.findOne({mail: req.params.mail}, function (err, user) {
-		if(err){res.json({success: false, error: 'User not found'});}
+		if(err){res.json({success: false, error: 'User not found', code:201});}
 		
 		res.json(user);
 		console.log(user);
@@ -480,11 +496,11 @@ app.get('/api/users/byMail/:mail', function (req, res) {
 });
 
 // get all lists per user
-app.get('/api/users/:id/lists', function (req, res) {
+app.get('/api/users/:id/lists', (req, res) => {
   User.findOne({_id : req.params.id}, function(err, user) {
-	  if(err)res.json({success:false, error:err}); console.log(err);
+	  if(err)res.json({success:false, error:err, code:202}); console.log(err);
 
-	  var lists = [];
+	  let lists = [];
 
 	  if (user.lists){
 
@@ -493,20 +509,18 @@ app.get('/api/users/:id/lists', function (req, res) {
 
 		  console.log("Lists");
 
-		  lists.forEach(list => {
-			  console.log(list);
-		  });
+		  lists.forEach(function (t) { console.log(t) });
 
 
 		  // then use that Array to get all Lists in it
 		  List.find({ _id: { $in: lists }}).exec()
 			  .then(function(gotLists) {
                 console.info("Lists: " + gotLists);
-                if(gotLists.length == 0) res.json({success: true, error:"no lists"});
+                if(gotLists.length === 0) res.json({success: false, error:"No lists", code:203});
                 else res.json({lists: gotLists, success: true});
 			  });
 	  }
-	  else res.json({success:false, error:0});
+	  else res.json({success:false, error:101});
 
 	  
   });
@@ -514,10 +528,10 @@ app.get('/api/users/:id/lists', function (req, res) {
 
 
 // create user
-app.post('/api/users', function(req, res) {
-  var hash = bCrypt.hashSync(req.body.password);
+app.post('/api/users', (req, res) => {
+  let hash = bCrypt.hashSync(req.body.password);
 	User.find({email:req.body.email}, function (err, user) {
-		if (user) res.json({success:false, error:"User already Exists!"});
+		if (user) res.json({success:false, error:"User already Exists!", code:204});
 	});
   User.create({
     name: req.body.name,
@@ -525,26 +539,40 @@ app.post('/api/users', function(req, res) {
     password: hash,
     lists: req.body.lists
   }, function(err, user) {
-    if(err){res.json({success: false, error: 'User not created'});}
+    if(err){res.json({success: false, error: 'User not created', code:205});}
     res.json({success:true, data:user});
   });
 });
 
 // remove a user
-app.delete('/api/users/:id', function(req, res) {
+app.delete('/api/users/:id', (req, res) => {
   User.remove({_id : req.params.id}, function(err, user) {
-    if(err){res.json({success: false, error: 'User not removed'});}
+    if(err){res.json({success: false, error: 'User not removed', code:206});}
     res.json(user);
   });
 });
 
 
 // update a user adding new lists
-app.post('/api/users/:id/newList', function (req, res) {
+app.post('/api/users/:id/newList', (req, res) => {
   User.findOneAndUpdate( { _id:req.params.id },{ $push: { "lists": {$each : req.body.lists} } }, function (err, user){
-    if (err) res.json({success:false, err:err});
+    if (err) res.json({success:false, error: 'Lists not added to User', code:207});
     else res.json({success:true, id:user._id});
   });
+});
+
+
+// add a list to multiple users
+app.post("/api/users/addListBulk", (req, res) => {
+    let {emails, list} = req.body;
+    let a = [];
+    emails.forEach(e => {
+        User.findOneAndUpdate({email: e}, {$push: {"lists": list}}, (err, user) => {
+           if (err) res.json({success:false, error: 'Lists not added to User', code:207});
+           else a.push(e);
+        });
+    });
+    res.json({success:true, users:a});
 });
 
 /**
@@ -554,7 +582,7 @@ app.post('/api/users/:id/newList', function (req, res) {
 
 
 // get all invitations
-app.get('/api/invitations', function (req, res) {
+app.get('/api/invitations', (req, res) => {
 	if (req.app.get('env') === 'development') {
 		Invitation.find(function (err, invitations) {
 			if(err){res.json({success: false, error: 'No Invitation found'});}
@@ -564,7 +592,7 @@ app.get('/api/invitations', function (req, res) {
 });
 
 // get single invitation
-app.get('/api/invitations/:id', function (req, res) {
+app.get('/api/invitations/:id', (req, res) => {
   Invitation.find({_id : req.params.id}, function (err, invitation) {
     if(err){res.json({success: false, error: 'Invitation not found'});}
     res.json(invitation);
@@ -572,47 +600,78 @@ app.get('/api/invitations/:id', function (req, res) {
 });
 
 // create invitation from array
-app.post('/api/invitations/array', function (req, res) {
-  var inv = {} // invitation
-      , e // element
-      , i=0 // incrementer
-	  , l = req.body.list;
-  if (req.body.constructor === Array){
-    for(e in req.body){
-      if(req.body.hasOwnProperty(e)){
-        createInvite(req.body[e].email, i);
-        i++;
-      }
-    }
-  }
-  else {
-    createInvite(req.body.email, i);
-  }
-	res.json(inv);
-  function createInvite(email, no) {
-    Invitation.create({
-      email: email,
-		list: l
-    }, function (err, invitation) {
-      inv[no] = invitation;
+app.post('/api/invitations/array', (req, res) => {
+  let inv = [] // invitation
+      , l = req.body.list;
+  if (req.body.invs.constructor === Array){
+    req.body.invs.forEach(i => {
+        createInvite(i, l, inv);
+        console.log("INV: "+inv);
     });
   }
+  else {
+    createInvite(req.body.email, l, inv);
+  }
+	res.json({invs: inv, success: true});
+
 });
 
 // create a single invitation
-app.post("/api/invitations", function (req, res) {
-	Invitation.create({
-		email: req.body.email,
-		name: req.body.name != "" ? req.body.name : false,
-		list: req.body.list
-	}, function (err, inv) {
-		res.json(inv);
-	});
+app.post("/api/invitations", (req, res) => {
+    createInvite(req.body.email, req.body.list, []);
 });
 
+function userExists(id, mail) {
+    if (id === null) byMail(mail);
+    if (mail === null) byId(id);
+    function byId(id) {
+        User.find({_id: id}, function (err, user) {
+            return !Boolean(err);
+        });
+    }
+    function byMail(mail) {
+        User.find({email:mail}, function (err, user) {
+            return !Boolean(err);
+        });
+    }
+}
+
+function createInvite(email, list, arr) {
+    if (!userExists(null, email)) {
+
+        Invitation.create({
+            email: email,
+            list: list
+        }, function (err, invitation) {
+            arr.push(invitation.email);
+            List.findById(list, (err, l) => {
+
+                let msg = {
+                    to: email,
+                    subject: `ListX - New Invitation to List ${l.name}!`,
+                    body: `Howdy! \n 
+                    The ListX User ${l.admin} has invited you to join the List ${l.name}! \n 
+                    Please follow this link to join ListX and accept the Invitation: \n \n 
+                    https://listx.io/list/${l._id}/invitations/${invitation._id} \n \n 
+                    The ListX.io Team`
+                };
+
+                console.log("Sending Invitation Email:");
+                mail(msg);
+
+                l.invitations.push(invitation._id);
+                List.findOneAndUpdate({_id: list},{$set:{invitations: l.invitations}}, (err, l2) => {
+                    if (err) return {k:0, l:l2};
+                    return {l:l2};
+                });
+            });
+        });
+
+    }
+}
 
 // Delete an invitation
-app.delete('/api/invitations/:id', function (req, res) {
+app.delete('/api/invitations/:id', (req, res) => {
   Invitation.remove({_id : req.params.id}, function (err, invitation) {
     if(err){res.json({success: false, error: 'Invitation not deleted'});}
     res.json({success: true, invitation: invitation});
@@ -620,23 +679,21 @@ app.delete('/api/invitations/:id', function (req, res) {
 });
 
 // Delete all invitations per list
-app.delete('/api/invitations/list/:id', function (req, res) {
-  var inv = {}, i=0;
+app.delete('/api/invitations/list/:id', (req, res) => {
+  let inv = {}, i=0;
   // first grab the Invitations from the list of :id
   List.find({_id : req.params.id}, function (err, list) {
     if(err){res.json({success: false, error: 'List not found'});}
     // bind the invitations
-    var invites = list.invitations;
-    for (var e in invites){
-      if (invites.hasOwnProperty(e)){
+    let invites = list.invitations;
+    invites.forEach(e => {
         // remove the invitation bound to e
         Invitation.remove({_id : e._id}, function (err, invite) {
-          if(err){res.json({success: false, error: 'Invitation not deleted'});}
-          inv[i] = invite;
-          i++;
+            if(err){res.json({success: false, error: 'Invitation not deleted'});}
+            inv[i] = invite;
+            i++;
         });
-      }
-    }
+    });
   });
   res.json(inv);
 });
@@ -645,18 +702,14 @@ app.delete('/api/invitations/list/:id', function (req, res) {
  * Mail API
  */
 
-app.post('/api/mail/:message', function (req, res) {
-	if (req.params.message) {
+function mail(data) {
+	if (data.message === true) {
+		let to = data.to;
+		let sub = data.subject;
+		let body = data.body;
+		let html = data.html;
 
-		switch (req.params.message) {
-
-		}
-		var to = req.body.to;
-		var sub = req.body.subject;
-		var body = req.body.body;
-		var html = req.body.html;
-
-		var data = {
+		let msg = {
 			from: 'ListX <noreply@listx.io>',
 			to: to,
 			subject: sub,
@@ -664,16 +717,16 @@ app.post('/api/mail/:message', function (req, res) {
 		};
 
 		if (html) {
-			data.html = html;
+			msg.html = html;
 		}
 
 
-		mailgun.messages().send(data, function (error, body) {
-			console.log(body);
-			res.json({success: true, message: data})
+		mailgun.messages().send(msg, (error, body) => {
+		    if (error) console.error(error);
+			console.log(`Mail sent to ${data.to} at ${new Date().getTime()}`, msg)
 		});
 	}
-});
+}
 
 
 /**
@@ -701,7 +754,7 @@ app.use(function(req, res, next) {
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-  var err = new Error('Not Found');
+  let err = new Error('Not Found');
   err.status = 404;
   next(err);
 });

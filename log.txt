@@ -219,3 +219,6 @@
 2017-11-09T23:55:47.047+0100 [conn38] end connection 127.0.0.1:54985 (2 connections now open)
 2017-11-09T23:55:47.047+0100 [conn40] end connection 127.0.0.1:54987 (1 connection now open)
 2017-11-09T23:55:47.047+0100 [conn41] end connection 127.0.0.1:54988 (0 connections now open)
+2017-11-09T23:58:16.288+0100 [clientcursormon] mem (MB) res:5 virt:623774
+2017-11-09T23:58:16.288+0100 [clientcursormon]  mapped (incl journal view):320
+2017-11-09T23:58:16.288+0100 [clientcursormon]  connections:0

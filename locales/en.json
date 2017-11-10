@@ -101,5 +101,6 @@
   "/ListX/UI/List/ArtSetter": "Art / Type",
   "/ListX/UI/List/AddElement": "Add Element",
   "/ListX/UI/Dashboard/ConfirmListDelete": "Do you really want to delete this list?",
-  "/ListX/UI/Dashboard/ConfirmListDeleteAdmin": "Do you really want to delete this list? This will permanently remove all data associated with the list!"
+  "/ListX/UI/Dashboard/ConfirmListDeleteAdmin": "Do you really want to delete this list? This will permanently remove all data associated with the list!",
+  "/ListX/UI/Index/Pricing": "Pricing"
 }

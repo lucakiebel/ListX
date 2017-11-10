@@ -9,5 +9,6 @@
     <orderEntry type="library" name="html5shiv" level="application" />
     <orderEntry type="library" name="respond" level="application" />
     <orderEntry type="library" name="jquery.easing" level="application" />
+    <orderEntry type="library" name="cookieconsent" level="application" />
   </component>
 </module>

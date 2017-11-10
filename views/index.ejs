@@ -79,6 +79,9 @@
                     <a class="page-scroll color-visible" href="#about"><%= __("/ListX/UI/Index/learnMore") %></a>
                 </li>
                 <li>
+                    <a href="#pricing" class="page-scroll color-visible"><%= __("/ListX/UI/Index/Pricing") %></a>
+                </li>
+                <li>
                     <a class="color-visible" href="/demo"><%= __("/ListX/UI/Index/demo") %> </a>
                 </li>
             </ul>
@@ -140,7 +143,7 @@
 </section>
 
 <!-- Contact Section -->
-<section id="showcase" class="container">
+<section id="showcase" class="content-section container">
     <div class="row">
         <div class="col-lg-4 col-lg-offset-1">
             <h2><%= __("/ListX/UI/Index/about/DashboardAd")%></h2>
@@ -152,47 +155,82 @@
     </div>
 </section>
 
+<section id="pricing" class="content-section container text-center">
+    <div class="row col-lg-8 col-lg-offset-2">
+        <h2>Pricing</h2>
+        <p>List<span class='color-red'>X</span> is free! But if you want more features, you can always get the super expensive version!!!</p>
+    </div>
+    <div class="row col-md-offset-3">
+        <div class="col-md-4">
+            <div class="well">
+                <h3><b>Free</b></h3>
+                <hr>
+                <p>5 Lists</p>
+                <hr>
+                <p>Limited Support</p>
+                <hr>
+                <p><b>Free</b></p>
+                <hr>
+                <a href="/signup" class="btn btn-default btn-block">Sign Up</a>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="well">
+                <h3><b>Extra</b></h3>
+                <hr>
+                <p>Unlimited Lists</p>
+                <hr>
+                <p>Full Support</p>
+                <hr>
+                <p><b>$5/mo</b></p>
+                <hr>
+                <a href="/signup?p=1" class="btn btn-danger btn-block">Sign Up</a>
+            </div>
+        </div>
+    </div>
+</section>
+
 
 <!-- Footer -->
 <footer class="footer">
-    <div class="legal-logo">
-        <div class="col-md-2 text-left">
-            <a class="navbar-brand page-scroll color-visible brand-name" href="#page-top">
-                <img src="/images/favicon.png" alt="<%=__("/ListX/UI/Index/SiteName") %>" class="navbar-brand-image">&nbsp;&nbsp;List<span class="x">X</span>
+    <div class="legal-logo  ">
+        <div class="col-md-2 text-left  ">
+            <a class="navbar-brand page-scroll brand-name" href="#page-top">
+                <img src="/images/favicon.png" alt="<%=__("/ListX/UI/Index/SiteName") %>" class="footer-brand-image text-white">&nbsp;&nbsp;<span style="color: white">List</span><span class="x">X</span>
             </a>
         </div>
-        <div class="col-md-2 vertical-divider-left">
+        <div class="col-md-2 vertical-divider-left  ">
             <a class="footer-link" href="/imprint"><h6><%=__("/ListX/UI/Index/imprint") %></h6></a>
             <a class="footer-link" href="/privacy"><h6><%=__("/ListX/UI/Index/privacy") %></h6></a>
             <a class="footer-link" href="/terms"><h6><%=__("/ListX/UI/Index/terms") %></h6></a>
-            <div class="inline">
+            <div class="inline  ">
                 <a href="/language/de" class="btn btn-default">DE</a>
                 <a href="/language/en" class="btn btn-default">EN</a>
             </div>
         </div>
     </div>
-    <div class="col-md-2">
+    <div class="col-md-2  ">
         <h5 class="footer-heading"><a href="/developer" class="color-red"><%=__("/ListX/UI/Index/developers") %></a></h5>
         <h6><a class="footer-link" href="/docs">API-<%=__("/ListX/UI/Index/docs") %></a></h6>
         <h6><a class="footer-link" href="https://github.com/klequex/ListX"><%=__("/ListX/UI/Index/sourceCode") %></a></h6>
         <h6><a href="https://npmjs.com/package/listx" class="footer-link">NPM</a></h6>
     </div>
-    <div class="col-md-2">
+    <div class="col-md-2  ">
         <h5 class="footer-heading"><%=__("/ListX/UI/Index/resources") %></h5>
         <h6><a class="footer-link" href="/support"><%=__("/ListX/UI/Index/support") %></a></h6>
         <h6><a class="footer-link" href="/blog"><%=__("/ListX/UI/Index/blog") %></a></h6>
-        <h6><a class="footer-link" href="/guides"><%=__n("guide", 0) %></a></h6>
+        <h6><a class="footer-link" href="/guides"><%=__n("/ListX/UI/Index/guide", 0) %></a></h6>
     </div>
-    <div class="col-md-2">
+    <div class="col-md-2  ">
         <h5 class="footer-heading">Links</h5>
         <h6><a href="https://twitter.com/listx.io" class="footer-link">Twitter</a></h6>
         <h6><a href="/signup" class="footer-link"><%=__("/ListX/UI/Index/signUp") %></a></h6>
         <h6><a href="/demo" class="footer-link"><%=__("/ListX/UI/Index/demo") %></a></h6>
         <h6><a href="" class="footer-link"></a></h6>
     </div>
-    <div class="col-md-2"></div>
+    <div class="col-md-2  "></div>
     <div class="col-md-12 text-right bottom">
-        <h5><a style="color: black" href="https://klequex.com" class="pull-right copy">&copy; Kleque<span class="color-red">x</span> Software</a></h5>
+        <h5><a style="color: white" href="https://klequex.com" class="pull-right copy">&copy; Kleque<span class="color-red">x</span> Software</a></h5>
     </div>
 </footer>
 

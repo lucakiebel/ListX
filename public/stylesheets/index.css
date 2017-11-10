@@ -77,6 +77,11 @@ a:focus {
   height: 40px;
   margin-top: -12px;
 }
+
+.footer-brand-image {
+  height: 40px;
+  margin-top: -12px;
+}
 .navbar-custom {
   margin-bottom: 0;
   border-bottom: 1px solid rgba(255, 255, 255, 0.3);
@@ -324,7 +329,10 @@ footer p {
 }
 footer {
   padding-bottom: 15px;
+  background: #2e3234;
+  height: 28vh;
 }
+
 ::-moz-selection {
   text-shadow: none;
   background: #fcfcfc;
@@ -350,17 +358,18 @@ a.brand-name{
 }
 
 a.footer-link{
-  color: black;
+  color: white;
 
 }
 
 footer {
   padding: 20px;
-  background: white;
+  background: #2e3234;
+  color: white;
 }
 
 .vertical-divider-left {
-  border-left: 1px solid black;
+  border-left: 1px solid white;
 }
 
 @media (max-width: 767px) {

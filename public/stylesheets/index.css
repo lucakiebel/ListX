@@ -263,6 +263,10 @@ a:focus {
 .content-section {
   padding-top: 100px;
 }
+
+#pricing {
+  padding-top: 100px; !important;
+}
 .showcase-section {
   width: 100%;
   padding: 50px 0;

@@ -1,0 +1,171 @@
+2017-11-11T12:24:36.932+0100 [initandlisten] MongoDB starting : pid=24 port=27070 dbpath=/var/data 64-bit host=PC
+2017-11-11T12:24:36.933+0100 [initandlisten] db version v2.6.10
+2017-11-11T12:24:36.933+0100 [initandlisten] git version: nogitversion
+2017-11-11T12:24:36.933+0100 [initandlisten] OpenSSL version: OpenSSL 1.0.2g  1 Mar 2016
+2017-11-11T12:24:36.933+0100 [initandlisten] build info: Linux lgw01-12 3.19.0-25-generic #26~14.04.1-Ubuntu SMP Fri Jul 24 21:16:20 UTC 2015 x86_64 BOOST_LIB_VERSION=1_58
+2017-11-11T12:24:36.933+0100 [initandlisten] allocator: tcmalloc
+2017-11-11T12:24:36.933+0100 [initandlisten] options: { net: { port: 27070 }, processManagement: { fork: true }, storage: { dbPath: "/var/data" }, systemLog: { destination: "file", path: "./log.txt" } }
+2017-11-11T12:24:36.983+0100 [initandlisten] journal dir=/var/data/journal
+2017-11-11T12:24:36.984+0100 [initandlisten] recover begin
+2017-11-11T12:24:36.987+0100 [initandlisten] recover lsn: 25148189
+2017-11-11T12:24:36.987+0100 [initandlisten] recover /var/data/journal/j._0
+2017-11-11T12:24:37.003+0100 [initandlisten] recover skipping application of section seq:0 < lsn:25148189
+2017-11-11T12:24:37.004+0100 [initandlisten] recover skipping application of section seq:12419614 < lsn:25148189
+2017-11-11T12:24:37.081+0100 [initandlisten] recover cleaning up
+2017-11-11T12:24:37.081+0100 [initandlisten] removeJournalFiles
+2017-11-11T12:24:37.115+0100 [initandlisten] recover done
+2017-11-11T12:24:39.459+0100 [initandlisten] preallocateIsFaster=true 2.96
+2017-11-11T12:24:41.819+0100 [initandlisten] preallocateIsFaster check took 4.703 secs
+2017-11-11T12:24:41.973+0100 [initandlisten] mincore failed: errno:38 Function not implemented
+2017-11-11T12:24:41.977+0100 [initandlisten] mincore failed: errno:38 Function not implemented
+2017-11-11T12:24:42.001+0100 [initandlisten] mincore failed: errno:38 Function not implemented
+2017-11-11T12:24:42.008+0100 [initandlisten] mincore failed: errno:38 Function not implemented
+2017-11-11T12:24:42.048+0100 [initandlisten] mincore failed: errno:38 Function not implemented
+2017-11-11T12:24:42.056+0100 [initandlisten] mincore failed: errno:38 Function not implemented
+2017-11-11T12:24:42.056+0100 [initandlisten] mincore failed: errno:38 Function not implemented
+2017-11-11T12:24:42.057+0100 [initandlisten] waiting for connections on port 27070
+2017-11-11T12:24:47.638+0100 [initandlisten] connection accepted from 127.0.0.1:60806 #1 (1 connection now open)
+2017-11-11T12:25:42.070+0100 [clientcursormon] mem (MB) res:22 virt:1035790
+2017-11-11T12:25:42.070+0100 [clientcursormon]  mapped (incl journal view):320
+2017-11-11T12:25:42.070+0100 [clientcursormon]  connections:1
+2017-11-11T12:30:42.098+0100 [clientcursormon] mem (MB) res:22 virt:1035790
+2017-11-11T12:30:42.098+0100 [clientcursormon]  mapped (incl journal view):320
+2017-11-11T12:30:42.098+0100 [clientcursormon]  connections:1
+2017-11-11T12:32:27.038+0100 [conn1] end connection 127.0.0.1:60806 (0 connections now open)
+2017-11-11T12:32:27.855+0100 [initandlisten] connection accepted from 127.0.0.1:60907 #2 (1 connection now open)
+2017-11-11T12:35:42.122+0100 [clientcursormon] mem (MB) res:23 virt:1035790
+2017-11-11T12:35:42.122+0100 [clientcursormon]  mapped (incl journal view):320
+2017-11-11T12:35:42.122+0100 [clientcursormon]  connections:1
+2017-11-11T12:40:42.151+0100 [clientcursormon] mem (MB) res:23 virt:1035790
+2017-11-11T12:40:42.151+0100 [clientcursormon]  mapped (incl journal view):320
+2017-11-11T12:40:42.151+0100 [clientcursormon]  connections:1
+2017-11-11T12:45:42.173+0100 [clientcursormon] mem (MB) res:19 virt:1035790
+2017-11-11T12:45:42.173+0100 [clientcursormon]  mapped (incl journal view):320
+2017-11-11T12:45:42.173+0100 [clientcursormon]  connections:1
+2017-11-11T12:50:42.206+0100 [clientcursormon] mem (MB) res:20 virt:1035790
+2017-11-11T12:50:42.207+0100 [clientcursormon]  mapped (incl journal view):320
+2017-11-11T12:50:42.207+0100 [clientcursormon]  connections:1
+2017-11-11T12:55:42.237+0100 [clientcursormon] mem (MB) res:20 virt:1035790
+2017-11-11T12:55:42.237+0100 [clientcursormon]  mapped (incl journal view):320
+2017-11-11T12:55:42.238+0100 [clientcursormon]  connections:1
+2017-11-11T13:00:42.271+0100 [clientcursormon] mem (MB) res:20 virt:1035790
+2017-11-11T13:00:42.271+0100 [clientcursormon]  mapped (incl journal view):320
+2017-11-11T13:00:42.271+0100 [clientcursormon]  connections:1
+2017-11-11T13:05:42.304+0100 [clientcursormon] mem (MB) res:20 virt:1035790
+2017-11-11T13:05:42.304+0100 [clientcursormon]  mapped (incl journal view):320
+2017-11-11T13:05:42.304+0100 [clientcursormon]  connections:1
+2017-11-11T13:10:42.332+0100 [clientcursormon] mem (MB) res:20 virt:1035790
+2017-11-11T13:10:42.332+0100 [clientcursormon]  mapped (incl journal view):320
+2017-11-11T13:10:42.332+0100 [clientcursormon]  connections:1
+2017-11-11T13:15:42.360+0100 [clientcursormon] mem (MB) res:20 virt:1035790
+2017-11-11T13:15:42.360+0100 [clientcursormon]  mapped (incl journal view):320
+2017-11-11T13:15:42.360+0100 [clientcursormon]  connections:1
+2017-11-11T13:20:42.392+0100 [clientcursormon] mem (MB) res:20 virt:1035790
+2017-11-11T13:20:42.392+0100 [clientcursormon]  mapped (incl journal view):320
+2017-11-11T13:20:42.392+0100 [clientcursormon]  connections:1
+2017-11-11T13:25:42.424+0100 [clientcursormon] mem (MB) res:20 virt:1035790
+2017-11-11T13:25:42.424+0100 [clientcursormon]  mapped (incl journal view):320
+2017-11-11T13:25:42.424+0100 [clientcursormon]  connections:1
+2017-11-11T13:30:42.456+0100 [clientcursormon] mem (MB) res:20 virt:1035790
+2017-11-11T13:30:42.456+0100 [clientcursormon]  mapped (incl journal view):320
+2017-11-11T13:30:42.456+0100 [clientcursormon]  connections:1
+2017-11-11T13:35:42.485+0100 [clientcursormon] mem (MB) res:20 virt:1035790
+2017-11-11T13:35:42.485+0100 [clientcursormon]  mapped (incl journal view):320
+2017-11-11T13:35:42.485+0100 [clientcursormon]  connections:1
+2017-11-11T13:40:42.511+0100 [clientcursormon] mem (MB) res:20 virt:1035790
+2017-11-11T13:40:42.511+0100 [clientcursormon]  mapped (incl journal view):320
+2017-11-11T13:40:42.511+0100 [clientcursormon]  connections:1
+2017-11-11T13:45:42.535+0100 [clientcursormon] mem (MB) res:19 virt:1035790
+2017-11-11T13:45:42.535+0100 [clientcursormon]  mapped (incl journal view):320
+2017-11-11T13:45:42.535+0100 [clientcursormon]  connections:1
+2017-11-11T13:50:42.565+0100 [clientcursormon] mem (MB) res:20 virt:1035790
+2017-11-11T13:50:42.565+0100 [clientcursormon]  mapped (incl journal view):320
+2017-11-11T13:50:42.565+0100 [clientcursormon]  connections:1
+2017-11-11T13:55:42.597+0100 [clientcursormon] mem (MB) res:20 virt:1035790
+2017-11-11T13:55:42.597+0100 [clientcursormon]  mapped (incl journal view):320
+2017-11-11T13:55:42.597+0100 [clientcursormon]  connections:1
+2017-11-11T14:00:42.631+0100 [clientcursormon] mem (MB) res:20 virt:1035790
+2017-11-11T14:00:42.631+0100 [clientcursormon]  mapped (incl journal view):320
+2017-11-11T14:00:42.631+0100 [clientcursormon]  connections:1
+2017-11-11T14:05:42.659+0100 [clientcursormon] mem (MB) res:20 virt:1035790
+2017-11-11T14:05:42.659+0100 [clientcursormon]  mapped (incl journal view):320
+2017-11-11T14:05:42.659+0100 [clientcursormon]  connections:1
+2017-11-11T14:10:42.690+0100 [clientcursormon] mem (MB) res:20 virt:1035790
+2017-11-11T14:10:42.690+0100 [clientcursormon]  mapped (incl journal view):320
+2017-11-11T14:10:42.690+0100 [clientcursormon]  connections:1
+2017-11-11T14:15:42.718+0100 [clientcursormon] mem (MB) res:20 virt:1035790
+2017-11-11T14:15:42.719+0100 [clientcursormon]  mapped (incl journal view):320
+2017-11-11T14:15:42.719+0100 [clientcursormon]  connections:1
+2017-11-11T14:20:42.747+0100 [clientcursormon] mem (MB) res:20 virt:1035790
+2017-11-11T14:20:42.747+0100 [clientcursormon]  mapped (incl journal view):320
+2017-11-11T14:20:42.747+0100 [clientcursormon]  connections:1
+2017-11-11T14:25:42.779+0100 [clientcursormon] mem (MB) res:20 virt:1035790
+2017-11-11T14:25:42.779+0100 [clientcursormon]  mapped (incl journal view):320
+2017-11-11T14:25:42.779+0100 [clientcursormon]  connections:1
+2017-11-11T14:30:42.810+0100 [clientcursormon] mem (MB) res:20 virt:1035790
+2017-11-11T14:30:42.810+0100 [clientcursormon]  mapped (incl journal view):320
+2017-11-11T14:30:42.810+0100 [clientcursormon]  connections:1
+2017-11-11T14:35:42.854+0100 [clientcursormon] mem (MB) res:20 virt:1035790
+2017-11-11T14:35:42.854+0100 [clientcursormon]  mapped (incl journal view):320
+2017-11-11T14:35:42.854+0100 [clientcursormon]  connections:1
+2017-11-11T14:40:42.881+0100 [clientcursormon] mem (MB) res:20 virt:1035790
+2017-11-11T14:40:42.881+0100 [clientcursormon]  mapped (incl journal view):320
+2017-11-11T14:40:42.881+0100 [clientcursormon]  connections:1
+2017-11-11T14:45:42.905+0100 [clientcursormon] mem (MB) res:19 virt:1035790
+2017-11-11T14:45:42.905+0100 [clientcursormon]  mapped (incl journal view):320
+2017-11-11T14:45:42.905+0100 [clientcursormon]  connections:1
+2017-11-11T14:50:42.932+0100 [clientcursormon] mem (MB) res:14 virt:1035790
+2017-11-11T14:50:42.932+0100 [clientcursormon]  mapped (incl journal view):320
+2017-11-11T14:50:42.932+0100 [clientcursormon]  connections:1
+2017-11-11T14:54:42.110+0100 [TTLMonitor] mincore failed: errno:38 Function not implemented
+2017-11-11T14:55:42.958+0100 [clientcursormon] mem (MB) res:8 virt:1035790
+2017-11-11T14:55:42.958+0100 [clientcursormon]  mapped (incl journal view):320
+2017-11-11T14:55:42.958+0100 [clientcursormon]  connections:1
+2017-11-11T15:00:42.984+0100 [clientcursormon] mem (MB) res:3 virt:1035790
+2017-11-11T15:00:42.984+0100 [clientcursormon]  mapped (incl journal view):320
+2017-11-11T15:00:42.984+0100 [clientcursormon]  connections:1
+2017-11-11T15:05:43.009+0100 [clientcursormon] mem (MB) res:3 virt:1035790
+2017-11-11T15:05:43.009+0100 [clientcursormon]  mapped (incl journal view):320
+2017-11-11T15:05:43.009+0100 [clientcursormon]  connections:1
+2017-11-11T15:10:43.038+0100 [clientcursormon] mem (MB) res:3 virt:1035790
+2017-11-11T15:10:43.038+0100 [clientcursormon]  mapped (incl journal view):320
+2017-11-11T15:10:43.038+0100 [clientcursormon]  connections:1
+2017-11-11T15:15:43.065+0100 [clientcursormon] mem (MB) res:3 virt:1035790
+2017-11-11T15:15:43.065+0100 [clientcursormon]  mapped (incl journal view):320
+2017-11-11T15:15:43.066+0100 [clientcursormon]  connections:1
+2017-11-11T15:20:43.093+0100 [clientcursormon] mem (MB) res:3 virt:1035790
+2017-11-11T15:20:43.094+0100 [clientcursormon]  mapped (incl journal view):320
+2017-11-11T15:20:43.094+0100 [clientcursormon]  connections:1
+2017-11-11T15:25:43.123+0100 [clientcursormon] mem (MB) res:3 virt:1035790
+2017-11-11T15:25:43.123+0100 [clientcursormon]  mapped (incl journal view):320
+2017-11-11T15:25:43.123+0100 [clientcursormon]  connections:1
+2017-11-11T15:30:43.148+0100 [clientcursormon] mem (MB) res:3 virt:1035790
+2017-11-11T15:30:43.148+0100 [clientcursormon]  mapped (incl journal view):320
+2017-11-11T15:30:43.148+0100 [clientcursormon]  connections:1
+2017-11-11T15:35:43.176+0100 [clientcursormon] mem (MB) res:3 virt:1035790
+2017-11-11T15:35:43.177+0100 [clientcursormon]  mapped (incl journal view):320
+2017-11-11T15:35:43.177+0100 [clientcursormon]  connections:1
+2017-11-11T15:40:43.199+0100 [clientcursormon] mem (MB) res:3 virt:1035790
+2017-11-11T15:40:43.199+0100 [clientcursormon]  mapped (incl journal view):320
+2017-11-11T15:40:43.200+0100 [clientcursormon]  connections:1
+2017-11-11T15:45:43.229+0100 [clientcursormon] mem (MB) res:3 virt:1035790
+2017-11-11T15:45:43.229+0100 [clientcursormon]  mapped (incl journal view):320
+2017-11-11T15:45:43.229+0100 [clientcursormon]  connections:1
+2017-11-11T15:50:43.253+0100 [clientcursormon] mem (MB) res:3 virt:1035790
+2017-11-11T15:50:43.253+0100 [clientcursormon]  mapped (incl journal view):320
+2017-11-11T15:50:43.253+0100 [clientcursormon]  connections:1
+2017-11-11T15:55:43.282+0100 [clientcursormon] mem (MB) res:3 virt:1035790
+2017-11-11T15:55:43.282+0100 [clientcursormon]  mapped (incl journal view):320
+2017-11-11T15:55:43.282+0100 [clientcursormon]  connections:1
+2017-11-11T16:00:43.311+0100 [clientcursormon] mem (MB) res:3 virt:1035790
+2017-11-11T16:00:43.311+0100 [clientcursormon]  mapped (incl journal view):320
+2017-11-11T16:00:43.311+0100 [clientcursormon]  connections:1
+2017-11-11T16:05:43.340+0100 [clientcursormon] mem (MB) res:3 virt:1035790
+2017-11-11T16:05:43.340+0100 [clientcursormon]  mapped (incl journal view):320
+2017-11-11T16:05:43.340+0100 [clientcursormon]  connections:1
+2017-11-11T16:10:43.366+0100 [clientcursormon] mem (MB) res:3 virt:1035790
+2017-11-11T16:10:43.366+0100 [clientcursormon]  mapped (incl journal view):320
+2017-11-11T16:10:43.366+0100 [clientcursormon]  connections:1
+2017-11-11T16:15:43.391+0100 [clientcursormon] mem (MB) res:3 virt:1035790
+2017-11-11T16:15:43.391+0100 [clientcursormon]  mapped (incl journal view):320
+2017-11-11T16:15:43.391+0100 [clientcursormon]  connections:1

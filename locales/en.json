@@ -55,7 +55,7 @@
   },
   "/ListX/UI/Index/sourceCode": "Source Code",
   "/ListX/UI/Index/aboutProjectName":"About List<span class='color-red'>X</span>",
-  "/ListX/UI/Index/aboutProjectLongText":"List<span class='color-red'>X</span> is a free tool to create and maintain Lists for every occasion. Whether it's for your monthly groceries or for the next big vacation - we got you covered!",
+  "/ListX/UI/Index/aboutProjectLongText":"List<span class='color-red'>X</span> is a free tool to create and maintain Lists for every occasion. Whether it's for your monthly groceries or for the next big vacation - we've got you covered!",
   "/ListX/UI/Index/aboutProjectShortText":"Give it a try now and plan your next shopping trip on the <a href='/demo'>Demo Page</a>!",
   "/ListX/UI/Index/support": "Support",
   "/ListX/UI/Index/blog": "Blog",
@@ -102,5 +102,6 @@
   "/ListX/UI/List/AddElement": "Add Element",
   "/ListX/UI/Dashboard/ConfirmListDelete": "Do you really want to delete this list?",
   "/ListX/UI/Dashboard/ConfirmListDeleteAdmin": "Do you really want to delete this list? This will permanently remove all data associated with the list!",
-  "/ListX/UI/Index/Pricing": "Pricing"
+  "/ListX/UI/Index/Pricing": "Pricing",
+  "/ListX/UI/Dashboard/AlphaWelcome": "Welcome to the Alpha-Phase of List<span class='color-red'>X</span>, should you find any Errors, please open an <a href=\"https://github.com/lucakiebel/ListX-Alpha/issues/new\">Issue</a>!"
 }

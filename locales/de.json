@@ -102,5 +102,6 @@
   "/ListX/UI/List/AddElement": "Element hinzufügen",
   "/ListX/UI/Dashboard/ConfirmListDelete": "Willst Du diese Liste wirklich entfernen?",
   "/ListX/UI/Dashboard/ConfirmListDeleteAdmin": "Willst Du diese Liste wirklich entfernen? Dies wird sämtliche, mit der Liste in Verbindung stehenden Daten löschen!",
-  "/ListX/UI/Index/Pricing": "Preise"
+  "/ListX/UI/Index/Pricing": "Preise",
+  "/ListX/UI/Dashboard/AlphaWelcome": "Willkommen in der Alpha-Phase von List<span class='color-red'>X</span>, solltest du Fehler finden, öffne bitte ein <a href=\"https://github.com/lucakiebel/ListX-Alpha/issues/new\">Issue</a>!"
 }

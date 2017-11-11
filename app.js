@@ -82,7 +82,8 @@ const User = mongoose.model('User', {
   name:String,
   email:String,
   password:String,
-  lists: [] // 1 User => 0+ Lists
+  lists: [], // 1 User => 0+ Lists
+  premium: {type:Boolean, default:false}
 });
 
 const List = mongoose.model('List', {

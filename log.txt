@@ -169,3 +169,9 @@
 2017-11-11T16:15:43.391+0100 [clientcursormon] mem (MB) res:3 virt:1035790
 2017-11-11T16:15:43.391+0100 [clientcursormon]  mapped (incl journal view):320
 2017-11-11T16:15:43.391+0100 [clientcursormon]  connections:1
+2017-11-11T16:20:43.416+0100 [clientcursormon] mem (MB) res:3 virt:1035790
+2017-11-11T16:20:43.416+0100 [clientcursormon]  mapped (incl journal view):320
+2017-11-11T16:20:43.416+0100 [clientcursormon]  connections:1
+2017-11-11T16:25:43.442+0100 [clientcursormon] mem (MB) res:3 virt:1035790
+2017-11-11T16:25:43.442+0100 [clientcursormon]  mapped (incl journal view):320
+2017-11-11T16:25:43.442+0100 [clientcursormon]  connections:1

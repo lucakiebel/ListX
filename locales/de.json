@@ -65,7 +65,7 @@
   "/ListX/UI/Dashboard/Login/loginErrorMessage": "Falsche Email-Adresse oder falsches Passwort!",
   "/ListX/UI/Dashboard/Login/noAccountYet": "Noch keinen Account?",
   "/ListX/UI/SignUp/enterPasswordAgain": "Passwort nochmal eingeben",
-  "/ListX/UI/SignUp/ErrorMessageEmail": "Bitte eine gültige Email-Adresse eingeben!",
+  "/ListX/UI/SignUp/ErrorMessageEmail": "Bitte eine gültige und dauerhafte Email-Adresse eingeben!",
   "/ListX/UI/SignUp/ErrorMessageServer": "Der Server hat bei der Bearbeitung Ihrer Anmeldung ein Problem festgestellt, bitte <a href='/support'>Kontaktiert uns!</a>",
   "/ListX/UI/SignUp/enterYourName": "Dein Name",
   "/ListX/UI/SignUp/enterYourEmail": "Deine Email",
@@ -103,5 +103,6 @@
   "/ListX/UI/Dashboard/ConfirmListDelete": "Willst Du diese Liste wirklich entfernen?",
   "/ListX/UI/Dashboard/ConfirmListDeleteAdmin": "Willst Du diese Liste wirklich entfernen? Dies wird sämtliche, mit der Liste in Verbindung stehenden Daten löschen!",
   "/ListX/UI/Index/Pricing": "Preise",
-  "/ListX/UI/Dashboard/AlphaWelcome": "Willkommen in der Alpha-Phase von List<span class='color-red'>X</span>, solltest du Fehler finden, öffne bitte ein <a href=\"https://github.com/lucakiebel/ListX-Alpha/issues/new\">Issue</a>!"
+  "/ListX/UI/Dashboard/AlphaWelcome": "Willkommen in der Alpha-Phase von List<span class='color-red'>X</span>, solltest du Fehler finden, öffne bitte ein <a href=\"https://github.com/lucakiebel/ListX-Alpha/issues/new\">Issue</a>!",
+  "/ListX/UI/Index/ApiDocs": "API-Dokumentation"
 }

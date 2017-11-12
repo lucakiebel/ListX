@@ -174,7 +174,7 @@
                                             listsDiv.html('<div class="nolist" style="text-align: center; align-items: center; padding-top: 30px; padding-bottom: 30px"><h2>No Lists found, create one!</h2></div>')
                                         }
                                         $.get("/api/lists/" + list._id + "/itemCount", function (itemCount) {
-                                            let html = '<div class="col-md-6"><div class="content-box-header"><div class="panel-title"><a href="/list/' + list._id + '">' + list.name + '</a></div><div class="panel-options"><a href="/list/' + list._id + '/settings"><i class="glyphicon glyphicon-cog"></i></a> <a href="#" onclick="removeList('+JSON.stringify(list)+')" ><i class="glyphicon glyphicon-remove-circle"></i></a> </div> </div> <div class="content-box-large box-with-header"> <h4>Items: ' + itemCount + '</h4><br> </div> </div>';
+                                            let html = '<div class="col-md-6"><div class="content-box-header"><div class="panel-title"><a href="/list/' + list._id + '">' + list.name + '</a></div><div class="panel-options"><a href="/list/' + list._id + '/settings"><i class="glyphicon glyphicon-cog"></i></a> <button onclick="removeList('+JSON.stringify(list)+')" ><i class="glyphicon glyphicon-remove-circle"></i></button> </div> </div> <div class="content-box-large box-with-header"> <h4>Items: ' + itemCount + '</h4><br> </div> </div>';
                                             listsDiv.html(listsDiv.html() + "\n" + html);
                                         });
                                     });
@@ -191,8 +191,8 @@
                         });
                     </script>
                     <div class="row" id="listsDiv">
-                        <div class="loading" style="text-align: center; align-items: center; padding-top: 30px; padding-bottom: 30px">
-                            <h2>Loading.....</h2>
+                        <div class="loading col-sm-offset-4 col-sm-2">
+                            <img class="img-responsive" width="5vw" src="/images/preloader.gif">
                         </div>
                     </div>
                 </div>

@@ -65,7 +65,7 @@
   "/ListX/UI/Dashboard/Login/loginErrorMessage": "Wrong Email-Address or wrong Password!",
   "/ListX/UI/Dashboard/Login/noAccountYet": "Don't have an account yet?",
   "/ListX/UI/SignUp/enterPasswordAgain": "Enter Password again",
-  "/ListX/UI/SignUp/ErrorMessageEmail": "Please enter a valid Email-Address",
+  "/ListX/UI/SignUp/ErrorMessageEmail": "Please enter a valid and permanent Email-Address",
   "/ListX/UI/SignUp/ErrorMessageServer": "The Server encountered an Error while processing your Sign-Up, please <a href='/support'>Contact us!</a>",
   "/ListX/UI/SignUp/enterYourName": "Your Name",
   "/ListX/UI/SignUp/enterYourEmail": "Your Email",
@@ -103,5 +103,6 @@
   "/ListX/UI/Dashboard/ConfirmListDelete": "Do you really want to delete this list?",
   "/ListX/UI/Dashboard/ConfirmListDeleteAdmin": "Do you really want to delete this list? This will permanently remove all data associated with the list!",
   "/ListX/UI/Index/Pricing": "Pricing",
-  "/ListX/UI/Dashboard/AlphaWelcome": "Welcome to the Alpha-Phase of List<span class='color-red'>X</span>, should you find any Errors, please open an <a href=\"https://github.com/lucakiebel/ListX-Alpha/issues/new\">Issue</a>!"
+  "/ListX/UI/Dashboard/AlphaWelcome": "Welcome to the Alpha-Phase of List<span class='color-red'>X</span>, should you find any Errors, please open an <a href=\"https://github.com/lucakiebel/ListX-Alpha/issues/new\">Issue</a>!",
+  "/ListX/UI/Index/ApiDocs": "API-Documentation"
 }

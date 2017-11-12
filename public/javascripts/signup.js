@@ -1,13 +1,13 @@
 
 $("#form_password").keyup(function(){
-	var ucase = new RegExp("[A-Z]+");
-	var lcase = new RegExp("[a-z]+");
-	var num = new RegExp("[0-9]+");
-	var password_field = $("#form_password");
-	var ucase_sel = $("#ucase");
-	var char_sel = $("#8char");
-	var lcase_sel = $("#lcase");
-	var num_sel = $("#num");
+	const ucase = new RegExp("[A-Z]+");
+	const lcase = new RegExp("[a-z]+");
+	const num = new RegExp("[0-9]+");
+	const password_field = $("#form_password");
+	const ucase_sel = $("#ucase");
+	const char_sel = $("#8char");
+	const lcase_sel = $("#lcase");
+	const num_sel = $("#num");
 
 
 	if(password_field.val().length >= 8){
@@ -52,18 +52,18 @@ $("#form_password").keyup(function(){
 });
 
 function signupValidation(form) {
-	var ucase = new RegExp("[A-Z]+");
-	var lcase = new RegExp("[a-z]+");
-	var num = new RegExp("[0-9]+");
-	var password_field = $("#form_password");
-	if($("#form_email").val().length >= 6) {
+	const ucase = new RegExp("[A-Z]+");
+	const lcase = new RegExp("[a-z]+");
+	const num = new RegExp("[0-9]+");
+	const password_field = $("#form_password");
+	if(emailValid($("#form_email").val())) {
 		if (
 			password_field.val().length >= 8 &&
 			ucase.test(password_field.val()) &&
 			lcase.test(password_field.val()) &&
 			num.test(password_field.val())
 		){
-			var formData = $(form).serialize();
+			const formData = $(form).serialize();
 			$.ajax({
 				type: "POST",
 				url: "/signup",
@@ -93,9 +93,22 @@ function signupValidation(form) {
 	
 }
 
+function emailValid(email) {
+	let url = "https://api.mailgun.net/v3/address/validate?api_key=pubkey-0ac06bae3872b0ae3c6ed01a479f0372&address=";
+    let valid = false;
+    jQuery.ajax({
+        url: url+email,
+        success: function(data) {
+            valid = (data.is_valid && !data.is_disposable_address);
+        },
+        async:false
+    });
+	return valid;
+}
+
 $("#show-password").click(function () {
-	var pass_input = $("#form_password");
-	var pass_fa = $("#show-password-i");
+	const pass_input = $("#form_password");
+	const pass_fa = $("#show-password-i");
 	if (pass_input.attr("type") === "text"){
 		pass_input.attr("type", "password");
 		pass_fa.addClass("fa-eye");

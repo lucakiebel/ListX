@@ -334,6 +334,9 @@ footer p {
 footer {
   padding-bottom: 15px;
   background: #2e3234;
+}
+
+.footer-desktop {
   height: 28vh;
 }
 

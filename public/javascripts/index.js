@@ -21,12 +21,23 @@ $(document).ready(collapseNavbar);
 // jQuery for page scrolling feature - requires jQuery Easing plugin
 $(function() {
     $('a.page-scroll').bind('click', function(event) {
-        var $anchor = $(this);
+        let $anchor = $(this);
         $('html, body').stop().animate({
             scrollTop: $($anchor.attr('href')).offset().top
         }, 1800, 'easeInOutExpo');
         event.preventDefault();
     });
+
+    if (/Mobi/i.test(navigator.userAgent)) {
+        // device is mobile (we don't need mobile version on tablets)
+        $("#companyLogo").removeClass("pull-right");
+        $("#companyLogoDiv").removeClass("text-right");
+        $("#footer").removeClass("footer-desktop");
+        $("#user-interaction-navbar").removeClass("navbar-right")
+            .addClass("navbar-center")
+            .css("float", "none");
+        $("#footer-brand").css("display", "none")
+    }
 });
 
 

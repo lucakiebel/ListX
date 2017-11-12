@@ -560,3 +560,7 @@
 2017-11-12T02:25:38.612+0100 [clientcursormon]  connections:1
 2017-11-12T02:26:14.159+0100 [conn7] end connection 127.0.0.1:50781 (0 connections now open)
 2017-11-12T02:26:14.990+0100 [initandlisten] connection accepted from 127.0.0.1:52332 #8 (1 connection now open)
+2017-11-12T02:30:38.634+0100 [clientcursormon] mem (MB) res:5 virt:1035792
+2017-11-12T02:30:38.634+0100 [clientcursormon]  mapped (incl journal view):320
+2017-11-12T02:30:38.634+0100 [clientcursormon]  connections:1
+2017-11-12T02:31:06.852+0100 [conn8] end connection 127.0.0.1:52332 (0 connections now open)

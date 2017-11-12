@@ -157,45 +157,55 @@
 
 <section id="pricing" class="content-section container text-center">
     <div class="row col-lg-8 col-lg-offset-2">
-        <h2>Pricing</h2>
-        <p>List<span class='color-red'>X</span> is free! But if you want more features, you can always get the super expensive version!!!</p>
+        <h2><%= __("/ListX/UI/Index/Pricing") %></h2>
     </div>
-    <div class="row col-md-offset-3">
+    <div class="row">
         <div class="col-md-4">
             <div class="well">
-                <h3><b>Free</b></h3>
+                <h3><b><%= __("/ListX/UI/Index/AlphaTesters") %></b></h3>
                 <hr>
-                <p>5 Lists</p>
+                <p><%= __("/ListX/UI/UnlimitedLists") %></p>
                 <hr>
-                <p>$0.50 once for every additional List</p>
+                <p><%= __("/ListX/UI/Index/EarlyAccess") %></p>
                 <hr>
-                <p>Limited Support</p>
+                <p><%= __("/ListX/UI/Index/LessLimitedSupport") %></p>
                 <hr>
-                <p><b>Free</b></p>
+                <p><b><%= __("/ListX/UI/Index/Free") %></b></p>
                 <hr>
-                <a href="/signup" class="btn btn-default btn-block">Sign Up</a>
+                <a href="/signup" class="btn btn-default btn-block"><%= __("/ListX/UI/Index/signUp") %></a>
             </div>
         </div>
         <div class="col-md-4">
             <div class="well">
-                <h3><b>Premium</b></h3>
+                <h3><b><%= __("/ListX/UI/Index/Free") %></b></h3>
                 <hr>
-                <p>Unlimited Lists</p>
+                <p><%= __n("/ListX/UI/Lists", 5) %></p>
                 <hr>
-                <p>Early access to newest features</p>
+                <p><%= __("/ListX/UI/Currency", "0", "50") %> <%= __("/ListX/UI/Index/AdditionalLists") %></p>
                 <hr>
-                <p>Full Support</p>
+                <p><%= __("/ListX/UI/Index/LimitedSupport") %></p>
                 <hr>
-                <p><b>$5/mo</b></p>
+                <p><b><%= __("/ListX/UI/Index/Free") %></b></p>
                 <hr>
-                <a href="/signup?p=1" class="btn btn-danger btn-block">Sign Up</a>
+                <a href="/signup" class="btn btn-default btn-block"><%= __("/ListX/UI/Index/signUp") %></a>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="well">
+                <h3><b><%= __("/ListX/UI/Index/Premium") %></b></h3>
+                <hr>
+                <p><%= __("/ListX/UI/UnlimitedLists") %></p>
+                <hr>
+                <p><%= __("/ListX/UI/Index/EarlyAccess") %></p>
+                <hr>
+                <p><%= __("/ListX/UI/Index/FullSupport") %></p>
+                <hr>
+                <p><b><%= __("/ListX/UI/Currency", "5", "00") %><%= __("/ListX/UI/Index/PerMonthShort") %></b></p>
+                <hr>
+                <a href="/signup?p=1" class="btn btn-danger btn-block"><%= __("/ListX/UI/Index/signUp") %></a>
             </div>
         </div>
     </div>
-</section>
-
-<section id="cta" class="content-section container text-center">
-    <h2><a href="/register">Sign Up for Alpha Access Now!</a></h2>
 </section>
 
 
@@ -208,6 +218,7 @@
             </a>
         </div>
         <div class="col-md-2 vertical-divider-left" id="footer-links1">
+            <h5 class="footer-heading color-red"><%= __("/ListX/UI/Index/About") %></h5>
             <a class="footer-link" href="/imprint"><h6><%=__("/ListX/UI/Index/imprint") %></h6></a>
             <a class="footer-link" href="/privacy"><h6><%=__("/ListX/UI/Index/privacy") %></h6></a>
             <a class="footer-link" href="/terms"><h6><%=__("/ListX/UI/Index/terms") %></h6></a>
@@ -222,6 +233,7 @@
         <h6><a class="footer-link" href="/docs"><%=__("/ListX/UI/Index/ApiDocs") %></a></h6>
         <h6><a class="footer-link" href="https://github.com/lucakiebel/ListX"><%=__("/ListX/UI/Index/sourceCode") %></a></h6>
         <h6><a href="https://npmjs.com/package/listx" class="footer-link">NPM</a></h6>
+        <h6><a href="/faq-dev" class="footer-link"><%=__("/ListX/UI/Index/faqDev")%></a></h6>
     </div>
     <div class="col-md-2" id="footer-links3">
         <h5 class="footer-heading"><%=__("/ListX/UI/Index/resources") %></h5>

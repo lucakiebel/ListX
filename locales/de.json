@@ -104,5 +104,24 @@
   "/ListX/UI/Dashboard/ConfirmListDeleteAdmin": "Willst Du diese Liste wirklich entfernen? Dies wird sämtliche, mit der Liste in Verbindung stehenden Daten löschen!",
   "/ListX/UI/Index/Pricing": "Preise",
   "/ListX/UI/Dashboard/AlphaWelcome": "Willkommen in der Alpha-Phase von List<span class='color-red'>X</span>, solltest du Fehler finden, öffne bitte ein <a href=\"https://github.com/lucakiebel/ListX-Alpha/issues/new\">Issue</a>!",
-  "/ListX/UI/Index/ApiDocs": "API-Dokumentation"
+  "/ListX/UI/Index/ApiDocs": "API-Dokumentation",
+  "/ListX/UI/Currency": "%s,%s €",
+  "/ListX/UI/Index/AlphaTesters": "Alpha Tester",
+  "/ListX/UI/Lists": {
+    "one": "%s Liste",
+    "other": "%s Listen"
+  },
+  "/ListX/UI/UnlimitedLists": "Unbegrenzte Listen",
+  "/ListX/UI/Index/AdditionalLists": "einmalig für jede weitere Liste",
+  "/ListX/UI/Index/LessLimitedSupport": "Weniger Limitierter Support",
+  "/ListX/UI/Index/Free": "Kostenlos",
+  "/ListX/UI/Index/Premium": "Premium",
+  "/ListX/UI/Index/EarlyAccess": "Zugang zu den neuesten Funktionen",
+  "/ListX/UI/Index/LimitedSupport": "Limitierter Support",
+  "/ListX/UI/Index/FullSupport": "Vollständiger Support",
+  "/ListX/UI/Index/PerMonthShort": "/Monat",
+  "/ListX/UI/DecimalMark": ",",
+  "/ListX/UI/Index/About": "Über",
+  "/ListX/UI/Index/faqDev": "Entwickler FAQ"
+
 }

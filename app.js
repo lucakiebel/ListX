@@ -510,14 +510,11 @@ app.get('/api/users/:id/lists', (req, res) => {
 
 		  console.log("Lists");
 
-		  lists.forEach(function (t) { console.log(t) });
-
-
 		  // then use that Array to get all Lists in it
 		  List.find({ _id: { $in: lists }}).exec()
 			  .then(function(gotLists) {
                 console.info("Lists: " + gotLists);
-                if(gotLists.length === 0) res.json({success: false, error:"No lists", code:203});
+                if(gotLists.length === 0) res.json({success: false, error:"No lists found, create one!", code:203});
                 else res.json({lists: gotLists, success: true});
 			  });
 	  }
@@ -541,21 +538,17 @@ app.get('/api/users/:id/lists/:query', (req, res) => {
 
             console.log("Lists matching");
 
-            lists.forEach(function (t) { console.log(t) });
-
 
             // then use that Array to get all Lists in it
             List.find({ _id: { $in: lists }}).exec()
                 .then(function(gotLists) {
                     let matching = [];
                     gotLists.forEach(l => {
-                        let re = new RegExp("/"+escapeRegExp(req.params.query)+"/g");
-                        if (l.match(re)) {
+                        if (l.name.indexOf(req.params.query) !== -1) {
                             matching.push(l);
                         }
                     });
-                    console.info("Lists: " + matching);
-                    if(gotLists.length === 0) res.json({success: false, error:"No lists", code:203});
+                    if(matching.length === 0) res.json({success: false, error:"No List found matching " + req.params.query, code:208});
                     else res.json({lists: matching, success: true});
 
 

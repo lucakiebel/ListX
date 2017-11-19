@@ -1,5 +1,7 @@
 $(document).ready(function(){
 
+	getLists("");
+
     $(".dropdown").hover(
         function() {
             $('.dropdown-menu', this).stop( true, true ).fadeIn("fast");
@@ -12,12 +14,35 @@ $(document).ready(function(){
             $('b', this).toggleClass("caret caret-up");
         });
 
-    $("#search-lists").change(() => {
-
+    $("#search-lists").on("input change keyup paste", e => {
+    	console.log("event");
+    	e.preventDefault();
+		getLists($("#search-lists").val());
 	});
+
+
+    function deleteList(list) {
+        console.log(list);
+        let delURL,r;
+        if(list.admin === userId) {
+            delURL = "/api/lists/"+list._id+"/admin";
+        } else {
+            delURL = "/api/lists/"+list._id;
+        }
+        $.ajax({
+            url: delURL,
+            type: 'DELETE',
+            success: function(result) {
+            	console.log(result);
+                getLists("");
+            }
+        });
+    }
+
 
     function getLists(query) {
 
+		query = query || "";
     	let url = query === "" ? "/api/users/" + userId + "/lists" : "/api/users/" + userId + "/lists/" + query;
 
         $.get(url, function (data) {
@@ -26,17 +51,17 @@ $(document).ready(function(){
             if (data.success === true) {
                 console.log("Lists found!");
                 listsDiv.html(null);
-                data.lists.forEach(function (list) {
-                    if (!lists || lists.length === 0) {
+                data.lists.forEach((list) => {
+                    if (!data.lists || data.lists.length === 0) {
                         listsDiv.html('<div class="alert alert-warning" role="alert"><strong>No Lists found!</strong> Create one!</div>');
                     }
                     $.get("/api/lists/" + list._id + "/itemCount", function (itemCount) {
-                        let html = `<div class="row">
+                        let html = `<div class="col-md-6">
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h3 class="pull-left"><a href="/list/${list._id}" class="list-link">${list.name}</a></h3>
                         <div class="input-group pull-right">
-                            <button class="btn btn-default delete-list" data-listId="${list._id}"><i class="glyphicon glyphicon-remove-circle"></i></button>
+                            <button class="btn btn-default" onclick='deleteList(${JSON.stringify(list)})'><i class="glyphicon glyphicon-remove-circle"></i></button>
                             <button class="btn btn-default" href="/list/${list._id}/settings"><i class="glyphicon glyphicon-wrench"></i></button>
                         </div>
                     </div>
@@ -53,11 +78,16 @@ $(document).ready(function(){
                 });
             }
             else {
-                console.log("No Lists found!");
-                listsDiv.html('<div class="nolist" style="text-align: center; align-items: center; padding-top: 30px; padding-bottom: 30px"><h2>No Lists found, create one!</h2></div>')
+                console.log("No Lists found! ", data.code);
+                let message = data.error;
+                listsDiv.html('<div class="nolist" style="text-align: center; align-items: center; padding-top: 30px; padding-bottom: 30px"><h2>'+message+'</h2></div>')
             }
         });
     }
+
+
+
+
 
 
 	$(".submenu > a").click(function(e) {
@@ -111,8 +141,8 @@ $(document).ready(function(){
 									$.post("/api/users/"+admin+"/newList", {lists: [id]}, data => {
 										if (data.success === true) {
 											// list added to admin account, close popup and reload lists
-                                            $("#new-list-modal").modal("hide");
-                                            getLists();
+                                            $("#newListModal").modal("hide");
+                                            getLists("");
 										}
 									});
 								}

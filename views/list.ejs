@@ -9,17 +9,18 @@
 
     <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        html                    { overflow-y:scroll; }
-        body                    { padding-top:2%; }
-        #todo-list              { margin-bottom:4%; }
-        #insert-button		    { margin-bottom:2%; }
-        input.form-control	    { margin-top:2%; }
+        html                    {   overflow-y:scroll;   }
+        body                    {   padding-top:2%;      }
+        #todo-list              {   margin-bottom:4%;    }
+        #insert-button		    {   margin-bottom:2%;    }
+        input.form-control	    {   margin-top:2%;       }
+        h3                      {   margin-top: 0;       }
     </style>
 
     <!-- jQuery -->
     <script src="/vendor/jquery/jquery.js"></script>
     <!-- AngularJS -->
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script>
+    <script src="/vendor/angular/angular-1.0.8.js"></script>
     <!-- Angular App -->
     <script src="https://sk-cdn.net/websites/listx.io/core.js.php?l=<%=list._id%>"></script>
 </head>
@@ -35,25 +36,10 @@
         <div class="col-sm-4 col-sm-offset-4">
             <div class="checkbox ng-scope" ng-repeat="item in items">
                 <label>
-                    <label>
-                        <input type="checkbox" ng-click="deleteTodo(item._id)"> <h3 style="margin-top: 0"> {{ item.name }} </h3>
-                        <ul><li ng-show="item.amount"><h4><%= __("/ListX/UI/List/Amount")%>: {{ item.amount }}</h4></li><li ng-show="item.art"><h4><%= __("/ListX/UI/List/Art") %>: {{ item.art }}</h4></li></ul>
-                    </label>
-
-
+                    <input type="checkbox" ng-click="deleteTodo(item._id)"> <h3 style="margin-top: 0"> {{ item.name }} </h3>
+                    <ul><li ng-show="item.amount"><h4><%= __("/ListX/UI/List/Amount")%>: {{ item.amount }}</h4></li><li ng-show="item.art"><h4><%= __("/ListX/UI/List/Art") %>: {{ item.art }}</h4></li></ul>
                 </label>
             </div>
-
-            <!--
-            <div class="checkbox" ng-repeat="item in items">
-                                <label>
-                                        <input type="checkbox" ng-click="deleteTodo(item._id)"> <h3> {{ item.name }} </h3>
-                                        <ul><li ng-show="todo.amount"><h4>Menge: {{ todo.amount }}</h4></li><li ng-show="todo.count"><h4>Anzahl: {{ todo.count }}</h4></li><li ng-show="todo.art"><h4>Art: {{ todo.art }}</h4></li></ul>
-                                </label>
-                </div>
-            -->
-
-
     </div>
 
     <div id="todo-form" class="row">
@@ -69,6 +55,12 @@
             </form>
         </div>
     </div>
+
+    <div class="row">
+        <a href="/dashboard"><%= __("/ListX/UI/Index/dashboard") %></a> <a href="<%=list._id%>/settings"><%= __("/ListX/UI/Index/settings") %></a>
+    </div>
+
+
 </div>
 
 </body>

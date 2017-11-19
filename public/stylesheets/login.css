@@ -1,0 +1,39 @@
+body {
+    font-family: 'Open Sans', sans-serif;
+    position: relative;
+    margin: 0px;
+    padding: 0px;
+}
+
+.vertical-offset-100 {
+    margin-top: 100px;
+}
+
+.vertical-space-20 {
+    margin-bottom: 20px;
+}
+
+a.listx:hover, a.listx:focus {
+    text-decoration: none;
+}
+
+.center {
+    text-align: center;
+}
+
+.btn-default {
+    border: 1px solid #FF4C4C;
+    color: #FF4C4C;
+    background-color: transparent;
+}
+.btn-default:hover,
+.btn-default:focus {
+    border: 1px solid #FF4C4C;
+    outline: none;
+    color: white;
+    background-color: #FF4C4C;
+}
+
+.x {
+    color: #FF4C4C;
+}

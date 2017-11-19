@@ -1,5 +1,62 @@
 $(document).ready(function(){
 
+    $(".dropdown").hover(
+        function() {
+            $('.dropdown-menu', this).stop( true, true ).fadeIn("fast");
+            $(this).toggleClass('open');
+            $('b', this).toggleClass("caret caret-up");
+        },
+        function() {
+            $('.dropdown-menu', this).stop( true, true ).fadeOut("fast");
+            $(this).toggleClass('open');
+            $('b', this).toggleClass("caret caret-up");
+        });
+
+    $("#search-lists").change(() => {
+
+	});
+
+    function getLists() {
+        $.get("/api/users/" + userId + "/lists", function (data) {
+            console.log(data);
+            const listsDiv = $('#list-container');
+            if (data.success === true) {
+                console.log("Lists found!");
+                listsDiv.html(null);
+                data.lists.forEach(function (list) {
+                    if (!lists || lists.length === 0) {
+                        listsDiv.html('<div class="alert alert-warning" role="alert"><strong>No Lists found!</strong> Create one!</div>');
+                    }
+                    $.get("/api/lists/" + list._id + "/itemCount", function (itemCount) {
+                        let html = `<div class="row">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="pull-left"><a href="/list/${list._id}" class="list-link">${list.name}</a></h3>
+                        <div class="input-group pull-right">
+                            <button class="btn btn-default delete-list" data-listId="${list._id}"><i class="glyphicon glyphicon-remove-circle"></i></button>
+                            <button class="btn btn-default" href="/list/${list._id}/settings"><i class="glyphicon glyphicon-wrench"></i></button>
+                        </div>
+                    </div>
+                    <!-- Default panel contents -->
+                    <div class="panel-body">
+                        <h4>
+                            Elements: <span class="label label-danger">${itemCount}</span>
+                        </h4>
+                    </div>
+                </div>
+            </div>`;
+						listsDiv.html(listsDiv.html() + "\n" + html);
+                    });
+                });
+            }
+            else {
+                console.log("No Lists found!");
+                listsDiv.html('<div class="nolist" style="text-align: center; align-items: center; padding-top: 30px; padding-bottom: 30px"><h2>No Lists found, create one!</h2></div>')
+            }
+        });
+    }
+
+
 	$(".submenu > a").click(function(e) {
 		e.preventDefault();
 		let $li = $(this).parent("li");

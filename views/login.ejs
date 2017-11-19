@@ -29,7 +29,7 @@
     <link href="https://fonts.googleapis.com/css?family=Raleway:400,700" rel="stylesheet" type="text/css">
 
     <!-- Theme CSS -->
-    <link href="/stylesheets/dashboard.css" rel="stylesheet">
+    <link href="/stylesheets/login.css" rel="stylesheet">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -39,49 +39,50 @@
     <![endif]-->
 </head>
 <body class="login-bg">
-<div class="header">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <!-- Logo -->
-                <div class="logo" style="color: white">
-                    <h1><a href="/"><img src="/images/favicon.png" alt="<%=__("/ListX/UI/SiteName") %>" height="40px" style="margin-top: -12px">&nbsp;&nbsp;List<span class="x">X</span> <%= __("/ListX/UI/Index/logIn") %></a></h1>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 
-<div class="page-content container">
-    <div class="row">
+<div class="container">
+    <div class="row vertical-offset-100">
         <div class="col-md-4 col-md-offset-4">
-            <div class="login-wrapper">
-                <div class="box">
-                    <div class="content-wrap">
-                        <h6><%= __("/ListX/UI/Index/logIn") %></h6>
+            <div class="row center vertical-space-20">
+                <a href="/" class="listx">
+                    <h1 style="color: black"><img src="/images/favicon.png" alt="<%=__("/ListX/UI/SiteName") %>" height="40px">List<span class="x">X</span></h1>
+                </a>
+            </div>
+            <div class="row">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="center"><%= __("/ListX/UI/Index/logIn") %></h3>
                         <div class="alert alert-danger" id="login-error" style="display: none">
                             <strong><%= __("/ListX/UI/Index/error")%>: </strong> <%= __("/ListX/UI/Dashboard/Login/loginErrorMessage") %>
                         </div>
-                        <form onsubmit="return loginValidation(this)" class="form-horizontal" style="text-align: left !important;">
-                            <label for="form_email"><%= __("/ListX/UI/Index/enterEmail") %></label>
-                            <input class="form-control" id="form_email" type="email" name="email" placeholder="" required>
-
-                            <label for="form_password"><%= __("/ListX/UI/Index/enterPassword") %></label>
-                            <div class="pull-right" id="show-password"><i id="show-password-i" class="fa fa-eye-slash fa-lg" aria-hidden="true"></i></div>
-                            <input class="form-control" type="text" name="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" id="form_password" required>
-                            <input type="submit" class="form-control btn btn-primary signup" value="<%= __("/ListX/UI/Index/logIn") %>">
+                    </div>
+                    <div class="panel-body">
+                        <form accept-charset="UTF-8" role="form" id="login-form">
+                            <fieldset>
+                                <div class="form-group">
+                                    <label for="form_email"><%= __("/ListX/UI/Index/enterEmail") %></label>
+                                    <input class="form-control" id="form_email" name="email" type="email" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="form_password"><%= __("/ListX/UI/Index/enterPassword") %></label>
+                                    <div class="pull-right" id="show-password"><i id="show-password-i" class="fa fa-eye-slash fa-lg" aria-hidden="true"></i></div>
+                                    <input class="form-control" id="form_password" name="password" type="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" required>
+                                </div>
+                                <input class="btn btn-lg btn-default btn-block" type="submit" value="<%= __("/ListX/UI/Index/logIn") %>">
+                            </fieldset>
                         </form>
                     </div>
                 </div>
-
                 <div class="already">
-                    <p><%= __("/ListX/UI/Dashboard/Login/noAccountYet") %> </p>
-                    <a href="/signup"><%= __("/ListX/UI/Index/signUp") %></a>
+                    <p><%= __("/ListX/UI/Dashboard/Login/noAccountYet") %> <a href="/signup" style="color: black"><%= __("/ListX/UI/Index/signUp") %></a></p>
+
                 </div>
             </div>
+
         </div>
     </div>
 </div>
+
 
 
 <!-- jQuery -->

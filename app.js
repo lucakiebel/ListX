@@ -527,6 +527,45 @@ app.get('/api/users/:id/lists', (req, res) => {
   });
 });
 
+// get all lists per user that contain :query
+app.get('/api/users/:id/lists/:query', (req, res) => {
+    User.findOne({_id : req.params.id}, function(err, user) {
+        if(err)res.json({success:false, error:err, code:202}); console.log(err);
+
+        let lists = [];
+
+        if (user.lists){
+
+            // first off, make an Array from the Users "list" Object
+            lists = user.lists;
+
+            console.log("Lists matching");
+
+            lists.forEach(function (t) { console.log(t) });
+
+
+            // then use that Array to get all Lists in it
+            List.find({ _id: { $in: lists }}).exec()
+                .then(function(gotLists) {
+                    let matching = [];
+                    gotLists.forEach(l => {
+                        let re = new RegExp("/"+escapeRegExp(req.params.query)+"/g");
+                        if (l.match(re)) {
+                            matching.push(l);
+                        }
+                    });
+                    console.info("Lists: " + matching);
+                    if(gotLists.length === 0) res.json({success: false, error:"No lists", code:203});
+                    else res.json({lists: matching, success: true});
+
+
+                });
+        }
+        else res.json({success:false, error:101});
+
+
+    });
+});
 
 // create user
 app.post('/api/users', (req, res) => {
@@ -635,6 +674,10 @@ function userExists(id, mail) {
             return !Boolean(err);
         });
     }
+}
+
+function escapeRegExp(stringToGoIntoTheRegex) {
+    return stringToGoIntoTheRegex.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
 }
 
 function createInvite(email, list, arr) {

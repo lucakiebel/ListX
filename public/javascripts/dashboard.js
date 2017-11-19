@@ -16,8 +16,11 @@ $(document).ready(function(){
 
 	});
 
-    function getLists() {
-        $.get("/api/users/" + userId + "/lists", function (data) {
+    function getLists(query) {
+
+    	let url = query === "" ? "/api/users/" + userId + "/lists" : "/api/users/" + userId + "/lists/" + query;
+
+        $.get(url, function (data) {
             console.log(data);
             const listsDiv = $('#list-container');
             if (data.success === true) {

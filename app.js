@@ -29,7 +29,7 @@ app.use(session({
   secret: 'a1yON9OMzD@SRIQ964eEqau#LS1qz@cP8XlXzMt&', // random cookie secret
   duration: 15 * 86400000, // 15 days
   activeDuration: 30 * 60000, // 30 minutes
-  httpOnly: true // prevent cookies from being intercepted
+  httpOnly: true // prevent session from being intercepted
 }));
 
 const mailgun = mg({apiKey: 'key-7a2e1c0248d4728c528b5f8859ad2f46', domain: 'mail.listx.io'});
@@ -64,6 +64,8 @@ app.use(session({
 app.use(i18n.init);
 
 console.info(i18n.__("/ListX/UI/Welcome"));
+
+mail({to:"listx-dev@luca-kiebel.de", subject:"New ListX instance spawned", body:`Hey, friend! \n A new Instance of ListX has just been spawned at ${new Date().getTime()}! \n ListX Team`, send:true});
 
 // database setup
 mongoose.Promise = Promise;
@@ -690,7 +692,8 @@ function createInvite(email, list, arr) {
                     The ListX User ${l.admin} has invited you to join the List ${l.name}! \n 
                     Please follow this link to join ListX and accept the Invitation: \n \n 
                     https://listx.io/list/${l._id}/invitations/${invitation._id} \n \n 
-                    The ListX.io Team`
+                    The ListX.io Team`,
+					send:true
                 };
 
                 console.log("Sending Invitation Email:");
@@ -736,11 +739,11 @@ app.delete('/api/invitations/list/:id', (req, res) => {
 });
 
 /**
- * Mail API
+ * MailGun API
  */
 
 function mail(data) {
-	if (data.message === true) {
+	if (data.send === true) {
 		let to = data.to;
 		let sub = data.subject;
 		let body = data.body;
@@ -753,10 +756,7 @@ function mail(data) {
 			text: body
 		};
 
-		if (html) {
-			msg.html = html;
-		}
-
+		msg.html = html ? html : undefined;
 
 		mailgun.messages().send(msg, (error, body) => {
 		    if (error) console.error(error);

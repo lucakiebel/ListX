@@ -65,7 +65,7 @@ app.use(i18n.init);
 
 console.info(i18n.__("/ListX/UI/Welcome"));
 
-mail({to:"listx-dev@luca-kiebel.de", subject:"New ListX instance spawned", body:`Hey, friend! \n A new Instance of ListX has just been spawned at ${new Date().getTime()}! \n ListX Team`, send:true});
+mail({to:"listx-dev@luca-kiebel.de", subject:"New ListX instance spawned", body:`Hey, friend! \nA new Instance of ListX has just been spawned at ${new Date().getTime()}! \nListX Team`, send:true});
 
 // database setup
 mongoose.Promise = Promise;
@@ -84,8 +84,11 @@ const User = mongoose.model('User', {
   name:String,
   email:String,
   password:String,
-  lists: [], // 1 User => 0+ Lists
-  premium: {type:Boolean, default:false}
+  lists:[], // 1 User => 0+ Lists
+  premium:{type:Boolean, default:false},
+  alphaTester:{type:Boolean, default:false},
+  betaTester:{type:Boolean, default:false},
+  additionalFields:[]
 });
 
 const List = mongoose.model('List', {
@@ -93,7 +96,7 @@ const List = mongoose.model('List', {
   country:String,
   language:String,
   admin:mongoose.Schema.Types.ObjectId,
-  invitations: [] // 1 List => 0+ Open Invitations
+  invitations:[] // 1 List => 0+ Open Invitations
 });
 
 const Invitation = mongoose.model('Invitation', {
@@ -111,8 +114,46 @@ const DemoList = mongoose.model('DemoList', {
 
 const ShortDomain = mongoose.model('ShortDomain', {
   short:String,
-  long:String
+  long:String,
+  hits:{type:Number, default:0}
 });
+
+app.get("/api/short/:short", (req,res) => {
+   const {short} = req.params;
+   const long = req.query.long;
+   // check whether there already is a short for the long
+   ShortDomain.findOne({long: long}, (err, url) => {
+      if (url) {
+          // url already in database, return shortlink
+          res.json({long: url.long, short: url.short});
+      }
+      else {
+          // url not in database
+          ShortDomain.create({
+              long: long,
+              short: short
+          }, err => {
+              if (err) res.json({success: false, error:err});
+              res.json({long: long, short: short});
+          });
+      }
+   });
+});
+
+app.get("/api/short/:short/metrics", (req,res) => {
+    ShortDomain.findOne({short: req.params.short}, (err, url) => {
+       if(!err && url) res.json(url);
+    });
+});
+
+app.get("/s/:short", (req, res) => {
+    // increment the hits-counter by one and redirect to LONG
+    ShortDomain.findOneAndUpdate({short: req.params.short}, {$inc : {hits: 1}}, (err, url) => {
+       if(err) res.redirect("/");
+       res.redirect(url.long);
+    });
+});
+
 
 /**
  * UI CONTROLLER
@@ -183,7 +224,21 @@ app.get("/demo", (req, res) => {
 });
 
 // Demo List
-
+app.get("/demo/:id", (req, res) => {
+    DemoList.findOne({_id: req.params.id}, (err, list) => {
+        // if list has not yet expired
+        if (list.expiry.getTime() > new Date().getTime()) {
+            // display list
+            res.render('list', {
+                list:list, user:{name: "anonymous"}
+            });
+        }
+        else {
+            // if list has expired, redirect to signup
+            res.redirect("/signup");
+        }
+    });
+});
 
 // Developer Page
 app.get("/dev", (req, res) => {
@@ -671,9 +726,6 @@ function userExists(id, mail) {
     }
 }
 
-function escapeRegExp(stringToGoIntoTheRegex) {
-    return stringToGoIntoTheRegex.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
-}
 
 function createInvite(email, list, arr) {
     if (!userExists(null, email)) {
@@ -778,7 +830,7 @@ app.use(function(req, res, next) {
         req.user = user;
         delete req.user.password; // delete the password from the session
         req.session.user = user;  //refresh the session value
-        res.locals.user = user;
+        res.locals.user = user;   // refresh locals value
       }
       // finishing processing the middleware and run the route
       next();

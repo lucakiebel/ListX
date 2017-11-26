@@ -210,7 +210,7 @@ app.get('/signup', function(req, res) {
 app.get("/validate/:id", function (req, res) {
     EmailValidation.find({_id: req.params.id}, (err, valid) => {
         if (err) res.json({success:false});
-        if (valid.expiry >= new Date.now()) {
+        if (valid.expiry >= Date.now()) {
             // Validation not expired
             User.findOneAndUpdate({_id: valid.userId}, {$set:{validated: true}}, (err, u) => {
                 // if there was an error, redirect to /signup and pass error 201 (user not found)

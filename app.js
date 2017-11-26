@@ -8,7 +8,6 @@ const   express = require('express')                        // Express as a Webs
     , methodOverride = require('method-override')         // Method Override to use delete method for elemets
     , i18n = require('i18n')                              // i18n for translations (German/English)
     , session = require('client-sessions')                // Client-Sessions to be able to access the session variables
-	, async = require('async')
     , bCrypt = require('bcrypt-nodejs')                   // bCrypt for secure Password hashing (on the server side)
     , app = express()
 	, mg = require('mailgun-js')

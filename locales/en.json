@@ -63,6 +63,7 @@
   "/ListX/UI/Index/Cookieconsent/Dismiss": "Got it!",
   "/ListX/UI/Index/Cookieconsent/learnMore": "More Info",
   "/ListX/UI/Dashboard/Login/loginErrorMessage": "Wrong Email-Address or wrong Password!",
+  "/ListX/UI/Dashboard/Login/ActivationErrorMessage": "This Account is not yet activated, please check your inbox!",
   "/ListX/UI/Dashboard/Login/noAccountYet": "Don't have an account yet?",
   "/ListX/UI/SignUp/enterPasswordAgain": "Enter Password again",
   "/ListX/UI/SignUp/ErrorMessageEmail": "Please enter a valid and permanent Email-Address",

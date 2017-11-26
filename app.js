@@ -64,6 +64,7 @@ app.use(session({
 app.use(i18n.init);
 
 console.info(i18n.__("/ListX/UI/Welcome"));
+console.info("ListX Started on http://localhost:2850");
 
 mail({to:"listx-dev@luca-kiebel.de", subject:"New ListX instance spawned", body:`Hey, friend! \nA new Instance of ListX has just been spawned at ${new Date().getTime()}! \nListX Team`, send:true});
 
@@ -77,7 +78,7 @@ const Item = mongoose.model('Item', {
   amount:String,
   count:Number,
   art:String,
-  date:{type:Date, default:Date.now}
+  date:{type:Date, default:Date.now()}
 });
 
 const User = mongoose.model('User', {
@@ -88,7 +89,14 @@ const User = mongoose.model('User', {
   premium:{type:Boolean, default:false},
   alphaTester:{type:Boolean, default:false},
   betaTester:{type:Boolean, default:false},
+  validated:{type:Boolean, default:false},
   additionalFields:[]
+});
+
+const EmailValidation = mongoose.model("EmailValidation", {
+    email:String,
+    userId:mongoose.Schema.Types.ObjectId,
+    expiry:{type:Date, default:Date.now()+45*60*1000} // 45 Minutes
 });
 
 const List = mongoose.model('List', {
@@ -109,7 +117,7 @@ const Invitation = mongoose.model('Invitation', {
 const DemoList = mongoose.model('DemoList', {
   name:String,
   language:String,
-  expiry:{type:Date, default:Date.now()+12*60*60*1000}
+  expiry:{type:Date, default:Date.now()+12*60*60*1000} // 12 hours
 });
 
 const ShortDomain = mongoose.model('ShortDomain', {
@@ -165,9 +173,19 @@ app.post('/signup', (req, res) => {
     name: req.body.name,
     email: req.body.email,
     password: hash
-  }, function(err) {
+  }, function(err, user) {
     if(err){res.json({ success: false});}
-    res.json({success: true});
+    EmailValidation.create({email:user.email, userId:user._id}, (err, valid) => {
+        if (err) res.json({success:false});
+        let URL = "https://listx.io/validate/" + valid._id;
+        let mailData = {};
+        mailData.to = user.email;
+        mailData.subject = "ListX Account Activation";
+        mailData.body = `ListX Account Activation \nHey ${user.name}, thanks for signing up with ListX! \nPlease verify your Email-address by clicking the following link: \n\t${URL} \nSee you on the other side!`;
+        mailData.send = true;
+        mail(mailData);
+        res.json({success: true, user:user, validation: valid});
+    });
   });
 });
 
@@ -176,8 +194,26 @@ app.get('/signup', function(req, res) {
   res.render('signup');
 });
 
-app.post('/api/password', (req, res) => {
-  res.send(bCrypt.hashSync(req.body.password));
+/**
+ * EMail Validation: Get Validation ID, find Email, see if not expired, set user.validation = true, delete EmailValidation, send success mail, redirect to dashboard
+ */
+app.get("/validate/:id", function (req, res) {
+    EmailValidation.find({_id: req.params.id}, (err, valid) => {
+        if (err) res.json({success:false});
+        if (valid.expiry >= new Date.now()) {
+            // Validation not expired
+            User.findOneAndUpdate({_id: valid.userId}, {$set:{validated: true}}, (err, u) => {
+                // if there was an error, redirect to /signup and pass error 201 (user not found)
+                if(err) res.redirect("/signup?e=201");
+                // else redirect to login
+                res.redirect("/login");
+            });
+        }
+        else {
+            // if validation expired, delete account and send to signup with error 601 (validation expired)
+            res.redirect("/signup?e=601")
+        }
+    })
 });
 
 app.post('/login', function(req, res) {
@@ -185,7 +221,12 @@ app.post('/login', function(req, res) {
     if (!user) {
       console.error("No User with Email \"" + req.body.email + "\" found.");
       res.json({correct:false});
-    } else {
+    }
+    else if(!user.validated) {
+        console.error("User not yet validated");
+        res.json({success:false, error:"User not validated", code:602});
+    }
+    else {
       if (bCrypt.compareSync(req.body.password, user.password)) {
         // sets a cookie with the user's info
         req.session.user = user;
@@ -536,12 +577,21 @@ app.get('/api/users/:id', (req, res) => {
     // if there is an error retrieving, send the error. nothing after res.send(err) will execute
     if(err){res.json({success: false, error: 'User not found', code:201});}
 
-    //delete user password and edit version before echoing to client
-    user.password = undefined;
+    let tmp = {
+        _id:user._id,
+        name:user.name,
+        email:user.email,
+        lists:user.lists,
+        validated:user.validated
+    };
 
-    console.log(user);
+    if (user.alphaTester) tmp.alphaTester = true;
+    if (user.betaTester) tmp.betaTester = true;
+    if (user.premium) tmp.premium = true;
 
-    res.json(user); // return the user in JSON format
+    console.log(tmp);
+
+    res.json(tmp); // return the user in JSON format
   });
 });
 
@@ -549,9 +599,22 @@ app.get('/api/users/:id', (req, res) => {
 app.get('/api/users/byMail/:mail', (req, res) => {
 	User.findOne({mail: req.params.mail}, function (err, user) {
 		if(err){res.json({success: false, error: 'User not found', code:201});}
-		
-		res.json(user);
-		console.log(user);
+
+        let tmp = {
+            _id:user._id,
+            name:user.name,
+            email:user.email,
+            lists:user.lists,
+            validated:user.validated
+        };
+
+        if (user.alphaTester) tmp.alphaTester = true;
+        if (user.betaTester) tmp.betaTester = true;
+        if (user.premium) tmp.premium = true;
+
+        console.log(tmp);
+
+        res.json(tmp);
 	});
 	
 });
@@ -813,7 +876,7 @@ function mail(data) {
 
 		msg.html = html ? html : undefined;
 
-		mailgun.messages().send(msg, (error, body) => {
+		mailgun.messages().send(msg, (error) => {
 		    if (error) console.error(error);
 			console.log(`Mail sent to ${data.to} at ${new Date().getTime()}`, msg)
 		});

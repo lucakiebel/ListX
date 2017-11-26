@@ -37,6 +37,8 @@
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
     <![endif]-->
+    <!-- reCaptcha -->
+    <script src='https://www.google.com/recaptcha/api.js'></script>
 </head>
 <body class="login-bg">
 
@@ -52,13 +54,26 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h3 class="center"><%= __("/ListX/UI/Index/signUp") %></h3>
-                        <div class="alert alert-danger" id="login-error" style="display: none">
-                            <strong><%= __("/ListX/UI/Index/error")%>: </strong> <%= __("/ListX/UI/Dashboard/Login/loginErrorMessage") %>
+                        <div class="alert alert-danger signup-error" id="signup-error-email" style="display: none">
+                            <strong><%= __("/ListX/UI/Index/error")%>: </strong> <%= __("/ListX/UI/SignUp/ErrorMessageEmail") %>
+                        </div>
+                        <div class="alert alert-danger signup-error" id="signup-error-server" style="display: none">
+                            <strong><%= __("/ListX/UI/Index/error")%>: </strong> <%- __("/ListX/UI/SignUp/ErrorMessageServer") %>
+                        </div>
+                        <div class="alert alert-danger signup-error" id="signup-error-rc" style="display: none">
+                            <strong><%= __("/ListX/UI/Index/error")%>: </strong> <%- __("/ListX/UI/SignUp/ErrorMessageRC") %>
+                        </div>
+                        <div class="alert alert-danger" id="signup-success" style="display: none">
+                            <strong><%= __("/ListX/UI/Index/error")%>: </strong> <%- __("/ListX/UI/SignUp/ErrorMessageRC") %>
                         </div>
                     </div>
                     <div class="panel-body">
-                        <form accept-charset="UTF-8" role="form" id="login-form">
+                        <form accept-charset="UTF-8" role="form" id="signup-form">
                             <fieldset>
+                                <div class="form-group">
+                                    <label for="form_name"></label>
+                                    <input type="text" class="form-control" id="form_name" required>
+                                </div>
                                 <div class="form-group">
                                     <label for="form_email"><%= __("/ListX/UI/Index/enterEmail") %></label>
                                     <input class="form-control" id="form_email" name="email" type="email" required>
@@ -66,15 +81,16 @@
                                 <div class="form-group">
                                     <label for="form_password"><%= __("/ListX/UI/Index/enterPassword") %></label>
                                     <div class="pull-right" id="show-password"><i id="show-password-i" class="fa fa-eye-slash fa-lg" aria-hidden="true"></i></div>
-                                    <input class="form-control" id="form_password" name="password" type="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" required>
+                                    <input class="form-control" id="form_password" name="password" type="password" required>
                                 </div>
-                                <input class="btn btn-lg btn-default btn-block" type="submit" value="<%= __("/ListX/UI/Index/logIn") %>">
+                                <div class="g-recaptcha" data-sitekey="6Ld0czoUAAAAAJlIj1qpWg9KyZQlRWcLp58A1Oj2"></div>
+                                <input class="btn btn-lg btn-default btn-block" type="submit" value="<%= __("/ListX/UI/Index/signUp") %>">
                             </fieldset>
                         </form>
                     </div>
                 </div>
                 <div class="already">
-                    <p><%= __("/ListX/UI/Dashboard/Login/alreadyAccount") %> <a href="/login" style="color: black"><%= __("/ListX/UI/Index/logIn") %></a></p>
+                    <p><%= __("/ListX/UI/Dashboard/SignUp/alreadyAccount") %> <a href="/login" style="color: black"><%= __("/ListX/UI/Index/logIn") %></a></p>
 
                 </div>
             </div>
@@ -95,8 +111,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
 
 <!-- Theme JavaScript -->
-<script src="/javascripts/dashboard.js"></script>
-<script src="/javascripts/login.js"></script>
+<script src="/javascripts/signup.js"></script>
 
 </body>
 </html>

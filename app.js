@@ -11,7 +11,10 @@ const   express = require('express')                        // Express as a Webs
 	, async = require('async')
     , bCrypt = require('bcrypt-nodejs')                   // bCrypt for secure Password hashing (on the server side)
     , app = express()
-	, mg = require('mailgun-js');
+	, mg = require('mailgun-js')
+    , request = require("request");
+
+const DP = "alpha.";
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -169,24 +172,32 @@ app.get("/s/:short", (req, res) => {
 
 app.post('/signup', (req, res) => {
   let hash = bCrypt.hashSync(req.body.password);
-  User.create({
-    name: req.body.name,
-    email: req.body.email,
-    password: hash
-  }, function(err, user) {
-    if(err){res.json({ success: false});}
-    EmailValidation.create({email:user.email, userId:user._id}, (err, valid) => {
-        if (err) res.json({success:false});
-        let URL = "https://listx.io/validate/" + valid._id;
-        let mailData = {};
-        mailData.to = user.email;
-        mailData.subject = "ListX Account Activation";
-        mailData.body = `ListX Account Activation \nHey ${user.name}, thanks for signing up with ListX! \nPlease verify your Email-address by clicking the following link: \n\t${URL} \nSee you on the other side!`;
-        mailData.send = true;
-        mail(mailData);
-        res.json({success: true, user:user, validation: valid});
+  let gUrl = "https://www.google.com/recaptcha/api/siteverify?secret=6Ld0czoUAAAAABKtI__dQPahjYi4XnRixWh0k08O&response=" + req.body["g-recaptcha-response"];
+    request(gUrl,(error,response,body) => {
+        body = JSON.parse(body);
+        if(body.success !== undefined && !body.success) {
+            return res.json({success:false, error:"reCAPTCHA failed", code:701});
+        } else {
+            User.create({
+                name: req.body.name,
+                email: req.body.email,
+                password: hash
+            }, function(err, user) {
+                if(err){res.json({ success: false});}
+                EmailValidation.create({email:user.email, userId:user._id}, (err, valid) => {
+                    if (err) res.json({success:false});
+                    let URL = "https://"+DP+"listx.io/validate/" + valid._id;
+                    let mailData = {};
+                    mailData.to = user.email;
+                    mailData.subject = "ListX Account Activation";
+                    mailData.body = `ListX Account Activation \nHey ${user.name}, thanks for signing up with ListX! \nPlease verify your Email-address by clicking the following link: \n\t${URL} \nSee you on the other side!`;
+                    mailData.send = true;
+                    mail(mailData);
+                    res.json({success: true, user:user, validation: valid});
+                });
+            });
+        }
     });
-  });
 });
 
 // signup page for users
@@ -211,6 +222,7 @@ app.get("/validate/:id", function (req, res) {
         }
         else {
             // if validation expired, delete account and send to signup with error 601 (validation expired)
+            User.findOneAndRemove({_id: valid.userId}, (err) => {console.log(err)});
             res.redirect("/signup?e=601")
         }
     })

@@ -68,6 +68,7 @@
   "/ListX/UI/SignUp/enterPasswordAgain": "Enter Password again",
   "/ListX/UI/SignUp/ErrorMessageEmail": "Please enter a valid and permanent Email-Address",
   "/ListX/UI/SignUp/ErrorMessageServer": "The Server encountered an Error while processing your Sign-Up, please <a href='/support'>Contact us!</a>",
+  "/ListX/UI/SignUp/ErrorMessageRC": "There was a problem with the reCAPTCHA, please try it again!",
   "/ListX/UI/SignUp/enterYourName": "Your Name",
   "/ListX/UI/SignUp/enterYourEmail": "Your Email",
   "/ListX/UI/SignUp/enterYourPassword": "Your Password",

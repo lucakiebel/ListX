@@ -11,7 +11,6 @@ function loginValidation() {
 			}
 			else {
 				$("#login-error").css("display", "block");
-				return false;
 			}
 		}
 	});
@@ -20,6 +19,7 @@ function loginValidation() {
 $("#login-form").submit(e => {
 	e.preventDefault();
 	loginValidation();
+	return false;
 });
 
 

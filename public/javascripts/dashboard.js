@@ -22,7 +22,7 @@ $(document).ready(function(){
 
 
     function deleteList(list) {
-        console.log(list);
+        console.log("Deleting " + list);
         let delURL,r;
         if(list.admin === userId) {
             delURL = "/api/lists/"+list._id+"/admin";
@@ -41,13 +41,16 @@ $(document).ready(function(){
 
 
     function getLists(query) {
+        const listsDiv = $('#list-container');
+        // show preloader gif
+        listsDiv.html("<img height=\"20px\" src=\"/images/preloader.gif\" alt='Loading'></img>");
 
 		query = query || "";
     	let url = query === "" ? "/api/users/" + userId + "/lists" : "/api/users/" + userId + "/lists/" + query;
 
         $.get(url, function (data) {
             console.log(data);
-            const listsDiv = $('#list-container');
+
             if (data.success === true) {
                 console.log("Lists found!");
                 listsDiv.html(null);

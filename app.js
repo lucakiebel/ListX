@@ -536,9 +536,12 @@ app.get('/api/users/:id', (req, res) => {
     // if there is an error retrieving, send the error. nothing after res.send(err) will execute
     if(err){res.json({success: false, error: 'User not found', code:201});}
 
+    //delete user password and edit version before echoing to client
+    user.password = undefined;
+
+    console.log(user);
 
     res.json(user); // return the user in JSON format
-    console.log(user);
   });
 });
 

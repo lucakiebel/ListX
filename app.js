@@ -174,27 +174,30 @@ app.post('/signup', (req, res) => {
   let gUrl = "https://www.google.com/recaptcha/api/siteverify?secret=6Ld0czoUAAAAABKtI__dQPahjYi4XnRixWh0k08O&response=" + req.body["g-recaptcha-response"];
     request(gUrl,(error,response,body) => {
         body = JSON.parse(body);
-        if(body.success !== undefined && !body.success) {
-            return res.json({success:false, error:"reCAPTCHA failed", code:701});
-        } else {
+        console.log(body);
+        if (body.success === true) {
             User.create({
                 name: req.body.name,
                 email: req.body.email,
                 password: hash
-            }, function(err, user) {
-                if(err){res.json({ success: false});}
-                EmailValidation.create({email:user.email, userId:user._id}, (err, valid) => {
-                    if (err) res.json({success:false});
-                    let URL = "https://"+DP+"listx.io/validate/" + valid._id;
+            }, function (err, user) {
+                if (err) {
+                    res.json({success: false});
+                }
+                EmailValidation.create({email: user.email, userId: user._id}, (err, valid) => {
+                    if (err) res.json({success: false});
+                    let URL = "https://" + DP + "listx.io/validate/" + valid._id;
                     let mailData = {};
                     mailData.to = user.email;
                     mailData.subject = "ListX Account Activation";
                     mailData.body = `ListX Account Activation \nHey ${user.name}, thanks for signing up with ListX! \nPlease verify your Email-address by clicking the following link: \n\t${URL} \nSee you on the other side!`;
                     mailData.send = true;
                     mail(mailData);
-                    res.json({success: true, user:user, validation: valid});
+                    res.json({success: true, user: user, validation: valid});
                 });
             });
+        } else {
+            return res.json({success: false, error: "reCAPTCHA failed", code: 701});
         }
     });
 });

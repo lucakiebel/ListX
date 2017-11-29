@@ -9,8 +9,6 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/node_modules/.bin/nopt" afterPath="$PROJECT_DIR$/node_modules/.bin/nopt" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/node_modules/.bin/semver" afterPath="$PROJECT_DIR$/node_modules/.bin/semver" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/node_modules/.bin/watchr" afterPath="$PROJECT_DIR$/node_modules/.bin/watchr" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app.js" afterPath="$PROJECT_DIR$/app.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/views/signup.ejs" afterPath="$PROJECT_DIR$/views/signup.ejs" />
     </list>
     <ignored path="einkaufsliste.iws" />
@@ -40,7 +38,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="dashboard.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="dashboard.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/public/javascripts/dashboard.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="289">
@@ -61,8 +59,8 @@
       <file leaf-file-name="signup.ejs" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/views/signup.ejs">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="799">
-              <caret line="92" column="52" lean-forward="false" selection-start-line="92" selection-start-column="52" selection-end-line="92" selection-end-column="52" />
+            <state relative-caret-position="476">
+              <caret line="73" column="97" lean-forward="false" selection-start-line="73" selection-start-column="97" selection-end-line="73" selection-end-column="97" />
               <folding />
             </state>
           </provider>
@@ -101,7 +99,7 @@
       <file leaf-file-name="login.ejs" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/views/login.ejs">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1156">
+            <state relative-caret-position="249">
               <caret line="68" column="124" lean-forward="false" selection-start-line="68" selection-start-column="124" selection-end-line="68" selection-end-column="124" />
               <folding />
             </state>
@@ -121,18 +119,18 @@
       <file leaf-file-name="de.json" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/locales/de.json">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="288">
-              <caret line="71" column="19" lean-forward="false" selection-start-line="71" selection-start-column="13" selection-end-line="71" selection-end-column="19" />
+            <state relative-caret-position="373">
+              <caret line="76" column="61" lean-forward="true" selection-start-line="76" selection-start-column="61" selection-end-line="76" selection-end-column="61" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="en.json" pinned="false" current-in-tab="false">
+      <file leaf-file-name="en.json" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/locales/en.json">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1173">
-              <caret line="69" column="148" lean-forward="true" selection-start-line="69" selection-start-column="148" selection-end-line="70" selection-end-column="100" />
+            <state relative-caret-position="1241">
+              <caret line="73" column="23" lean-forward="true" selection-start-line="73" selection-start-column="23" selection-end-line="73" selection-end-column="23" />
               <folding />
             </state>
           </provider>
@@ -175,6 +173,7 @@
       <find>loginerr</find>
       <find>login</find>
       <find>alre</find>
+      <find>Sign</find>
       <find>signup</find>
     </findStrings>
     <replaceStrings>
@@ -566,7 +565,7 @@
       <workItem from="1511628845394" duration="1177000" />
       <workItem from="1511702125418" duration="15922000" />
       <workItem from="1511889989379" duration="1368000" />
-      <workItem from="1511970317912" duration="2586000" />
+      <workItem from="1511970317912" duration="2764000" />
     </task>
     <task id="LOCAL-00001" summary="Test">
       <created>1492638735378</created>
@@ -663,7 +662,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="334796000" />
+    <option name="totallyTimeSpent" value="334974000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1075,26 +1074,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/locales/en.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1173">
-          <caret line="69" column="148" lean-forward="true" selection-start-line="69" selection-start-column="148" selection-end-line="70" selection-end-column="100" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/public/javascripts/login.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="357">
           <caret line="21" column="17" lean-forward="false" selection-start-line="21" selection-start-column="17" selection-end-line="21" selection-end-column="17" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/views/login.ejs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1156">
-          <caret line="68" column="124" lean-forward="false" selection-start-line="68" selection-start-column="124" selection-end-line="68" selection-end-column="124" />
           <folding />
         </state>
       </provider>
@@ -1123,26 +1106,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/locales/de.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="288">
-          <caret line="71" column="19" lean-forward="false" selection-start-line="71" selection-start-column="13" selection-end-line="71" selection-end-column="19" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="596">
           <caret line="193" column="41" lean-forward="true" selection-start-line="193" selection-start-column="41" selection-end-line="193" selection-end-column="41" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/views/signup.ejs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="799">
-          <caret line="92" column="52" lean-forward="false" selection-start-line="92" selection-start-column="52" selection-end-line="92" selection-end-column="52" />
           <folding />
         </state>
       </provider>
@@ -1160,6 +1127,38 @@
             <marker date="1511972737025" expanded="true" signature="2814:2935" ph="..." />
             <marker date="1511972737025" expanded="true" signature="3328:3408" ph="..." />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/login.ejs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="249">
+          <caret line="68" column="124" lean-forward="false" selection-start-line="68" selection-start-column="124" selection-end-line="68" selection-end-column="124" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/signup.ejs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="476">
+          <caret line="73" column="97" lean-forward="false" selection-start-line="73" selection-start-column="97" selection-end-line="73" selection-end-column="97" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/locales/de.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="373">
+          <caret line="76" column="61" lean-forward="true" selection-start-line="76" selection-start-column="61" selection-end-line="76" selection-end-column="61" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/locales/en.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1241">
+          <caret line="73" column="23" lean-forward="true" selection-start-line="73" selection-start-column="23" selection-end-line="73" selection-end-column="23" />
+          <folding />
         </state>
       </provider>
     </entry>

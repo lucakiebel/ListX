@@ -1,5 +1,6 @@
 $(document).ready(function(){
-
+    const listsDiv = $('#list-container');
+    listsDiv.html("<img height=\"20px\" src=\"/images/preloader.gif\" alt='Loading'></img>");
 	getLists("");
 
     $(".dropdown").hover(
@@ -41,9 +42,9 @@ $(document).ready(function(){
 
 
     function getLists(query) {
-        const listsDiv = $('#list-container');
+
         // show preloader gif
-        listsDiv.html("<img height=\"20px\" src=\"/images/preloader.gif\" alt='Loading'></img>");
+
 
 		query = query || "";
     	let url = query === "" ? "/api/users/" + userId + "/lists" : "/api/users/" + userId + "/lists/" + query;
@@ -53,7 +54,7 @@ $(document).ready(function(){
 
             if (data.success === true) {
                 console.log("Lists found!");
-                listsDiv.html(null);
+                listsArray = [];
                 data.lists.forEach((list) => {
                     if (!data.lists || data.lists.length === 0) {
                         listsDiv.html('<div class="alert alert-warning" role="alert"><strong>No Lists found!</strong> Create one!</div>');
@@ -76,9 +77,10 @@ $(document).ready(function(){
                     </div>
                 </div>
             </div>`;
-						listsDiv.html(listsDiv.html() + "\n" + html);
+						listsArray.push(html);
                     });
                 });
+                listsDiv.html(listsArray.join("\n"));
             }
             else {
                 console.log("No Lists found! ", data.code);

@@ -190,7 +190,7 @@ app.post('/signup', (req, res) => {
                     let mailData = {};
                     mailData.to = user.email;
                     mailData.subject = "ListX Account Activation";
-                    mailData.body = `ListX Account Activation \nHey ${user.name}, thanks for signing up with ListX! \nPlease verify your Email-address by clicking the following link: \n\t${URL} \nSee you on the other side!`;
+                    mailData.body = `ListX Account Activation \nHey ${req.body.name}, thanks for signing up with ListX! \nPlease verify your Email-address by clicking the following link: \n\t${URL} \nSee you on the other side!`;
                     mailData.send = true;
                     mail(mailData);
                     res.json({success: true, user: user, validation: valid});

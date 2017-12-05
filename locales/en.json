@@ -44,6 +44,7 @@
   "/ListX/UI/Index/language": "Language",
   "/ListX/UI/Index/change-lang": "Change the Language",
   "/ListX/UI/Index/error": "Error",
+  "/ListX/UI/Index/success": "Success",
   "/ListX/UI/Index/settings": "Settings",
   "/ListX/UI/Index/profile": "Profile",
   "/ListX/UI/Index/developers": "Developers",
@@ -124,6 +125,10 @@
   "/ListX/UI/Index/PerMonthShort": "/month",
   "/ListX/UI/DecimalMark": ".",
   "/ListX/UI/Index/About": "About",
-  "/ListX/UI/Index/faqDev": "Developer FAQ"
+  "/ListX/UI/Index/faqDev": "Developer FAQ",
+  "/ListX/UI/passswordReset": "Reset Password",
+  "/ListX/UI/passwordReset/emailSent": "We have sent you an email with further instructions.",
+  "/ListX/UI/reset": "Reset",
+  "/ListX/UI/resetError": "The Server encountered an error while trying to progress your request."
 
 }

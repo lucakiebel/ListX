@@ -44,6 +44,7 @@
   "/ListX/UI/Index/language": "Sprache",
   "/ListX/UI/Index/change-lang": "Sprache ändern",
   "/ListX/UI/Index/error": "Fehler",
+  "/ListX/UI/Index/success": "Erfolg",
   "/ListX/UI/Index/settings": "Einstellungen",
   "/ListX/UI/Index/profile": "Profil",
   "/ListX/UI/Index/developers": "Entwickler",
@@ -124,6 +125,10 @@
   "/ListX/UI/Index/PerMonthShort": "/Monat",
   "/ListX/UI/DecimalMark": ",",
   "/ListX/UI/Index/About": "Über",
-  "/ListX/UI/Index/faqDev": "Entwickler FAQ"
+  "/ListX/UI/Index/faqDev": "Entwickler FAQ",
+  "/ListX/UI/passswordReset": "Passwort Zurücksetzen",
+  "/ListX/UI/passwordReset/emailSent": "Wir haben dir eine E-Mail mit weiteren Anweisungen geschickt.",
+  "/ListX/UI/reset": "Zurücksetzen",
+  "/ListX/UI/resetError": "Der Server hat bei der Verarbeitung deiner Anfrage ein Problem festgestellt."
 
 }

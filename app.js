@@ -1,4 +1,4 @@
-const   express = require('express')                        // Express as a Webserver
+const express = require('express')                        // Express as a Webserver
     , path = require('path')                              // path used for local file access
     , favicon = require('serve-favicon')                  // Serve favicons for every request
     , logger = require('morgan')                          // Morgan to log requests to the console
@@ -10,8 +10,7 @@ const   express = require('express')                        // Express as a Webs
     , session = require('client-sessions')                // Client-Sessions to be able to access the session variables
     , bCrypt = require('bcrypt-nodejs')                   // bCrypt for secure Password hashing (on the server side)
     , app = express()
-	, mg = require('mailgun-js')
-    , request = require("request");
+    , mg = require('mailgun-js');
 
 const DP = "alpha.";
 
@@ -22,16 +21,16 @@ app.set('view engine', 'ejs');
 app.use(favicon(path.join(__dirname, 'public', 'images', 'favicon.png')));
 app.use(logger('short'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({extended: true}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(methodOverride());
 app.use(session({
-  cookieName: 'session',
-  secret: 'a1yON9OMzD@SRIQ964eEqau#LS1qz@cP8XlXzMt&', // random cookie secret
-  duration: 15 * 86400000, // 15 days
-  activeDuration: 30 * 60000, // 30 minutes
-  httpOnly: true // prevent session from being intercepted
+    cookieName: 'session',
+    secret: 'a1yON9OMzD@SRIQ964eEqau#LS1qz@cP8XlXzMt&', // random cookie secret
+    duration: 15 * 86400000, // 15 days
+    activeDuration: 30 * 60000, // 30 minutes
+    httpOnly: true // prevent session from being intercepted
 }));
 
 const mailgun = mg({apiKey: 'key-7a2e1c0248d4728c528b5f8859ad2f46', domain: 'mail.listx.io'});
@@ -39,28 +38,28 @@ const mailgun = mg({apiKey: 'key-7a2e1c0248d4728c528b5f8859ad2f46', domain: 'mai
 i18n.configure({
 
 //define what languages we support in our application
-  locales:['en', 'de'],
+    locales: ['en', 'de'],
 
 //define the path to language json files, default is /locales
-  directory: __dirname + '/locales',
+    directory: __dirname + '/locales',
 
 //define the default language
-  defaultLocale: 'en',
+    defaultLocale: 'en',
 
 // define a custom cookie name to parse locale settings from
-  cookie: 'preferredLang',
+    cookie: 'preferredLang',
 
 // sync locale information across files
-  syncFiles: false,
-  updateFiles: false
+    syncFiles: false,
+    updateFiles: false
 });
 
 app.use(cookieParser("preferredLang"));
 app.use(session({
-  secret: "preferredLang",
-  resave: true,
-  saveUninitialized: true,
-  cookie: { maxAge: 900000, httpOnly: true }
+    secret: "preferredLang",
+    resave: true,
+    saveUninitialized: true,
+    cookie: {maxAge: 900000, httpOnly: true}
 }));
 
 app.use(i18n.init);
@@ -68,99 +67,109 @@ app.use(i18n.init);
 console.info(i18n.__("/ListX/UI/Welcome"));
 console.info("ListX Started on http://localhost:2850");
 
-mail({to:"listx-dev@luca-kiebel.de", subject:"New ListX instance spawned", body:`Hey, friend! \nA new Instance of ListX has just been spawned at ${new Date().getTime()}! \nListX Team`, send:true});
+mail({
+    to: "listx-dev@luca-kiebel.de",
+    subject: "New ListX instance spawned",
+    body: `Hey, friend! \nA new Instance of ListX has just been spawned at ${new Date().getTime()}! \nListX Team`,
+    send: true
+});
 
 // database setup
 mongoose.Promise = Promise;
 mongoose.connect('mongodb://localhost:27070/listx');	// sudo mongod --dbpath=/var/data --port=27070 --fork --logpath=./log.txt
 
 const Item = mongoose.model('Item', {
-  list:mongoose.Schema.Types.ObjectId,
-  name:String,
-  amount:String,
-  count:Number,
-  art:String,
-  date:{type:Date, default:Date.now()}
+    list: mongoose.Schema.Types.ObjectId,
+    name: String,
+    amount: String,
+    count: Number,
+    art: String,
+    date: {type: Date, default: Date.now()}
 });
 
 const User = mongoose.model('User', {
-  name:String,
-  email:String,
-  password:String,
-  lists:[], // 1 User => 0+ Lists
-  premium:{type:Boolean, default:false},
-  alphaTester:{type:Boolean, default:false},
-  betaTester:{type:Boolean, default:false},
-  validated:{type:Boolean, default:false},
-  additionalFields:[]
+    name: String,
+    email: String,
+    password: String,
+    lists: [], // 1 User => 0+ Lists
+    premium: {type: Boolean, default: false},
+    alphaTester: {type: Boolean, default: false},
+    betaTester: {type: Boolean, default: false},
+    validated: {type: Boolean, default: false},
+    additionalFields: []
 });
 
 const EmailValidation = mongoose.model("EmailValidation", {
-    email:String,
-    userId:mongoose.Schema.Types.ObjectId,
-    expiry:{type:Date, default:Date.now()+45*60*1000} // 45 Minutes
+    email: String,
+    userId: mongoose.Schema.Types.ObjectId,
+    expiry: {type: Date, default: Date.now() + 45 * 60 * 1000} // 45 Minutes
+});
+
+const PasswordReset = mongoose.model("PasswordReset", {
+    userId: mongoose.Schema.Types.ObjectId,
+    expiry: {type: Date, default: Date.now() + 45 * 60 * 1000} // 45 Minutes
 });
 
 const List = mongoose.model('List', {
-  name:String,
-  country:String,
-  language:String,
-  admin:mongoose.Schema.Types.ObjectId,
-  invitations:[] // 1 List => 0+ Open Invitations
+    name: String,
+    country: String,
+    language: String,
+    admin: mongoose.Schema.Types.ObjectId,
+    invitations: [] // 1 List => 0+ Open Invitations
 });
 
 const Invitation = mongoose.model('Invitation', {
-  name:String,
-  email:String,
-  list:mongoose.Schema.Types.ObjectId
+    name: String,
+    email: String,
+    list: mongoose.Schema.Types.ObjectId
 });
 
 
 const DemoList = mongoose.model('DemoList', {
-  name:String,
-  language:String,
-  expiry:{type:Date, default:Date.now()+12*60*60*1000} // 12 hours
+    name: String,
+    language: String,
+    expiry: {type: Date, default: Date.now() + 12 * 60 * 60 * 1000} // 12 hours
 });
 
 const ShortDomain = mongoose.model('ShortDomain', {
-  short:String,
-  long:String,
-  hits:{type:Number, default:0}
+    short: String,
+    long: String,
+    hits: {type: Number, default: 0}
 });
 
-app.get("/api/short/:short", (req,res) => {
-   const {short} = req.params;
-   const long = req.query.long;
-   // check whether there already is a short for the long
-   ShortDomain.findOne({long: long}, (err, url) => {
-      if (url) {
-          // url already in database, return shortlink
-          res.json({long: url.long, short: url.short});
-      }
-      else {
-          // url not in database
-          ShortDomain.create({
-              long: long,
-              short: short
-          }, err => {
-              if (err) res.json({success: false, error:err});
-              res.json({long: long, short: short});
-          });
-      }
-   });
+app.get("/api/short/:short", (req, res) => {
+    const {short} = req.params;
+    const long = req.query.long;
+    // check whether there already is a short for the long
+    ShortDomain.findOne({long: long}, (err, url) => {
+        if (url) {
+            // url already in database, return shortlink
+            res.json({long: url.long, short: url.short});
+        }
+        else {
+            // url not in database
+            ShortDomain.create({
+                long: long,
+                short: short
+            }, err => {
+                if (err) res.json({success: false, error: err});
+                res.json({long: long, short: short});
+            });
+        }
+    });
 });
 
-app.get("/api/short/:short/metrics", (req,res) => {
+app.get("/api/short/:short/metrics", (req, res) => {
     ShortDomain.findOne({short: req.params.short}, (err, url) => {
-       if(!err && url) res.json(url);
+        if (!err && url) res.json(url);
     });
 });
 
 app.get("/s/:short", (req, res) => {
     // increment the hits-counter by one and redirect to LONG
-    ShortDomain.findOneAndUpdate({short: req.params.short}, {$inc : {hits: 1}}, (err, url) => {
-       if(err) res.redirect("/");
-       res.redirect(url.long);
+    ShortDomain.findOneAndUpdate({short: req.params.short}, {$inc: {hits: 1}}, (err, url) => {
+        if (err) res.redirect("/");
+        res.redirect(url.long);
     });
 });
 
@@ -170,41 +179,32 @@ app.get("/s/:short", (req, res) => {
  */
 
 app.post('/signup', (req, res) => {
-  let hash = bCrypt.hashSync(req.body.password);
-  let gUrl = "https://www.google.com/recaptcha/api/siteverify?secret=6Ld0czoUAAAAABKtI__dQPahjYi4XnRixWh0k08O&response=" + req.body["g-recaptcha-response"];
-    request(gUrl,(error,response,body) => {
-        body = JSON.parse(body);
-        console.log(body);
-        if (body.success === true) {
-            User.create({
-                name: req.body.name,
-                email: req.body.email,
-                password: hash
-            }, function (err, user) {
-                if (err) {
-                    res.json({success: false});
-                }
-                EmailValidation.create({email: user.email, userId: user._id}, (err, valid) => {
-                    if (err) res.json({success: false});
-                    let URL = "https://" + DP + "listx.io/validate/" + valid._id;
-                    let mailData = {};
-                    mailData.to = user.email;
-                    mailData.subject = "ListX Account Activation";
-                    mailData.body = `ListX Account Activation \nHey ${req.body.name}, thanks for signing up with ListX! \nPlease verify your Email-address by clicking the following link: \n\t${URL} \nSee you on the other side!`;
-                    mailData.send = true;
-                    mail(mailData);
-                    res.json({success: true, user: user, validation: valid});
-                });
-            });
-        } else {
-            return res.json({success: false, error: "reCAPTCHA failed", code: 701});
+    let hash = bCrypt.hashSync(req.body.password);
+    User.create({
+        name: req.body.name,
+        email: req.body.email,
+        password: hash
+    }, function (err, user) {
+        if (err) {
+            res.json({success: false});
         }
+        EmailValidation.create({email: user.email, userId: user._id}, (err, valid) => {
+            if (err) res.json({success: false});
+            let URL = "https://" + DP + "listx.io/validate/" + valid._id;
+            let mailData = {};
+            mailData.to = user.email;
+            mailData.subject = "ListX Account Activation";
+            mailData.body = `ListX Account Activation \nHey ${req.body.name}, thanks for signing up with ListX! \nPlease verify your email address by clicking the following link: \n\t${URL} (Voids in 45 minutes)\nSee you on the other side!`;
+            mailData.send = true;
+            mail(mailData);
+            res.json({success: true, user: user, validation: valid});
+        });
     });
 });
 
 // signup page for users
-app.get('/signup', function(req, res) {
-  res.render('signup');
+app.get('/signup', function (req, res) {
+    res.render('signup');
 });
 
 /**
@@ -212,59 +212,132 @@ app.get('/signup', function(req, res) {
  */
 app.get("/validate/:id", function (req, res) {
     EmailValidation.find({_id: req.params.id}, (err, valid) => {
-        if (err) res.json({success:false});
+        if (err) res.json({success: false});
         if (valid.expiry >= Date.now()) {
             // Validation not expired
-            User.findOneAndUpdate({_id: valid.userId}, {$set:{validated: true}}, (err, u) => {
+            User.findOneAndUpdate({_id: valid.userId}, {$set: {validated: true}}, (err, u) => {
                 // if there was an error, redirect to /signup and pass error 201 (user not found)
-                if(err) res.redirect("/signup?e=201");
+                if (err) res.redirect("/signup?e=201");
                 // else redirect to login
                 res.redirect("/login");
             });
         }
         else {
             // if validation expired, delete account and send to signup with error 601 (validation expired)
-            User.findOneAndRemove({_id: valid.userId}, (err) => {console.log(err)});
+            User.findOneAndRemove({_id: valid.userId}, (err) => {
+                console.log(err)
+            });
             res.redirect("/signup?e=601")
         }
     })
 });
 
-app.post('/login', function(req, res) {
-  User.findOne({ email: req.body.email }, function(err, user) {
-    if (!user) {
-      console.error("No User with Email \"" + req.body.email + "\" found.");
-      res.json({correct:false});
-    }
-    else if(!user.validated) {
-        console.error("User not yet validated");
-        res.json({success:false, error:"User not validated", code:602});
-    }
-    else {
-      if (bCrypt.compareSync(req.body.password, user.password)) {
-        // sets a cookie with the user's info
-        req.session.user = user;
-        console.info("User "+ user.email + " successfully logged in!");
-        res.json({correct:true, username:user.name});
-      } else {
-        console.error("Wrong Password for " + user.name);
-        res.json({correct:false});
-      }
-    }
-  });
+/**
+ * Password Reset: Only display Email input
+ */
+app.get("/reset", (req, res) => {
+    res.render("reset-password-email-form");
+});
+
+/**
+ * Get Email from body, send mail to email,
+ *      if mail is user: send password reset link
+ *      else: send bruteforce reminder
+ */
+app.post("/api/reset", (req, res) => {
+    const email = req.body.email;
+    User.findOne({email: email}, function (err, user) {
+        if (err || !user) {
+            let mailData = {
+                to: email,
+                subject: "ListX Password Reset Attempt",
+                body: `You (or someone else) just entered this email address (${email}) when trying to change the password of a ListX account. \n\nHowever there is no user with this email address in our database, thus the password reset attempt failed. \n\nIf you are in fact a ListX customer and were expecting this email, please try again using the email address you gave when opening your account. \n\nIf you are not a ListX customer ignore this email. Someone most likely mistyped his own email address. \n\nFor more information on ListX, please visit https://listx.io. \n\nListX Support`,
+                send: true
+            };
+            mail(mailData);
+            res.json({success: true});
+        } else {
+            PasswordReset.create({userId: user._id}, (err, pwr) => {
+                let URL = "https://" + DP + "listx.io/passwordreset/" + pwr._id;
+                let mailData = {
+                    to: email,
+                    subject: "ListX Password Reset",
+                    body: `Hi ${user.name}, \nYou (or someone else) just entered this email address (${email}) when trying to change the password of a ListX account. \n\nIf it was you and you are trying to reset or change your password, please follow this link in order to set a new password: \n\t${URL} (Voids in 45 minutes)\n\nIf you did not request a password reset or change, please ignore this email. Someone most likely mistyped his own email address. \n\nListX Support`,
+                    send: true
+                };
+                mail(mailData);
+                res.json({success: true});
+            });
+        }
+        res.json({sucess: false, code:101});
+    });
+});
+
+/**
+ * Password reset link: display password form
+ */
+app.get("/passwordreset/:id", (req, res) => {
+    PasswordReset.findOne({_id: req.params.id}, (err, pwr) => {
+        if (err) res.json({success: false});
+        if (pwr.expiry >= Date.now()) {
+            res.render("reset-password-passsword-form", {
+                userId: pwr.userId,
+                pwrId: req.params.id
+            });
+        }
+        else {
+            res.redirect("/reset?expired");
+        }
+    });
+});
+
+app.post("/api/passwordreset", (req,res) => {
+    let {pwrId, userId, password} = req.body;
+    password = bCrypt.hashSync(password);
+    PasswordReset.findOneAndRemove({_id: pwrId}, (err, pwr) => {
+        if (err) res.json({success: false, code: 101});
+    });
+    User.findOneAndUpdate({_id: userId}, {$set: {password: password}}, (err, user) => {
+        if (err) res.json({success: false, error: 201});
+        res.json({success: true});
+    });
+});
+
+app.post('/login', function (req, res) {
+    User.findOne({email: req.body.email}, function (err, user) {
+        if (!user) {
+            console.error("No User with Email \"" + req.body.email + "\" found.");
+            res.json({correct: false});
+        }
+        else if (!user.validated) {
+            console.error("User not yet validated");
+            res.json({success: false, error: "User not validated", code: 602});
+        }
+        else {
+            if (bCrypt.compareSync(req.body.password, user.password)) {
+                // sets a cookie with the user's info
+                req.session.user = user;
+                console.info("User " + user.email + " successfully logged in!");
+                res.json({correct: true, username: user.name});
+            } else {
+                console.error("Wrong Password for " + user.name);
+                res.json({correct: false});
+            }
+        }
+    });
 });
 
 
 app.get('/login', (req, res) => {
-  if(req.session.user){
-    res.redirect("/dashboard");
-  }
-  res.render("login");
+    if (req.session.user) {
+        res.redirect("/dashboard");
+    }
+    res.render("login");
 });
 
 app.get('/logout', (req, res) => {
-  req.session.destroy();
-  res.redirect("/");
+    req.session.destroy();
+    res.redirect("/");
 });
 
 
@@ -275,7 +348,7 @@ app.get('/logout', (req, res) => {
 
 // Demo Page
 app.get("/demo", (req, res) => {
-  res.render("demo");
+    res.render("demo");
 });
 
 // Demo List
@@ -285,7 +358,7 @@ app.get("/demo/:id", (req, res) => {
         if (list.expiry.getTime() > new Date().getTime()) {
             // display list
             res.render('list', {
-                list:list, user:{name: "anonymous"}
+                list: list, user: {name: "anonymous"}
             });
         }
         else {
@@ -297,7 +370,7 @@ app.get("/demo/:id", (req, res) => {
 
 // Developer Page
 app.get("/dev", (req, res) => {
-  res.render("index-dev");
+    res.render("index-dev");
 });
 
 /**
@@ -305,83 +378,100 @@ app.get("/dev", (req, res) => {
  */
 // List index per List if $user is part of it
 app.get('/list/:id', requireLogin, (req, res) => {
-  List.findOne({_id : req.params.id}, (err, list) => {
-    let user = req.session.user;
-    if(err){res.render('index', { error: 'List not found!'});}
-    if (user.lists.indexOf(list._id)){
-      res.render('list', {
-        list:list, user:user
-      });
-    }
-    else {
-      console.log("User "+user.name+" is not member of List "+list.name);
-      res.render('index', { error: 'User not part of List!'});
-    }
-  });
+    List.findOne({_id: req.params.id}, (err, list) => {
+        let user = req.session.user;
+        if (err) {
+            res.render('index', {error: 'List not found!'});
+        }
+        if (user.lists.indexOf(list._id)) {
+            res.render('list', {
+                list: list, user: user
+            });
+        }
+        else {
+            console.log("User " + user.name + " is not member of List " + list.name);
+            res.render('index', {error: 'User not part of List!'});
+        }
+    });
 });
 
 // List Settings. If $user is list.admin render admin settings
-app.get('/list/:id/settings', requireLogin, function(req, res) {
-	List.findOne({_id : req.params.id}, function(err, list) {
-		let user = req.session.user;
-		if(err){res.render('index', { error: 'List not found!'});}
-		if (user.lists.indexOf(list._id)){
-			if (list.admin === user._id) {
-				res.render('list-settings-admin', {
-					list:list, user:user
-				});
-				console.log("rendering " + list._id + "'s admin settings for user " + user.name);
-			}
-			else {
-				res.render('list-settings', {
-					list:list, user:user
-				});
-				console.log("rendering " + list._id + "'s settings for user " + user.name);
-			}
-		}
-		else {
-			console.log("User "+user.name+" is not member of List "+list.name);
-			res.render('index', { error: 'User not part of List!'});
-		}
-	});
+app.get('/list/:id/settings', requireLogin, function (req, res) {
+    List.findOne({_id: req.params.id}, function (err, list) {
+        let user = req.session.user;
+        if (err) {
+            res.render('index', {error: 'List not found!'});
+        }
+        if (user.lists.indexOf(list._id)) {
+            if (list.admin === user._id) {
+                res.render('list-settings-admin', {
+                    list: list, user: user
+                });
+                console.log("rendering " + list._id + "'s admin settings for user " + user.name);
+            }
+            else {
+                res.render('list-settings', {
+                    list: list, user: user
+                });
+                console.log("rendering " + list._id + "'s settings for user " + user.name);
+            }
+        }
+        else {
+            console.log("User " + user.name + " is not member of List " + list.name);
+            res.render('index', {error: 'User not part of List!'});
+        }
+    });
 });
 
 
 // Users Dashboard
 app.get('/dashboard', requireLogin, (req, res) => {
-	console.log(req.session.user.lists);
-  res.render('dashboard', {user: req.session.user});
+    console.log(req.session.user.lists);
+    res.render('dashboard', {user: req.session.user});
 });
 
 
 // User Profile
 app.get('/user', requireLogin, (req, res) => {
-	res.render('settings-user', {user: req.session.user});
+    res.render('settings-user', {user: req.session.user});
 });
 
 
 // Invitations page for invited users to join a family and "sign up"
 app.get('/list/:id/invitations/:invId/:email/:name', (req, res) => {
-  List.findOne({_id : req.params.id}, function(err, list) {
-    if(err){res.render('index', { error: 'List not found!', translate : res  });}
+    List.findOne({_id: req.params.id}, function (err, list) {
+        if (err) {
+            res.render('index', {error: 'List not found!', translate: res});
+        }
 
-    Invitation.findOne({_id : req.params.invId}, function (err, inv) {
-      if(err){res.render('index', { error: 'Invitation not found!', translate : res  });}
-      if (list.invitations.map(function(e) { return e._id; }).indexOf(inv._id)){
-        // List exists and has an invitation for :name
-        res.render('signup', {list: req.params.id, email: req.params.email, name: req.params.name, translate : res })
-      }
-      else res.render('index', {error: 'Invitation not associated with List!', translate : res });
+        Invitation.findOne({_id: req.params.invId}, function (err, inv) {
+            if (err) {
+                res.render('index', {error: 'Invitation not found!', translate: res});
+            }
+            if (list.invitations.map(function (e) {
+                    return e._id;
+                }).indexOf(inv._id)) {
+                // List exists and has an invitation for :name
+                res.render('signup', {
+                    list: req.params.id,
+                    email: req.params.email,
+                    name: req.params.name,
+                    translate: res
+                })
+            }
+            else res.render('index', {error: 'Invitation not associated with List!', translate: res});
+        });
     });
-  });
 });
 
 // page for family members to invite new ppl
 app.get('/list/:id/invite', requireLogin, (req, res) => {
-  List.findOne({_id: req.params.id}, function (err, list) {
-    if(err){res.render('index', { error: 'List not found!', translate : res });}
-    res.render('invite', {list: list._id, translate : res})
-  });
+    List.findOne({_id: req.params.id}, function (err, list) {
+        if (err) {
+            res.render('index', {error: 'List not found!', translate: res});
+        }
+        res.render('invite', {list: list._id, translate: res})
+    });
 });
 
 /**
@@ -389,9 +479,9 @@ app.get('/list/:id/invite', requireLogin, (req, res) => {
  */
 
 app.get("/language/:lang", (req, res) => {
-  res.cookie("preferredLang", req.params.lang, { maxAge: 900000, httpOnly: true });
-  let url = req.headers.referer !== undefined ? req.headers.referer : "/";
-  res.redirect(url);
+    res.cookie("preferredLang", req.params.lang, {maxAge: 900000, httpOnly: true});
+    let url = req.headers.referer !== undefined ? req.headers.referer : "/";
+    res.redirect(url);
 });
 
 /**
@@ -399,8 +489,8 @@ app.get("/language/:lang", (req, res) => {
  */
 
 app.all('/', (req, res) => {
-  if(req.session.user) res.render('index', {user: req.session.user});
-  else res.render('index', {user:false});
+    if (req.session.user) res.render('index', {user: req.session.user});
+    else res.render('index', {user: false});
 });
 
 
@@ -415,63 +505,75 @@ app.all('/', (req, res) => {
 
 // get all lists
 app.get('/api/lists', (req, res) => {
-	if (req.app.get('env') === 'development') {
-		// use mongoose to get all lists in the database
-		List.find(function(err, list) {
+    if (req.app.get('env') === 'development') {
+        // use mongoose to get all lists in the database
+        List.find(function (err, list) {
 
-			// if there is an error retrieving, send the error
-			if(err){res.json({success: false, error: 'No Lists Found!', code:400 })}
+            // if there is an error retrieving, send the error
+            if (err) {
+                res.json({success: false, error: 'No Lists Found!', code: 400})
+            }
 
 
-			res.json(list); // return all lists in JSON format
-			console.log(list);
-		});
-	}
+            res.json(list); // return all lists in JSON format
+            console.log(list);
+        });
+    }
 });
 
 // get single list
 app.get('/api/lists/:id', (req, res) => {
-  List.findOne({_id : req.params.id}, function(err, list) {
+    List.findOne({_id: req.params.id}, function (err, list) {
 
-    // if there is an error retrieving, send the error, nothing after res.send(err) will execute
-    if(err){res.json({success: false, error: 'List not found', code:401})}
+        // if there is an error retrieving, send the error, nothing after res.send(err) will execute
+        if (err) {
+            res.json({success: false, error: 'List not found', code: 401})
+        }
 
 
-    res.json(list); // return the List in JSON format
-    console.log(list);
-  });
+        res.json(list); // return the List in JSON format
+        console.log(list);
+    });
 });
 
 // get item-count of a list
 app.get('/api/lists/:id/itemCount', (req, res) => {
-	List.findOne({_id : req.params.id}, function(err, list) {
-		if(err){res.json({success: false, error: 'List not found', code:401})}
-		Item.find({list : list._id}, function (err, items) {
-			if(err){res.json({success: false, error: 'Items not found', code:300})}
-			res.json(items.length);
-		});
-	});
+    List.findOne({_id: req.params.id}, function (err, list) {
+        if (err) {
+            res.json({success: false, error: 'List not found', code: 401})
+        }
+        Item.find({list: list._id}, function (err, items) {
+            if (err) {
+                res.json({success: false, error: 'Items not found', code: 300})
+            }
+            res.json(items.length);
+        });
+    });
 });
 
 // get all invitaions for a list
 app.get('/api/lists/:id/invitations', (req, res) => {
-	Invitation.find({list: req.params.id} ,function (err, invitations) {
-		if(err){res.json({success: false, error: 'No Invitations found for this List', code:402});}
-		res.json(invitations);
-	});
+    Invitation.find({list: req.params.id}, function (err, invitations) {
+        if (err) {
+            res.json({success: false, error: 'No Invitations found for this List', code: 402});
+        }
+        res.json(invitations);
+    });
 });
 
 // create list
 app.post('/api/lists', (req, res) => {
-  List.create({
-    name: req.body.name,
-    country: req.body.country,
-  	admin: req.body.admin,
-    invitations: req.body.invitations
-  }, function(err, list) {
-    if(err){res.json({success: false, error: 'List not created!', code:403});}
-    res.json({success: true, id : list._id.toString()});
-  });
+    List.create({
+        name: req.body.name,
+        country: req.body.country,
+        admin: req.body.admin,
+        invitations: req.body.invitations
+    }, function (err, list) {
+        if (err) {
+            res.json({success: false, error: 'List not created!', code: 403});
+        }
+        res.json({success: true, id: list._id.toString()});
+    });
 });
 
 // remove a list
@@ -479,12 +581,14 @@ app.delete('/api/lists/:id/admin', (req, res) => {
     let user = req.body.user;
     List.findOne({_id: req.params.id}, (err, l) => {
         if (l.admin === user) {
-            List.remove({_id : req.params.id}, function(err, list) {
-                if(err){res.json({success: false, error: 'List not removed', code:404});}
+            List.remove({_id: req.params.id}, function (err, list) {
+                if (err) {
+                    res.json({success: false, error: 'List not removed', code: 404});
+                }
                 res.json({success: true, list: list});
             });
         }
-        else res.json({success:false, error: 'User not List Admin'});
+        else res.json({success: false, error: 'User not List Admin'});
     });
 });
 
@@ -493,22 +597,24 @@ app.delete('/api/lists/:id', (req, res) => {
     let list = req.body.list;
     User.findOne({_id: user}, (err, u) => {
         if (err) res.json({success: false}); // user not found
-       u.lists = u.lists.filter(e => e.id !== list);
-       User.findOneAndUpdate({_id: u._id}, {$set:{lists: u.lists}}, (err, u2) => {
-          if (err) res.json({success:false}); //user not updated
-           res.json({success:true});
-       });
+        u.lists = u.lists.filter(e => e.id !== list);
+        User.findOneAndUpdate({_id: u._id}, {$set: {lists: u.lists}}, (err, u2) => {
+            if (err) res.json({success: false}); //user not updated
+            res.json({success: true});
+        });
     });
 });
 
 
 // update a list
 app.post('/api/lists/:id', (req, res) => {
-  let update = req.body;
-  List.findOneAndUpdate({_id : req.params.id}, update, function (err, list) {
-    if(err){res.json({error: 'List not updated', success: false, code:405});}
-    res.json({success: true, list: list});
-  });
+    let update = req.body;
+    List.findOneAndUpdate({_id: req.params.id}, update, function (err, list) {
+        if (err) {
+            res.json({error: 'List not updated', success: false, code: 405});
+        }
+        res.json({success: true, list: list});
+    });
 });
 
 /**
@@ -518,48 +624,55 @@ app.post('/api/lists/:id', (req, res) => {
 
 // get all items per list
 app.get('/api/items/:id', (req, res) => {
-  // use mongoose to get all items in the database
-  Item.find({list : req.params.id}, function(err, items) {
+    // use mongoose to get all items in the database
+    Item.find({list: req.params.id}, function (err, items) {
 
-    // if there is an error retrieving, send the error. nothing after res.send(err) will execute
-    if(err){res.json({success: false, error: 'Items not found', code:300});}
+        // if there is an error retrieving, send the error. nothing after res.send(err) will execute
+        if (err) {
+            res.json({success: false, error: 'Items not found', code: 300});
+        }
 
 
-    res.json({success: true, items : items}); // return all items in JSON format
-    console.log(items);
-  });
+        res.json({success: true, items: items}); // return all items in JSON format
+        console.log(items);
+    });
 });
 
 // create item
 app.post('/api/items', (req, res) => {
-  Item.create({
-    list: req.body.list,
-    name: req.body.name,
-    amount: req.body.amount,
-    art: req.body.art
-  }, function(err, item) {
-    if(err){res.json({success: false, error: 'Item not created', code:301});}
-    res.json(item);
-  });
+    Item.create({
+        list: req.body.list,
+        name: req.body.name,
+        amount: req.body.amount,
+        art: req.body.art
+    }, function (err, item) {
+        if (err) {
+            res.json({success: false, error: 'Item not created', code: 301});
+        }
+        res.json(item);
+    });
 });
 
 // remove an item
 app.delete('/api/items/:id', (req, res) => {
-  Item.remove({_id : req.params.id}, function(err, item) {
-    if(err){res.json({success: false, error: 'Item not removed', code:302});}
-    res.json(item);
-  });
+    Item.remove({_id: req.params.id}, function (err, item) {
+        if (err) {
+            res.json({success: false, error: 'Item not removed', code: 302});
+        }
+        res.json(item);
+    });
 });
 
 // update an item
 app.post('/api/items/:id', (req, res) => {
-  let update = req.body;
-  Item.findOneAndUpdate({_id : req.params.id}, update, function (err, item) {
-    if(err){res.json({success: false, error: 'Item not updated', code:303});}
-    res.json(item);
-  });
+    let update = req.body;
+    Item.findOneAndUpdate({_id: req.params.id}, update, function (err, item) {
+        if (err) {
+            res.json({success: false, error: 'Item not updated', code: 303});
+        }
+        res.json(item);
+    });
 });
-
 
 
 /**
@@ -569,57 +682,62 @@ app.post('/api/items/:id', (req, res) => {
 
 // get all users
 app.get('/api/users', (req, res) => {
-	if (req.app.get('env') === 'development') {
-		// use mongoose to get all users in the database
-		User.find(function(err, users) {
+    if (req.app.get('env') === 'development') {
+        // use mongoose to get all users in the database
+        User.find(function (err, users) {
 
-			// if there is an error retrieving, send the error. nothing after res.send(err) will execute
-			if(err){res.json({success: false, error: 'No users found', code:200});}
+            // if there is an error retrieving, send the error. nothing after res.send(err) will execute
+            if (err) {
+                res.json({success: false, error: 'No users found', code: 200});
+            }
 
 
+            res.json(users); // return all users in JSON format
 
-			res.json(users); // return all users in JSON format
-
-		});
-	}
+        });
+    }
 });
 
 // get single user
 app.get('/api/users/:id', (req, res) => {
-  User.findOne({_id : req.params.id}, function(err, user) {
+    User.findOne({_id: req.params.id}, function (err, user) {
 
-    // if there is an error retrieving, send the error. nothing after res.send(err) will execute
-    if(err){res.json({success: false, error: 'User not found', code:201});}
+        // if there is an error retrieving, send the error. nothing after res.send(err) will execute
+        if (err) {
+            res.json({success: false, error: 'User not found', code: 201});
+        }
 
-    let tmp = {
-        _id:user._id,
-        name:user.name,
-        email:user.email,
-        lists:user.lists,
-        validated:user.validated
-    };
+        let tmp = {
+            _id: user._id,
+            name: user.name,
+            email: user.email,
+            lists: user.lists,
+            validated: user.validated
+        };
 
-    if (user.alphaTester) tmp.alphaTester = true;
-    if (user.betaTester) tmp.betaTester = true;
-    if (user.premium) tmp.premium = true;
+        if (user.alphaTester) tmp.alphaTester = true;
+        if (user.betaTester) tmp.betaTester = true;
+        if (user.premium) tmp.premium = true;
 
-    console.log(tmp);
+        console.log(tmp);
 
-    res.json(tmp); // return the user in JSON format
-  });
+        res.json(tmp); // return the user in JSON format
+    });
 });
 
 // get single user per mail
 app.get('/api/users/byMail/:mail', (req, res) => {
-	User.findOne({mail: req.params.mail}, function (err, user) {
-		if(err){res.json({success: false, error: 'User not found', code:201});}
+    User.findOne({mail: req.params.mail}, function (err, user) {
+        if (err) {
+            res.json({success: false, error: 'User not found', code: 201});
+        }
 
         let tmp = {
-            _id:user._id,
-            name:user.name,
-            email:user.email,
-            lists:user.lists,
-            validated:user.validated
+            _id: user._id,
+            name: user.name,
+            email: user.email,
+            lists: user.lists,
+            validated: user.validated
         };
 
         if (user.alphaTester) tmp.alphaTester = true;
@@ -629,46 +747,52 @@ app.get('/api/users/byMail/:mail', (req, res) => {
         console.log(tmp);
 
         res.json(tmp);
-	});
-	
+    });
+
 });
 
 // get all lists per user
 app.get('/api/users/:id/lists', (req, res) => {
-  User.findOne({_id : req.params.id}, function(err, user) {
-	  if(err)res.json({success:false, error:err, code:202}); console.log(err);
+    User.findOne({_id: req.params.id}, function (err, user) {
+        if (err) res.json({success: false, error: err, code: 202});
+        console.log(err);
 
-	  let lists = [];
+        let lists = [];
 
-	  if (user.lists){
+        if (user.lists) {
 
-		  // first off, make an Array from the Users "list" Object
-		  lists = user.lists;
+            // first off, make an Array from the Users "list" Object
+            lists = user.lists;
 
-		  console.log("Lists");
+            console.log("Lists");
 
-		  // then use that Array to get all Lists in it
-		  List.find({ _id: { $in: lists }}).exec()
-			  .then(function(gotLists) {
-                console.info("Lists: " + gotLists);
-                if(gotLists.length === 0) res.json({success: false, error:"No lists found, create one!", code:203});
-                else res.json({lists: gotLists, success: true});
-			  });
-	  }
-	  else res.json({success:false, error:101});
+            // then use that Array to get all Lists in it
+            List.find({_id: {$in: lists}}).exec()
+                .then(function (gotLists) {
+                    console.info("Lists: " + gotLists);
+                    if (gotLists.length === 0) res.json({
+                        success: false,
+                        error: "No lists found, create one!",
+                        code: 203
+                    });
+                    else res.json({lists: gotLists, success: true});
+                });
+        }
+        else res.json({success: false, error: 101});
 
-	  
-  });
+
+    });
 });
 
 // get all lists per user that contain :query
 app.get('/api/users/:id/lists/:query', (req, res) => {
-    User.findOne({_id : req.params.id}, function(err, user) {
-        if(err)res.json({success:false, error:err, code:202}); console.log(err);
+    User.findOne({_id: req.params.id}, function (err, user) {
+        if (err) res.json({success: false, error: err, code: 202});
+        console.log(err);
 
         let lists = [];
 
-        if (user.lists){
+        if (user.lists) {
 
             // first off, make an Array from the Users "list" Object
             lists = user.lists;
@@ -677,21 +801,25 @@ app.get('/api/users/:id/lists/:query', (req, res) => {
 
 
             // then use that Array to get all Lists in it
-            List.find({ _id: { $in: lists }}).exec()
-                .then(function(gotLists) {
+            List.find({_id: {$in: lists}}).exec()
+                .then(function (gotLists) {
                     let matching = [];
                     gotLists.forEach(l => {
                         if (l.name.indexOf(req.params.query) !== -1) {
                             matching.push(l);
                         }
                     });
-                    if(matching.length === 0) res.json({success: false, error:"No List found matching " + req.params.query, code:208});
+                    if (matching.length === 0) res.json({
+                        success: false,
+                        error: "No List found matching " + req.params.query,
+                        code: 208
+                    });
                     else res.json({lists: matching, success: true});
 
 
                 });
         }
-        else res.json({success:false, error:101});
+        else res.json({success: false, error: 101});
 
 
     });
@@ -699,36 +827,40 @@ app.get('/api/users/:id/lists/:query', (req, res) => {
 
 // create user
 app.post('/api/users', (req, res) => {
-  let hash = bCrypt.hashSync(req.body.password);
-	User.find({email:req.body.email}, function (err, user) {
-		if (user) res.json({success:false, error:"User already Exists!", code:204});
-	});
-  User.create({
-    name: req.body.name,
-    email: req.body.email,
-    password: hash,
-    lists: req.body.lists
-  }, function(err, user) {
-    if(err){res.json({success: false, error: 'User not created', code:205});}
-    res.json({success:true, data:user});
-  });
+    let hash = bCrypt.hashSync(req.body.password);
+    User.find({email: req.body.email}, function (err, user) {
+        if (user) res.json({success: false, error: "User already Exists!", code: 204});
+    });
+    User.create({
+        name: req.body.name,
+        email: req.body.email,
+        password: hash,
+        lists: req.body.lists
+    }, function (err, user) {
+        if (err) {
+            res.json({success: false, error: 'User not created', code: 205});
+        }
+        res.json({success: true, data: user});
+    });
 });
 
 // remove a user
 app.delete('/api/users/:id', (req, res) => {
-  User.remove({_id : req.params.id}, function(err, user) {
-    if(err){res.json({success: false, error: 'User not removed', code:206});}
-    res.json(user);
-  });
+    User.remove({_id: req.params.id}, function (err, user) {
+        if (err) {
+            res.json({success: false, error: 'User not removed', code: 206});
+        }
+        res.json(user);
+    });
 });
 
 
 // update a user adding new lists
 app.post('/api/users/:id/newList', (req, res) => {
-  User.findOneAndUpdate( { _id:req.params.id },{ $push: { "lists": {$each : req.body.lists} } }, function (err, user){
-    if (err) res.json({success:false, error: 'Lists not added to User', code:207});
-    else res.json({success:true, id:user._id});
-  });
+    User.findOneAndUpdate({_id: req.params.id}, {$push: {"lists": {$each: req.body.lists}}}, function (err, user) {
+        if (err) res.json({success: false, error: 'Lists not added to User', code: 207});
+        else res.json({success: true, id: user._id});
+    });
 });
 
 
@@ -738,11 +870,11 @@ app.post("/api/users/addListBulk", (req, res) => {
     let a = [];
     emails.forEach(e => {
         User.findOneAndUpdate({email: e}, {$push: {"lists": list}}, (err, user) => {
-           if (err) res.json({success:false, error: 'Lists not added to User', code:207});
-           else a.push(e);
+            if (err) res.json({success: false, error: 'Lists not added to User', code: 207});
+            else a.push(e);
         });
     });
-    res.json({success:true, users:a});
+    res.json({success: true, users: a});
 });
 
 /**
@@ -753,36 +885,40 @@ app.post("/api/users/addListBulk", (req, res) => {
 
 // get all invitations
 app.get('/api/invitations', (req, res) => {
-	if (req.app.get('env') === 'development') {
-		Invitation.find(function (err, invitations) {
-			if(err){res.json({success: false, error: 'No Invitation found'});}
-			res.json(invitations);
-		});
-	}
+    if (req.app.get('env') === 'development') {
+        Invitation.find(function (err, invitations) {
+            if (err) {
+                res.json({success: false, error: 'No Invitation found'});
+            }
+            res.json(invitations);
+        });
+    }
 });
 
 // get single invitation
 app.get('/api/invitations/:id', (req, res) => {
-  Invitation.find({_id : req.params.id}, function (err, invitation) {
-    if(err){res.json({success: false, error: 'Invitation not found'});}
-    res.json(invitation);
-  });
+    Invitation.find({_id: req.params.id}, function (err, invitation) {
+        if (err) {
+            res.json({success: false, error: 'Invitation not found'});
+        }
+        res.json(invitation);
+    });
 });
 
 // create invitation from array
 app.post('/api/invitations/array', (req, res) => {
-  let inv = [] // invitation
-      , l = req.body.list;
-  if (req.body.invs.constructor === Array){
-    req.body.invs.forEach(i => {
-        createInvite(i, l, inv);
-        console.log("INV: "+inv);
-    });
-  }
-  else {
-    createInvite(req.body.email, l, inv);
-  }
-	res.json({invs: inv, success: true});
+    let inv = [] // invitation
+        , l = req.body.list;
+    if (req.body.invs.constructor === Array) {
+        req.body.invs.forEach(i => {
+            createInvite(i, l, inv);
+            console.log("INV: " + inv);
+        });
+    }
+    else {
+        createInvite(req.body.email, l, inv);
+    }
+    res.json({invs: inv, success: true});
 
 });
 
@@ -794,13 +930,15 @@ app.post("/api/invitations", (req, res) => {
 function userExists(id, mail) {
     if (id === null) byMail(mail);
     if (mail === null) byId(id);
+
     function byId(id) {
         User.find({_id: id}, function (err, user) {
             return !Boolean(err);
         });
     }
+
     function byMail(mail) {
-        User.find({email:mail}, function (err, user) {
+        User.find({email: mail}, function (err, user) {
             return !Boolean(err);
         });
     }
@@ -825,16 +963,16 @@ function createInvite(email, list, arr) {
                     Please follow this link to join ListX and accept the Invitation: \n \n 
                     https://listx.io/list/${l._id}/invitations/${invitation._id} \n \n 
                     The ListX.io Team`,
-					send:true
+                    send: true
                 };
 
                 console.log("Sending Invitation Email:");
                 mail(msg);
 
                 l.invitations.push(invitation._id);
-                List.findOneAndUpdate({_id: list},{$set:{invitations: l.invitations}}, (err, l2) => {
-                    if (err) return {k:0, l:l2};
-                    return {l:l2};
+                List.findOneAndUpdate({_id: list}, {$set: {invitations: l.invitations}}, (err, l2) => {
+                    if (err) return {k: 0, l: l2};
+                    return {l: l2};
                 });
             });
         });
@@ -844,30 +982,36 @@ function createInvite(email, list, arr) {
 
 // Delete an invitation
 app.delete('/api/invitations/:id', (req, res) => {
-  Invitation.remove({_id : req.params.id}, function (err, invitation) {
-    if(err){res.json({success: false, error: 'Invitation not deleted'});}
-    res.json({success: true, invitation: invitation});
-  });
+    Invitation.remove({_id: req.params.id}, function (err, invitation) {
+        if (err) {
+            res.json({success: false, error: 'Invitation not deleted'});
+        }
+        res.json({success: true, invitation: invitation});
+    });
 });
 
 // Delete all invitations per list
 app.delete('/api/invitations/list/:id', (req, res) => {
-  let inv = {}, i=0;
-  // first grab the Invitations from the list of :id
-  List.find({_id : req.params.id}, function (err, list) {
-    if(err){res.json({success: false, error: 'List not found'});}
-    // bind the invitations
-    let invites = list.invitations;
-    invites.forEach(e => {
-        // remove the invitation bound to e
-        Invitation.remove({_id : e._id}, function (err, invite) {
-            if(err){res.json({success: false, error: 'Invitation not deleted'});}
-            inv[i] = invite;
-            i++;
+    let inv = {}, i = 0;
+    // first grab the Invitations from the list of :id
+    List.find({_id: req.params.id}, function (err, list) {
+        if (err) {
+            res.json({success: false, error: 'List not found'});
+        }
+        // bind the invitations
+        let invites = list.invitations;
+        invites.forEach(e => {
+            // remove the invitation bound to e
+            Invitation.remove({_id: e._id}, function (err, invite) {
+                if (err) {
+                    res.json({success: false, error: 'Invitation not deleted'});
+                }
+                inv[i] = invite;
+                i++;
+            });
         });
     });
-  });
-  res.json(inv);
+    res.json(inv);
 });
 
 /**
@@ -875,26 +1019,26 @@ app.delete('/api/invitations/list/:id', (req, res) => {
  */
 
 function mail(data) {
-	if (data.send === true) {
-		let to = data.to;
-		let sub = data.subject;
-		let body = data.body;
-		let html = data.html;
+    if (data.send === true) {
+        let to = data.to;
+        let sub = data.subject;
+        let body = data.body;
+        let html = data.html;
 
-		let msg = {
-			from: 'ListX <noreply@listx.io>',
-			to: to,
-			subject: sub,
-			text: body
-		};
+        let msg = {
+            from: 'ListX <noreply@listx.io>',
+            to: to,
+            subject: sub,
+            text: body
+        };
 
-		msg.html = html ? html : undefined;
+        msg.html = html ? html : undefined;
 
-		mailgun.messages().send(msg, (error) => {
-		    if (error) console.error(error);
-			console.log(`Mail sent to ${data.to} at ${new Date().getTime()}`, msg)
-		});
-	}
+        mailgun.messages().send(msg, (error) => {
+            if (error) console.error(error);
+            console.log(`Mail sent to ${data.to} at ${new Date().getTime()}`, msg)
+        });
+    }
 }
 
 
@@ -903,24 +1047,23 @@ function mail(data) {
  */
 
 // authentication
-app.use(function(req, res, next) {
-  if (req.session && req.session.user) {
-    User.findOne({ email: req.session.user.email }, function(err, user) {
-      if (user) {
-        req.user = user;
-        delete req.user.password; // delete the password from the session
-        req.session.user = user;  //refresh the session value
-        res.locals.user = user;   // refresh locals value
-      }
-      // finishing processing the middleware and run the route
-      next();
-    });
-  } else {
-	  res.redirect("/login");
-    next();
-  }
+app.use(function (req, res, next) {
+    if (req.session && req.session.user) {
+        User.findOne({email: req.session.user.email}, function (err, user) {
+            if (user) {
+                req.user = user;
+                delete req.user.password; // delete the password from the session
+                req.session.user = user;  //refresh the session value
+                res.locals.user = user;   // refresh locals value
+            }
+            // finishing processing the middleware and run the route
+            next();
+        });
+    } else {
+        res.redirect("/login");
+        next();
+    }
 });
-
 
 
 /**
@@ -929,25 +1072,25 @@ app.use(function(req, res, next) {
  * @param res Response to be send by the server
  * @param next The next handler
  */
-function requireLogin (req, res, next) {
-  if (!req.session.user) {
-    // redirect to login page
-    res.redirect('/login');
-  } else {
-    next();
-  }
+function requireLogin(req, res, next) {
+    if (!req.session.user) {
+        // redirect to login page
+        res.redirect('/login');
+    } else {
+        next();
+    }
 }
 
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
     let err = new Error('Not Found');
     err.status = 404;
     next(err);
 });
 
 // error handler
-app.use(function(err, req, res) {
+app.use(function (err, req, res) {
     // set locals, only providing error in development
     res.locals.message = err.message;
     res.locals.error = req.app.get('env') === 'development' ? err : {};

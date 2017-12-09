@@ -129,6 +129,7 @@
   "/ListX/UI/passswordReset": "Reset Password",
   "/ListX/UI/passwordReset/emailSent": "We have sent you an email with further instructions.",
   "/ListX/UI/reset": "Reset",
-  "/ListX/UI/resetError": "The Server encountered an error while trying to progress your request."
+  "/ListX/UI/resetError": "The Server encountered an error while trying to progress your request.",
+  "/ListX/UI/passwordReset/passwordResetSuccess": "Your password was changed successfully."
 
 }

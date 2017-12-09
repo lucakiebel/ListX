@@ -10,7 +10,8 @@ const express = require('express')                        // Express as a Webser
     , session = require('client-sessions')                // Client-Sessions to be able to access the session variables
     , bCrypt = require('bcrypt-nodejs')                   // bCrypt for secure Password hashing (on the server side)
     , app = express()
-    , mg = require('mailgun-js');
+    , mg = require('mailgun-js')
+    , request = require("request");
 
 const DP = "alpha.";
 
@@ -141,6 +142,8 @@ const ShortDomain = mongoose.model('ShortDomain', {
     hits: {type: Number, default: 0}
 });
 
+
+
 app.get("/api/short/:short", (req, res) => {
     const {short} = req.params;
     const long = req.query.long;
@@ -183,27 +186,36 @@ app.get("/s/:short", (req, res) => {
  */
 
 app.post('/signup', (req, res) => {
-    let hash = bCrypt.hashSync(req.body.password);
-    User.create({
-        name: req.body.name,
-        email: req.body.email,
-        password: hash
-    }, function (err, user) {
-        if (err) {
-            res.json({success: false});
+    console.log("Req.body", req.body);
+    validateReCAPTCHA(req.body["g-recaptcha-response"], (err, success) => {
+        if (success) {
+            bCrypt.hash(req.body.password, 10, function (err, hash) {
+                User.create({
+                    name: req.body.name,
+                    email: req.body.email,
+                    password: hash
+                }, function (err, user) {
+                    if (err) {
+                        res.json({success: false});
+                    }
+                    EmailValidation.create({email: user.email, userId: user._id}, (err, valid) => {
+                        if (err) res.json({success: false});
+                        let URL = "https://" + DP + "listx.io/validate/" + valid._id;
+                        let mailData = {};
+                        mailData.to = user.email;
+                        mailData.subject = "ListX Account Activation";
+                        mailData.body = `ListX Account Activation \nHey ${req.body.name}, thanks for signing up with ListX! \nPlease verify your email address by clicking the following link: \n\t${URL} (Voids in 45 minutes)\nSee you on the other side!`;
+                        mailData.send = true;
+                        mail(mailData);
+                        res.json({success: true, user: user, validation: valid});
+                    });
+                });
+            });
+        } else {
+            res.json({success:false, error:err});
         }
-        EmailValidation.create({email: user.email, userId: user._id}, (err, valid) => {
-            if (err) res.json({success: false});
-            let URL = "https://" + DP + "listx.io/validate/" + valid._id;
-            let mailData = {};
-            mailData.to = user.email;
-            mailData.subject = "ListX Account Activation";
-            mailData.body = `ListX Account Activation \nHey ${req.body.name}, thanks for signing up with ListX! \nPlease verify your email address by clicking the following link: \n\t${URL} (Voids in 45 minutes)\nSee you on the other side!`;
-            mailData.send = true;
-            mail(mailData);
-            res.json({success: true, user: user, validation: valid});
-        });
     });
+
 });
 
 // signup page for users
@@ -239,7 +251,7 @@ app.get("/validate/:id", function (req, res) {
 /**
  * Password Reset: Only display Email input
  */
-app.get("/reset", (req, res) => {
+app.get("/user/reset", (req, res) => {
     res.render("reset-password-email-form");
 });
 
@@ -250,61 +262,69 @@ app.get("/reset", (req, res) => {
  */
 app.post("/api/reset", (req, res) => {
     const email = req.body.email;
-    User.findOne({email: email}, function (err, user) {
-        if (err || !user) {
-            let mailData = {
-                to: email,
-                subject: "ListX Password Reset Attempt",
-                body: `You (or someone else) just entered this email address (${email}) when trying to change the password of a ListX account. \n\nHowever there is no user with this email address in our database, thus the password reset attempt failed. \n\nIf you are in fact a ListX customer and were expecting this email, please try again using the email address you gave when opening your account. \n\nIf you are not a ListX customer ignore this email. Someone most likely mistyped his own email address. \n\nFor more information on ListX, please visit https://listx.io. \n\nListX Support`,
-                send: true
-            };
-            mail(mailData);
-            res.json({success: true});
-        } else {
-            PasswordReset.create({userId: user._id}, (err, pwr) => {
-                let URL = "https://" + DP + "listx.io/passwordreset/" + pwr._id;
-                let mailData = {
-                    to: email,
-                    subject: "ListX Password Reset",
-                    body: `Hi ${user.name}, \nYou (or someone else) just entered this email address (${email}) when trying to change the password of a ListX account. \n\nIf it was you and you are trying to reset or change your password, please follow this link in order to set a new password: \n\t${URL} (Voids in 45 minutes)\n\nIf you did not request a password reset or change, please ignore this email. Someone most likely mistyped his own email address. \n\nListX Support`,
-                    send: true
-                };
-                mail(mailData);
-                res.json({success: true});
+    console.log("Req.body", req.body);
+    validateReCAPTCHA(req.body.recRes, (err, success) => {
+        if (err === null) {
+            User.findOne({email: email}, function (err, user) {
+                if (err || !user) {
+                    let mailData = {
+                        to: email,
+                        subject: "ListX Password Reset Attempt",
+                        body: `You (or someone else) just entered this email address (${email}) when trying to change the password of a ListX account. \n\nHowever there is no user with this email address in our database, thus the password reset attempt failed. \n\nIf you are in fact a ListX customer and were expecting this email, please try again using the email address you gave when opening your account. \n\nIf you are not a ListX customer ignore this email. Someone most likely mistyped his own email address. \n\nFor more information on ListX, please visit https://listx.io. \n\nListX Support`,
+                        send: true
+                    };
+                    mail(mailData);
+                    res.json({success: true});
+                } else {
+                    PasswordReset.create({userId: user._id}, (err, pwr) => {
+                        let URL = "https://" + DP + "listx.io/user/reset/" + pwr._id;
+                        let mailData = {
+                            to: email,
+                            subject: "ListX Password Reset",
+                            body: `Hi ${user.name}, \nYou (or someone else) just entered this email address (${email}) when trying to change the password of a ListX account. \n\nIf it was you and you are trying to reset or change your password, please follow this link in order to set a new password: \n\t${URL} (Voids in 45 minutes)\n\nIf you did not request a password reset or change, please ignore this email. Someone most likely mistyped his own email address. \n\nListX Support`,
+                            send: true
+                        };
+                        mail(mailData);
+                        res.json({success: true});
+                    });
+                }
             });
+        } else {
+            res.json({success:false, error:err})
         }
-        res.json({sucess: false, code:101});
     });
 });
 
 /**
  * Password reset link: display password form
  */
-app.get("/passwordreset/:id", (req, res) => {
+app.get("/user/reset/:id", (req, res) => {
     PasswordReset.findOne({_id: req.params.id}, (err, pwr) => {
         if (err) res.json({success: false});
         if (pwr.expiry >= Date.now()) {
-            res.render("reset-password-passsword-form", {
+            res.render("reset-password-password-form", {
                 userId: pwr.userId,
                 pwrId: req.params.id
             });
         }
         else {
-            res.redirect("/reset?expired");
+            res.redirect("/user/reset?expired");
         }
     });
 });
 
 app.post("/api/passwordreset", (req,res) => {
     let {pwrId, userId, password} = req.body;
-    password = bCrypt.hashSync(password);
-    PasswordReset.findOneAndRemove({_id: pwrId}, (err, pwr) => {
-        if (err) res.json({success: false, code: 101});
+    bCrypt.hash(password, 10, function (err, password) {
+        PasswordReset.findOneAndRemove({_id: pwrId}, (err, pwr) => {
+            if (err) res.json({success: false, code: 101});
+        });
+        User.findOneAndUpdate({_id: userId}, {$set: {password: password}}, (err, user) => {
+            if (err) res.json({success: false, error: 201});
+            res.json({success: true});
+        });
     });
-    User.findOneAndUpdate({_id: userId}, {$set: {password: password}}, (err, user) => {
-        if (err) res.json({success: false, error: 201});
-        res.json({success: true});
-    });
+
 });
 
 app.post('/login', function (req, res) {
@@ -369,7 +389,7 @@ app.get("/demo/:id", (req, res) => {
         }
         else {
             // if list has expired, redirect to signup
-            res.redirect("/signup");
+            res.redirect("/signup?demo");
         }
     });
 });
@@ -377,6 +397,22 @@ app.get("/demo/:id", (req, res) => {
 // Developer Page
 app.get("/dev", (req, res) => {
     res.render("index-dev");
+});
+
+app.get("/imprint", (req, res) => {
+    res.render("imprint")
+});
+
+app.get("/guides", (req, res) => {
+    res.render("guides");
+});
+
+app.get("/privacy", (req, res) => {
+    res.render("privacy");
+});
+
+app.get("/terms", (req, res) => {
+    res.render("terms")
 });
 
 /**
@@ -1117,6 +1153,18 @@ function requireLogin(req, res, next) {
     }
 }
 
+
+function validateReCAPTCHA(gResponse, callback) {
+    const secretKey = "6Ld0czoUAAAAABKtI__dQPahjYi4XnRixWh0k08O";
+    console.log(gResponse);
+    request.post(
+        `https://www.google.com/recaptcha/api/siteverify?secret=${secretKey}&response=${gResponse}`,
+        function (error, response, body) {
+            console.log(body);
+            callback(null, body.success);
+        }
+    );
+}
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

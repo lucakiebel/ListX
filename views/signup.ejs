@@ -19,6 +19,9 @@
     <!-- Bootstrap Core CSS -->
     <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
+    <!-- Google reCAPTCHA v2 -->
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+
     <!-- Animate CSS -->
     <link rel="stylesheet" href="/stylesheets/animate.css">
 
@@ -81,6 +84,7 @@
                                     <div class="pull-right" id="show-password"><i id="show-password-i" class="fa fa-eye-slash fa-lg" aria-hidden="true"></i></div>
                                     <input class="form-control" id="form_password" name="password" type="password" required>
                                 </div>
+                                <div class="g-recaptcha" data-sitekey="6Ld0czoUAAAAAJlIj1qpWg9KyZQlRWcLp58A1Oj2"></div>
                                 <input class="btn btn-lg btn-default btn-block" type="submit" value="<%= __("/ListX/UI/Index/signUp") %>">
                             </fieldset>
                         </form>

@@ -110,6 +110,10 @@ const PasswordReset = mongoose.model("PasswordReset", {
     expiry: {type: Date, default: Date.now() + 45 * 60 * 1000} // 45 Minutes
 });
 
+const UserDeletionToken = mongoose.model("UserDeletionToken", {
+   userId: mongoose.Schema.Types.ObjectId
+});
+
 const List = mongoose.model('List', {
     name: String,
     country: String,
@@ -314,15 +318,17 @@ app.post('/login', function (req, res) {
             res.json({success: false, error: "User not validated", code: 602});
         }
         else {
-            if (bCrypt.compareSync(req.body.password, user.password)) {
-                // sets a cookie with the user's info
-                req.session.user = user;
-                console.info("User " + user.email + " successfully logged in!");
-                res.json({correct: true, username: user.name});
-            } else {
-                console.error("Wrong Password for " + user.name);
-                res.json({correct: false});
-            }
+            bCrypt.compare(req.body.password, user.password, function(err, res) {
+                if (res) {
+                    // sets a cookie with the user's info
+                    req.session.user = user;
+                    console.info("User " + user.email + " successfully logged in!");
+                    res.json({correct: true, username: user.name});
+                } else {
+                    console.error("Wrong Password for " + user.name);
+                    res.json({correct: false});
+                }
+            });
         }
     });
 });
@@ -827,30 +833,60 @@ app.get('/api/users/:id/lists/:query', (req, res) => {
 
 // create user
 app.post('/api/users', (req, res) => {
-    let hash = bCrypt.hashSync(req.body.password);
-    User.find({email: req.body.email}, function (err, user) {
-        if (user) res.json({success: false, error: "User already Exists!", code: 204});
+    bCrypt.hash(req.body.password, 10, function(err, hash) {
+        if (err) res.json({success:false, error: "Password Error", code:101});
+        User.find({email: req.body.email}, function (err, user) {
+            if (user) res.json({success: false, error: "User already Exists!", code: 204});
+        });
+        User.create({
+            name: req.body.name,
+            email: req.body.email,
+            password: hash,
+            lists: req.body.lists
+        }, function (err, user) {
+            if (err) {
+                res.json({success: false, error: 'User not created', code: 205});
+            }
+            res.json({success: true, data: user});
+        });
     });
-    User.create({
-        name: req.body.name,
-        email: req.body.email,
-        password: hash,
-        lists: req.body.lists
-    }, function (err, user) {
-        if (err) {
-            res.json({success: false, error: 'User not created', code: 205});
-        }
-        res.json({success: true, data: user});
-    });
+
 });
 
 // remove a user
 app.delete('/api/users/:id', (req, res) => {
-    User.remove({_id: req.params.id}, function (err, user) {
-        if (err) {
-            res.json({success: false, error: 'User not removed', code: 206});
-        }
-        res.json(user);
+    // send email to user with delete token //
+    UserDeletionToken.create({userId: req.params.id}, function (err, token) {
+        if (err) res.json({succes:false, error:'User not removed', code: 206});
+        token = token._id;
+        User.findOne({_id: req.params.id}, function (err, user) {
+            if (err) {
+                res.json({success: false, error: 'User not removed', code: 206});
+            }
+            let URL = `https://${DP}listx.io/user/delete/${token}`;
+            let mailData = {
+                to: user.email,
+                subject: "ListX Account Deletion",
+                body: `Hi ${user.name}, \nYou (or someone else) just requested deletion for this ListX account. \n\nIf it was you and you are trying to delete your account, please follow this link in order to do so: \n\t${URL} \n\nIf you did not request account deletion, please immediately change your password, it might be known to someone else. \n\nListX Support`,
+                send: true
+            };
+            mail(mailData);
+            res.json({success: true});
+        });
+    });
+
+
+});
+
+
+app.get("/user/delete/:token", (req, res) => {
+    const token = req.params.token;
+    UserDeletionToken.findOne({_id: req.params.token}, function (err, token) {
+        if (err) res.render("user-deleted", {error: "Deletion Token not found", code: 900});
+        User.remove({_id: token.userId}, function (err, user) {
+            if (err) res.render("user-deleted", {error: "User not found", code:201});
+            res.render("user-deleted");
+        });
     });
 });
 

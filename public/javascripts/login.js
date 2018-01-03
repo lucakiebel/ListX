@@ -6,6 +6,12 @@ function loginValidation() {
 		data: formData,
 		dataType: "json",
 		success: function(data) {
+			if(data.code) {
+				if(data.code === 602 && data.correct === false) {
+					// user not validated
+					$("#login-validation-error").css("display", "block")
+				}
+			}
 			if (data.correct === true){
 				window.location.href = "/dashboard";
 			}

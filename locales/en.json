@@ -130,6 +130,8 @@
   "/ListX/UI/passwordReset/emailSent": "We have sent you an email with further instructions.",
   "/ListX/UI/reset": "Reset",
   "/ListX/UI/resetError": "The Server encountered an error while trying to progress your request.",
-  "/ListX/UI/passwordReset/passwordResetSuccess": "Your password was changed successfully."
+  "/ListX/UI/passwordReset/passwordResetSuccess": "Your password was changed successfully.",
+  "/ListX/UI/resetExpired": "Your Password reset link has expired, please enter your email again.",
+  "/ListX/UI/Dashboard/Login/loginValidError": ""
 
 }

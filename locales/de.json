@@ -130,6 +130,7 @@
   "/ListX/UI/passwordReset/emailSent": "Wir haben dir eine E-Mail mit weiteren Anweisungen geschickt.",
   "/ListX/UI/reset": "Zurücksetzen",
   "/ListX/UI/resetError": "Der Server hat bei der Verarbeitung deiner Anfrage ein Problem festgestellt.",
-  "/ListX/UI/passwordReset/passwordResetSuccess": "Dein Passwort wurde erfolgreich geändert."
+  "/ListX/UI/passwordReset/passwordResetSuccess": "Dein Passwort wurde erfolgreich geändert.",
+  "/ListX/UI/resetExpired": "Dein Password-Resetlink ist abgelaufen, bitte gib deine E-Mail erneut ein."
 
 }

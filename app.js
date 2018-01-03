@@ -89,6 +89,7 @@ const Item = mongoose.model('Item', {
 });
 
 const User = mongoose.model('User', {
+    username: String,
     name: String,
     email: String,
     password: String,
@@ -148,22 +149,7 @@ app.get("/api/short/:short", (req, res) => {
     const {short} = req.params;
     const long = req.query.long;
     // check whether there already is a short for the long
-    ShortDomain.findOne({long: long}, (err, url) => {
-        if (url) {
-            // url already in database, return shortlink
-            res.json({long: url.long, short: url.short});
-        }
-        else {
-            // url not in database
-            ShortDomain.create({
-                long: long,
-                short: short
-            }, err => {
-                if (err) res.json({success: false, error: err});
-                res.json({long: long, short: short});
-            });
-        }
-    });
+    res.json(linkShortener(long, short));
 });
 
 app.get("/api/short/:short/metrics", (req, res) => {
@@ -201,10 +187,11 @@ app.post('/signup', (req, res) => {
                     EmailValidation.create({email: user.email, userId: user._id}, (err, valid) => {
                         if (err) res.json({success: false});
                         let URL = "https://" + DP + "listx.io/validate/" + valid._id;
+                        let short = "https://" + DP + "listx.io/s/"+linkShortener(URL).short;
                         let mailData = {};
                         mailData.to = user.email;
                         mailData.subject = "ListX Account Activation";
-                        mailData.body = `ListX Account Activation \nHey ${req.body.name}, thanks for signing up with ListX! \nPlease verify your email address by clicking the following link: \n\t${URL} (Voids in 45 minutes)\nSee you on the other side!`;
+                        mailData.body = `ListX Account Activation \nHey ${req.body.name}, thanks for signing up with ListX! \nPlease verify your email address by clicking the following link: \n${short} (Voids in 45 minutes)\nSee you on the other side!`;
                         mailData.send = true;
                         mail(mailData);
                         res.json({success: true, user: user, validation: valid});
@@ -252,7 +239,11 @@ app.get("/validate/:id", function (req, res) {
  * Password Reset: Only display Email input
  */
 app.get("/user/reset", (req, res) => {
-    res.render("reset-password-email-form");
+    if (req.query.expired === "1") {
+        // Password link expired.
+        res.remder("reset-password-email-form", {expired:true});
+    }
+    res.render("reset-password-email-form", {expired:false});
 });
 
 /**
@@ -308,19 +299,20 @@ app.get("/user/reset/:id", (req, res) => {
             });
         }
         else {
-            res.redirect("/user/reset?expired");
+            res.redirect("/user/reset?expired=1");
         }
     });
 });
 
 app.post("/api/passwordreset", (req,res) => {
     let {pwrId, userId, password} = req.body;
-    bCrypt.hash(password, 10, function (err, password) {
+    bCrypt.hash(password, 10, function (err, hashedpassword) {
         PasswordReset.findOneAndRemove({_id: pwrId}, (err, pwr) => {
             if (err) res.json({success: false, code: 101});
         });
-        User.findOneAndUpdate({_id: userId}, {$set: {password: password}}, (err, user) => {
+        User.findOneAndUpdate({_id: userId}, {$set: {password: hashedpassword}}, (err, user) => {
             if (err) res.json({success: false, error: 201});
+            console.log("Passwordreset for: ", user.email);
             res.json({success: true});
         });
     });
@@ -335,7 +327,7 @@ app.post('/login', function (req, res) {
         }
         else if (!user.validated) {
             console.error("User not yet validated");
-            res.json({success: false, error: "User not validated", code: 602});
+            res.json({correct: false, error: "User not validated", code: 602});
         }
         else {
             bCrypt.compare(req.body.password, user.password, function(err, res) {
@@ -1153,6 +1145,30 @@ function requireLogin(req, res, next) {
     }
 }
 
+function linkShortener(long, short) {
+    let returnData;
+    if (!short) short = makeSlug();
+    ShortDomain.findOne({long: long}, (err, url) => {
+        if (url) {
+            // url already in database, return shortlink
+            returnData = url;
+            return returnData;
+        }
+        else {
+            // url not in database
+            ShortDomain.create({
+                long: long,
+                short: short
+            }, err => {
+                if (err) returnData.err = err;
+                returnData.long = long;
+                returnData.short = short
+                return returnData;
+            });
+        }
+    });
+
+}
 
 function validateReCAPTCHA(gResponse, callback) {
     const secretKey = "6Ld0czoUAAAAABKtI__dQPahjYi4XnRixWh0k08O";
@@ -1164,6 +1180,16 @@ function validateReCAPTCHA(gResponse, callback) {
             callback(null, body.success);
         }
     );
+}
+
+function makeSlug() {
+    let text = "";
+    const possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz123456789";
+
+    for (let i = 0; i < 5; i++)
+        text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+    return text;
 }
 
 // catch 404 and forward to error handler

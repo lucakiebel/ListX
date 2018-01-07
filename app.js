@@ -116,6 +116,11 @@ const UserDeletionToken = mongoose.model("UserDeletionToken", {
    userId: mongoose.Schema.Types.ObjectId
 });
 
+const EmailReset = mongoose.model("EmailReset", {
+    userId: mongoose.Schema.Types.ObjectId,
+    expiry: {type: Date, default: Date.now() + 45 * 60 * 1000} // 45 Minutes
+});
+
 const List = mongoose.model('List', {
     name: String,
     country: String,
@@ -148,8 +153,7 @@ const ShortDomain = mongoose.model('ShortDomain', {
 app.get("/api/short/:short", (req, res) => {
     const {short} = req.params;
     const long = req.query.long;
-    // check whether there already is a short for the long
-    res.json(linkShortener(long, short));
+    linkShortener(long, short, obj => res.json(obj));
 });
 
 app.get("/api/short/:short/metrics", (req, res) => {
@@ -238,7 +242,7 @@ app.get("/validate/:id", function (req, res) {
 /**
  * Password Reset: Only display Email input
  */
-app.get("/user/reset", (req, res) => {
+app.get("/user/reset-password", (req, res) => {
     if (req.query.expired === "1") {
         // Password link expired.
         res.remder("reset-password-email-form", {expired:true});
@@ -268,11 +272,12 @@ app.post("/api/reset", (req, res) => {
                     res.json({success: true});
                 } else {
                     PasswordReset.create({userId: user._id}, (err, pwr) => {
-                        let URL = "https://" + DP + "listx.io/user/reset/" + pwr._id;
+                        let long = "https://" + DP + "listx.io/user/reset-password/" + pwr._id;
+                        let URL = "https://" + DP + "listx.io/s/"+linkShortener(long).short;
                         let mailData = {
                             to: email,
                             subject: "ListX Password Reset",
-                            body: `Hi ${user.name}, \nYou (or someone else) just entered this email address (${email}) when trying to change the password of a ListX account. \n\nIf it was you and you are trying to reset or change your password, please follow this link in order to set a new password: \n\t${URL} (Voids in 45 minutes)\n\nIf you did not request a password reset or change, please ignore this email. Someone most likely mistyped his own email address. \n\nListX Support`,
+                            body: `Hey ${user.name}, \nYou (or someone else) just entered this email address (${email}) when trying to change the password of a ListX account. \n\nIf it was you and you are trying to reset or change your password, please follow this link in order to set a new password: \n${URL} (Voids in 45 minutes)\n\nIf you did not request a password reset or change, please ignore this email. Someone most likely mistyped his own email address. \n\nListX Support`,
                             send: true
                         };
                         mail(mailData);
@@ -289,7 +294,7 @@ app.post("/api/reset", (req, res) => {
 /**
  * Password reset link: display password form
  */
-app.get("/user/reset/:id", (req, res) => {
+app.get("/user/reset-password/:id", (req, res) => {
     PasswordReset.findOne({_id: req.params.id}, (err, pwr) => {
         if (err) res.json({success: false});
         if (pwr.expiry >= Date.now()) {
@@ -299,7 +304,7 @@ app.get("/user/reset/:id", (req, res) => {
             });
         }
         else {
-            res.redirect("/user/reset?expired=1");
+            res.redirect("/user/reset-password?expired=1");
         }
     });
 });
@@ -895,7 +900,7 @@ app.delete('/api/users/:id', (req, res) => {
             let mailData = {
                 to: user.email,
                 subject: "ListX Account Deletion",
-                body: `Hi ${user.name}, \nYou (or someone else) just requested deletion for this ListX account. \n\nIf it was you and you are trying to delete your account, please follow this link in order to do so: \n\t${URL} \n\nIf you did not request account deletion, please immediately change your password, it might be known to someone else. \n\nListX Support`,
+                body: `Hey ${user.name}, \nYou (or someone else) just requested deletion for this ListX account. \n\nIf it was you and you are trying to delete your account, please follow this link in order to do so: \n\t${URL} \n\nIf you did not request account deletion, please immediately change your password, it might be known to someone else. \n\nListX Support`,
                 send: true
             };
             mail(mailData);
@@ -940,6 +945,49 @@ app.post("/api/users/addListBulk", (req, res) => {
     });
     res.json({success: true, users: a});
 });
+
+/**
+ * User Settings
+ */
+
+// email Change
+app.post("/api/user/changeEmail", (req, res) => {
+    let newEmail = req.body.newEmail;
+    let userId = req.body.userId;
+    // send verification email to current email address
+    User.findOneById(userId, (err, user) => {
+        EmailReset.create({userId:user._id}, (err, reset) => {
+            let long = `https://${DP}listx.io/user/change-email/${reset._id}?newEmail=${newEmail}`;
+            let URL = linkShortener(long);
+            let resetLink = `https://${DP}listx.io/user/reset-password`;
+            let mailData = {};
+            mailData.to = user.email;
+            mailData.subject = `ListX Email Change`;
+            mailData.body = `Hey ${user.name}, \nTo change your ListX email address, follow the link below: \n${URL} (Voids in 45 minutes)\n\nIf you didn't request an email address change, please consider resetting your password (${resetLink}) \nListX Support`;
+            mailData.send = true;
+
+        });
+    })
+
+});
+
+// name change
+
+
+// username change
+
+
+// private information deletion
+
+
+// get all private information per mail
+
+
+// delete all lists, items, and personal data
+
+
+// cancel subscriptons
+
 
 /**
  * Invitations API: Control Invitations
@@ -1145,29 +1193,40 @@ function requireLogin(req, res, next) {
     }
 }
 
-function linkShortener(long, short) {
-    let returnData;
-    if (!short) short = makeSlug();
+function linkShortener(long, short, callback) {
+    let returnData = {};
+    if (!short) short = recursiveSlugMaker();
     ShortDomain.findOne({long: long}, (err, url) => {
         if (url) {
             // url already in database, return shortlink
             returnData = url;
-            return returnData;
+            console.log(returnData);
+            callback(returnData);
         }
-        else {
-            // url not in database
-            ShortDomain.create({
-                long: long,
-                short: short
-            }, err => {
-                if (err) returnData.err = err;
-                returnData.long = long;
-                returnData.short = short
-                return returnData;
-            });
-        }
+        ShortDomain.create({
+            long: long,
+            short: short
+        }, (err, sd) => {
+            if (err) returnData.err = err;
+            returnData = sd;
+            console.log(returnData);
+            callback(returnData);
+        });
+
+
     });
 
+}
+
+function recursiveSlugMaker(short) {
+    if (!short) short = makeSlug();
+    ShortDomain.findOne({short:short}).exec().then((sl) => {
+        if (!sl) {
+            // not found
+            return short;
+        }
+        recursiveSlugMaker();
+    });
 }
 
 function validateReCAPTCHA(gResponse, callback) {

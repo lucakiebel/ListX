@@ -251,7 +251,8 @@ app.get("/validate/:id", function (req, res) {
         if (err) res.json({success: false});
         console.log("String?",new Date(String("'"+valid.expiry+"'")).getTime());
         console.log("SoA?", new Date(String(""+valid.expiry)).getTime());
-        if (new Date("'"+valid.expiry+"'").getTime() >= new Date(Date.now()).getTime()) {
+        console.log("as String", new Date(valid.expiry).getTime());
+        if (new Date(valid.expiry).getTime() >= new Date(Date.now()).getTime()) {
             // Validation not expired
             User.findOneAndUpdate({_id: valid.userId}, {$set: {validated: true}}, (err, u) => {
                 // if there was an error, redirect to /signup and pass error 201 (user not found)

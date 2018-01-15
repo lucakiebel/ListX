@@ -70,6 +70,7 @@
   "/ListX/UI/SignUp/ErrorMessageEmail": "Bitte eine gültige und dauerhafte Email-Adresse eingeben!",
   "/ListX/UI/SignUp/ErrorMessageServer": "Der Server hat bei der Bearbeitung der Anmeldung ein Problem festgestellt, bitte <a href='/support'>Kontaktiere uns!</a>",
   "/ListX/UI/SignUp/ErrorMessageRC": "Es gab ein Problem mit dem reCAPTCHA, bitte probiere es nochmal!",
+  "/ListX/UI/SignUp/SuccessMessage": "Überprüfe deinen Posteingang für weitere Schritte! Dieses Fenster kann nun geschlossen werden.",
   "/ListX/UI/SignUp/enterYourName": "Dein Name",
   "/ListX/UI/SignUp/enterYourEmail": "Deine Email",
   "/ListX/UI/SignUp/enterYourPassword": "Dein Passwort",
@@ -131,6 +132,8 @@
   "/ListX/UI/reset": "Zurücksetzen",
   "/ListX/UI/resetError": "Der Server hat bei der Verarbeitung deiner Anfrage ein Problem festgestellt.",
   "/ListX/UI/passwordReset/passwordResetSuccess": "Dein Passwort wurde erfolgreich geändert.",
-  "/ListX/UI/resetExpired": "Dein Password-Resetlink ist abgelaufen, bitte gib deine E-Mail erneut ein."
+  "/ListX/UI/resetExpired": "Dein Password-Resetlink ist abgelaufen, bitte gib deine E-Mail erneut ein.",
+  "/ListX/UI/Dashboard/Login/loginValidError": "Deine E-Mail Adresse ist noch nicht bestätigt. Bitte überprüfe deinen Posteingang.",
+  "/ListX/UI/SignUp/ErrorMessageDisp": "Bitte keine wegwerf-Email Adressen nutzen!"
 
 }

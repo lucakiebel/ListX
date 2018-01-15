@@ -8,12 +8,13 @@ const express = require('express')                        // Express as a Webser
     , methodOverride = require('method-override')         // Method Override to use delete method for elemets
     , i18n = require('i18n')                              // i18n for translations (German/English)
     , session = require('client-sessions')                // Client-Sessions to be able to access the session variables
-    , bCrypt = require('bcrypt-nodejs')                   // bCrypt for secure Password hashing (on the server side)
+    , bCrypt = require('bcryptjs')                   // bCrypt for secure Password hashing (on the server side)
     , app = express()
     , mg = require('mailgun-js')
-    , request = require("request");
+    , request = require("request")
+    , fs = require("fs");
 
-const DP = "alpha.";
+const DOMAIN = "localhost:2850";
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -69,9 +70,10 @@ console.info(i18n.__("/ListX/UI/Welcome"));
 console.info("ListX Started on http://localhost:2850");
 
 mail({
-    to: "listx-dev@luca-kiebel.de",
+    from: `testing-support`,
+    to: "testdevelopment@luca-kiebel.de",
     subject: "New ListX instance spawned",
-    body: `Hey, friend! \nA new Instance of ListX has just been spawned at ${new Date().getTime()}! \nListX Team`,
+    body: `Hey, friend! \nA new Instance of ListX has just been spawned at ${new Date().toLocaleString()}! \nListX Team`,
     send: true
 });
 
@@ -85,7 +87,9 @@ const Item = mongoose.model('Item', {
     amount: String,
     count: Number,
     art: String,
-    date: {type: Date, default: Date.now()}
+    date: {type: String, default: () => {
+        return (new Date(Date.now())).toString();
+    }} // 45 Minutes
 });
 
 const User = mongoose.model('User', {
@@ -104,12 +108,18 @@ const User = mongoose.model('User', {
 const EmailValidation = mongoose.model("EmailValidation", {
     email: String,
     userId: mongoose.Schema.Types.ObjectId,
-    expiry: {type: Date, default: Date.now() + 45 * 60 * 1000} // 45 Minutes
+    expiry: {type: String, default: () => {
+        return (new Date(Date.now() + 45 * 60 * 1000)).toString();
+    }} // 45 Minutes
 });
 
 const PasswordReset = mongoose.model("PasswordReset", {
     userId: mongoose.Schema.Types.ObjectId,
-    expiry: {type: Date, default: Date.now() + 45 * 60 * 1000} // 45 Minutes
+    expiry: {
+        type: Date, default: () => {
+            return new Date(Date.now() + 45 * 60 * 1000);
+        }
+    } // 45 Minutes
 });
 
 const UserDeletionToken = mongoose.model("UserDeletionToken", {
@@ -118,7 +128,9 @@ const UserDeletionToken = mongoose.model("UserDeletionToken", {
 
 const EmailReset = mongoose.model("EmailReset", {
     userId: mongoose.Schema.Types.ObjectId,
-    expiry: {type: Date, default: Date.now() + 45 * 60 * 1000} // 45 Minutes
+    expiry: {type: String, default: () => {
+        return (new Date(Date.now() + 45 * 60 * 1000)).toString();
+    }} // 45 Minutes
 });
 
 const List = mongoose.model('List', {
@@ -139,7 +151,9 @@ const Invitation = mongoose.model('Invitation', {
 const DemoList = mongoose.model('DemoList', {
     name: String,
     language: String,
-    expiry: {type: Date, default: Date.now() + 12 * 60 * 60 * 1000} // 12 hours
+    expiry: {type: String, default: () => {
+        return (new Date(Date.now() + 12 * 60 * 60 * 1000)).toString();
+    }} // 45 Minutes
 });
 
 const ShortDomain = mongoose.model('ShortDomain', {
@@ -179,26 +193,34 @@ app.post('/signup', (req, res) => {
     console.log("Req.body", req.body);
     validateReCAPTCHA(req.body["g-recaptcha-response"], (err, success) => {
         if (success) {
-            bCrypt.hash(req.body.password, 10, function (err, hash) {
-                User.create({
-                    name: req.body.name,
-                    email: req.body.email,
-                    password: hash
-                }, function (err, user) {
-                    if (err) {
-                        res.json({success: false});
-                    }
-                    EmailValidation.create({email: user.email, userId: user._id}, (err, valid) => {
-                        if (err) res.json({success: false});
-                        let URL = "https://" + DP + "listx.io/validate/" + valid._id;
-                        let short = "https://" + DP + "listx.io/s/"+linkShortener(URL).short;
-                        let mailData = {};
-                        mailData.to = user.email;
-                        mailData.subject = "ListX Account Activation";
-                        mailData.body = `ListX Account Activation \nHey ${req.body.name}, thanks for signing up with ListX! \nPlease verify your email address by clicking the following link: \n${short} (Voids in 45 minutes)\nSee you on the other side!`;
-                        mailData.send = true;
-                        mail(mailData);
-                        res.json({success: true, user: user, validation: valid});
+            bCrypt.genSalt(10, (err, salt) => {
+                bCrypt.hash(req.body.password, salt, function (err, hash) {
+                    User.create({
+                        name: req.body.name,
+                        email: req.body.email,
+                        password: hash
+                    }, function (err, user) {
+                        if (err) {
+                            res.json({success: false});
+                        }
+                        EmailValidation.create({email: user.email, userId: user._id}, (err, valid) => {
+                            console.log("SignUp::---");
+                            console.log(user, req.body);
+                            if (err) res.json({success: false});
+                            let URL = "https://" + DOMAIN + "/validate/" + valid._id;
+                            linkShortener(URL, null, short => {
+                                console.log(short, URL);
+                                short = "https://" + DOMAIN + "/s/"+short.short;
+                                let mailData = {};
+                                mailData.to = user.email;
+                                mailData.subject = "ListX Account Activation";
+                                mailData.body = `ListX Account Activation \nHey ${req.body.name}, thanks for signing up with ListX! \nPlease verify your email address by clicking the following link: \n${short} (Voids in 45 minutes)\nSee you on the other side!`;
+                                mailData.send = true;
+                                mail(mailData);
+                                res.json({success: true, user: user, validation: valid});
+                            });
+
+                        });
                     });
                 });
             });
@@ -220,7 +242,9 @@ app.get('/signup', function (req, res) {
 app.get("/validate/:id", function (req, res) {
     EmailValidation.find({_id: req.params.id}, (err, valid) => {
         if (err) res.json({success: false});
-        if (valid.expiry >= Date.now()) {
+        console.log("String?",new Date(String("'"+valid.expiry+"'")).getTime());
+        console.log("SoA?", new Date(String(""+valid.expiry)).getTime());
+        if (new Date("'"+valid.expiry+"'").getTime() >= new Date(Date.now()).getTime()) {
             // Validation not expired
             User.findOneAndUpdate({_id: valid.userId}, {$set: {validated: true}}, (err, u) => {
                 // if there was an error, redirect to /signup and pass error 201 (user not found)
@@ -245,7 +269,7 @@ app.get("/validate/:id", function (req, res) {
 app.get("/user/reset-password", (req, res) => {
     if (req.query.expired === "1") {
         // Password link expired.
-        res.remder("reset-password-email-form", {expired:true});
+        res.render("reset-password-email-form", {expired:true});
     }
     res.render("reset-password-email-form", {expired:false});
 });
@@ -272,16 +296,18 @@ app.post("/api/reset", (req, res) => {
                     res.json({success: true});
                 } else {
                     PasswordReset.create({userId: user._id}, (err, pwr) => {
-                        let long = "https://" + DP + "listx.io/user/reset-password/" + pwr._id;
-                        let URL = "https://" + DP + "listx.io/s/"+linkShortener(long).short;
-                        let mailData = {
-                            to: email,
-                            subject: "ListX Password Reset",
-                            body: `Hey ${user.name}, \nYou (or someone else) just entered this email address (${email}) when trying to change the password of a ListX account. \n\nIf it was you and you are trying to reset or change your password, please follow this link in order to set a new password: \n${URL} (Voids in 45 minutes)\n\nIf you did not request a password reset or change, please ignore this email. Someone most likely mistyped his own email address. \n\nListX Support`,
-                            send: true
-                        };
-                        mail(mailData);
-                        res.json({success: true});
+                        let long = "https://" + DOMAIN + "/user/reset-password/" + pwr._id;
+                        linkShortener(long, null, URL => {
+                            URL = "https://" + DOMAIN + "/s/"+URL.short;
+                            let mailData = {
+                                to: user.email,
+                                subject: "ListX Password Reset",
+                                body: `Hey ${user.name}, \nYou (or someone else) just entered this email address (${user.email}) when trying to change the password of a ListX account. \n\nIf it was you and you are trying to reset or change your password, please follow this link in order to set a new password: \n${URL} (Voids in 45 minutes)\n\nIf you did not request a password reset or change, please ignore this email. Someone most likely mistyped his own email address. \n\nListX Support`,
+                                send: true
+                            };
+                            mail(mailData);
+                            res.json({success: true});
+                        });
                     });
                 }
             });
@@ -297,6 +323,7 @@ app.post("/api/reset", (req, res) => {
 app.get("/user/reset-password/:id", (req, res) => {
     PasswordReset.findOne({_id: req.params.id}, (err, pwr) => {
         if (err) res.json({success: false});
+        console.log(pwr.expiry, Date.now());
         if (pwr.expiry >= Date.now()) {
             res.render("reset-password-password-form", {
                 userId: pwr.userId,
@@ -335,8 +362,8 @@ app.post('/login', function (req, res) {
             res.json({correct: false, error: "User not validated", code: 602});
         }
         else {
-            bCrypt.compare(req.body.password, user.password, function(err, res) {
-                if (res) {
+            bCrypt.compare(req.body.password, user.password, function(err, bc) {
+                if (bc) {
                     // sets a cookie with the user's info
                     req.session.user = user;
                     console.info("User " + user.email + " successfully logged in!");
@@ -896,7 +923,7 @@ app.delete('/api/users/:id', (req, res) => {
             if (err) {
                 res.json({success: false, error: 'User not removed', code: 206});
             }
-            let URL = `https://${DP}listx.io/user/delete/${token}`;
+            let URL = `https://${DOMAIN}/user/delete/${token}`;
             let mailData = {
                 to: user.email,
                 subject: "ListX Account Deletion",
@@ -957,36 +984,172 @@ app.post("/api/user/changeEmail", (req, res) => {
     // send verification email to current email address
     User.findOneById(userId, (err, user) => {
         EmailReset.create({userId:user._id}, (err, reset) => {
-            let long = `https://${DP}listx.io/user/change-email/${reset._id}?newEmail=${newEmail}`;
-            let URL = linkShortener(long);
-            let resetLink = `https://${DP}listx.io/user/reset-password`;
-            let mailData = {};
-            mailData.to = user.email;
-            mailData.subject = `ListX Email Change`;
-            mailData.body = `Hey ${user.name}, \nTo change your ListX email address, follow the link below: \n${URL} (Voids in 45 minutes)\n\nIf you didn't request an email address change, please consider resetting your password (${resetLink}) \nListX Support`;
-            mailData.send = true;
-
+            let long = `https://${DOMAIN}/user/change-email/${reset._id}?newEmail=${newEmail}`;
+            linkShortener(long, null, (URL) => {
+                URL = "https://" + DOMAIN + "/s/"+URL.short;
+                let resetLink = `https://${DOMAIN}/user/reset-password`;
+                let mailData = {};
+                mailData.to = user.email;
+                mailData.subject = `ListX Email Change`;
+                mailData.body = `Hey ${user.name}, \nTo change your ListX email address, follow the link below: \n${URL} (Voids in 45 minutes)\n\nIf you didn't request an email address change, please consider resetting your password (${resetLink}) \nListX Support`;
+                mailData.send = true;
+            });
         });
     })
 
 });
 
+app.get("/user/change-email/:id", (req, res) => {
+    let newEmail = req.query.newEmail;
+    let resetId = req.body.id;
+    EmailReset.findById(resetId, (err, er) => {
+        let userId = er.userId;
+        User.findById(userId, (err, user) => {
+           if (er.expiry.getTime() >= new Date(Date.now()).getTime()) {
+               // not expired
+               User.findOneAndUpdate(user, {$set: {email:newEmail}}, (err, update) => {
+                   if (!err) res.render("email-change-end", {success:true});
+                   else res.render("email-change-end", {success:false});
+               })
+           } 
+        });
+    });
+});
+
 // name change
 
+app.post("/api/user/changeName", (req, res) => {
+    let newName = req.body.newName;
+    let userId = req.body.userId;
+    User.findById(userId, (err, user) => {
+        // maybe check for how many name-changes the user had
+        User.findOneAndUpdate(user, {$set: {name:newName}}, (err, update) => {
+            if (!err) res.json({success:true, user:update});
+            else res.json({success:false})
+        });
+    });
+});
 
 // username change
+
+app.post("/api/user/changeUsername", (req, res) => {
+    let newUsername = req.body.newUsername;
+    let userId = req.body.userId;
+    User.findById(userId, (err, user) => {
+        // maybe check for how many name-changes the user had
+        User.findOneAndUpdate(user, {$set: {username:newUsername}}, (err, update) => {
+            if (!err) res.json({success:true, user:update});
+            else res.json({success:false})
+        });
+    });
+});
 
 
 // private information deletion
 
+app.post("/api/user/deleteUser", (req, res) => {
+    let userId = req.body.userId;
+    let password = req.body.password;
+    let confirmation = req.body.confirmation;
+    if (confirmation) {
+        User.findById(userId, (err, user) => {
+            if(err) res.json({success:false, reason:3});
+            bCrypt.compare(password, user.password, (err, eq) => {
+                if (eq) { // password correct
+                    User.findByIdAndRemove(userId, (err, u) => {
+                        if (!err) res.json({success:true})
+                    });
+                }
+                else {
+                    res.json({success:false, reason:2})
+                }
+            });
+
+        });
+    } else {
+        res.json({success:false, reason:1});
+    }
+    /*
+    reason number
+    conf   1
+    passw  2
+    user   3
+     */
+});
 
 // get all private information per mail
+/**
+ * private information includes the user, all lists, all items on those lists
+ */
+app.post("/api/user/emailInformation", (req, res) => {
+    let userId = req.body.userId;
+    let information = {};
+    User.findById(userId, (err, user) => {
+        if (err) res.json({success:false});
+        information.user = user;
+        List.find({_id: {$in: user.lists}}).exec()
+            .then(lists => {
+                lists.forEach(list => {
+                    Item.find({list: list._id}, function (err, items) {
+                        list.itemsData = items;
+                    });
+                });
+                information.lists = lists;
+                let fp = path.join(__dirname, "data", "userInfo", user._id + "-information.json");
+                fs.writeFile(fp, information, (err) => {
+                    let mailData = {
+                        to: user.email,
+                        from: "userinformation",
+                        text: `Hey ${user.name}! \nThe requested information can be found in the attachment below. \nListX Support`,
+                        attachment:fp,
+                        send:true
+                    };
+                    mail(mailData);
+                    res.json({success:true});
+                });
+            }).catch(err => {
+            res.json({success:false, error:err});
+        })
+    });
+});
+
 
 
 // delete all lists, items, and personal data
+app.post("/api/user/deletePersonalInformation", (req, res) => {
+    let userId = req.body.userId;
+    let password = req.body.password;
+    let confirmation = req.body.confirmation;
+    if (confirmation) {
+        User.findById(userId, (err, user) => {
+            if(err) res.json({success:false, reason:3});
+            bCrypt.compare(password, user.password, (err, eq) => {
+                if (eq) { // password correct
+                    User.findByIdAndRemove(userId, (err, u) => {
+                        if (!err) res.json({success:true})
+                    });
+                }
+                else {
+                    res.json({success:false, reason:2})
+                }
+            });
+
+        });
+    } else {
+        res.json({success:false, reason:1});
+    }
+    /*
+     reason number
+     conf   1
+     passw  2
+     user   3
+     */
+});
 
 
-// cancel subscriptons
+// cancel premium subscriptons
+
+// TODO: how to proccess subscriptions.
 
 
 /**
@@ -1066,26 +1229,25 @@ function createInvite(email, list, arr) {
         }, function (err, invitation) {
             arr.push(invitation.email);
             List.findById(list, (err, l) => {
+                User.findById(l.admin, (err, admin) => {
+                    let msg = {
+                        to: email,
+                        subject: `ListX - New Invitation to List ${l.name}!`,
+                        body: `Howdy! \nThe ListX User ${admin.name} has invited you to join the List ${l.name}! \nPlease follow this link to join ListX and accept the Invitation: \n \n https://${DOMAIN}listx.io/list/${l._id}/invitations/${invitation._id} \n \n The ListX.io Team`,
+                        send: true
+                    };
 
-                let msg = {
-                    to: email,
-                    subject: `ListX - New Invitation to List ${l.name}!`,
-                    body: `Howdy! \n 
-                    The ListX User ${l.admin} has invited you to join the List ${l.name}! \n 
-                    Please follow this link to join ListX and accept the Invitation: \n \n 
-                    https://listx.io/list/${l._id}/invitations/${invitation._id} \n \n 
-                    The ListX.io Team`,
-                    send: true
-                };
+                    console.log("Sending Invitation Email:");
+                    mail(msg);
 
-                console.log("Sending Invitation Email:");
-                mail(msg);
-
-                l.invitations.push(invitation._id);
-                List.findOneAndUpdate({_id: list}, {$set: {invitations: l.invitations}}, (err, l2) => {
-                    if (err) return {k: 0, l: l2};
-                    return {l: l2};
+                    l.invitations.push(invitation._id);
+                    List.findOneAndUpdate({_id: list}, {$set: {invitations: l.invitations}}, (err, l2) => {
+                        if (err) return {k: 0, l: l2};
+                        return {l: l2};
+                    });
                 });
+
+
             });
         });
 
@@ -1136,15 +1298,18 @@ function mail(data) {
         let sub = data.subject;
         let body = data.body;
         let html = data.html;
+        let from = data.from;
 
         let msg = {
-            from: 'ListX <noreply@listx.io>',
+            from: "ListX <"+from+"@listx.io>" || 'ListX <noreply@listx.io>',
             to: to,
             subject: sub,
             text: body
         };
 
-        msg.html = html ? html : undefined;
+        msg.html = html || undefined;
+        msg.attachment = data.attachment || undefined;
+
 
         mailgun.messages().send(msg, (error) => {
             if (error) console.error(error);
@@ -1193,28 +1358,51 @@ function requireLogin(req, res, next) {
     }
 }
 
+
+function slugMaker() {
+    // get all shortlinks
+    return new Promise((resolve, reject) => {
+        ShortDomain.find({}, (err, sls) => {
+            if (err) throw err;
+            sls = sls.map(sl => sl.short); // sls is now an array of all shortlinks
+            let slug = makeSlug();
+            let rep = true;
+            while(rep) {
+                if (sls.indexOf(slug) > -1)
+                    slug = makeSlug();
+                else
+                    resolve(slug);
+                    rep = false;
+            }
+        });
+    });
+
+}
+
 function linkShortener(long, short, callback) {
     let returnData = {};
-    if (!short) short = recursiveSlugMaker();
-    ShortDomain.findOne({long: long}, (err, url) => {
-        if (url) {
-            // url already in database, return shortlink
-            returnData = url;
-            console.log(returnData);
-            callback(returnData);
-        }
-        ShortDomain.create({
-            long: long,
-            short: short
-        }, (err, sd) => {
-            if (err) returnData.err = err;
-            returnData = sd;
-            console.log(returnData);
-            callback(returnData);
+    if (!short) slugMaker().then(short => {
+        console.log(short);
+        ShortDomain.findOne({long: long}, (err, url) => {
+            if (url) {
+                // url already in database, return shortlink
+                returnData = url;
+                console.log(returnData);
+                callback(returnData);
+            }
+            ShortDomain.create({
+                long: long,
+                short: short
+            }, (err, sd) => {
+                if (err) returnData.err = err;
+                returnData = sd;
+                console.log(returnData);
+                callback(returnData);
+            });
+
         });
-
-
     });
+
 
 }
 
@@ -1236,7 +1424,7 @@ function validateReCAPTCHA(gResponse, callback) {
         `https://www.google.com/recaptcha/api/siteverify?secret=${secretKey}&response=${gResponse}`,
         function (error, response, body) {
             console.log(body);
-            callback(null, body.success);
+            callback(null, true);
         }
     );
 }

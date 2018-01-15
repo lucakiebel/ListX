@@ -1,5 +1,6 @@
 function signupValidation() {
-	if(emailValid($("#form_email").val())) {
+	let eV = emailValid($("#form_email").val());
+	if(eV.valid) {
         const formData = $("#signup-form").serialize();
         $.ajax({
             type: "POST",
@@ -10,7 +11,7 @@ function signupValidation() {
                 if (data.success === true) {
 					// message sent to user, display this.
 					$("#signup-success").css("display", "block");
-                }
+				}
                 else if (data.code === 701) {
                 	// reCAPTCHA failed
                     $("#signup-error-rc").css("display", "block");
@@ -23,7 +24,11 @@ function signupValidation() {
     }
 	else {
 		// email not ok
-		$("#signup-error-email").css("display", "block"); return false;
+		if (eV.disposable) {
+			$("#signup-error-disposable").css("display", "block"); return false;
+		} else {
+			$("#signup-error-email").css("display", "block"); return false;
+		}
 	}
 	
 }
@@ -43,8 +48,11 @@ function emailValid(email) {
     $.ajax({
         url: url+email,
         success: function(data) {
-            valid = (data.is_valid && !data.is_disposable_address);
-        },
+			valid = {
+				valid:data.is_valid,
+				disposable:data.is_disposable_address
+			};
+		},
         async:false
     });
 	return valid;

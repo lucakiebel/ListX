@@ -64,8 +64,11 @@
                         <div class="alert alert-danger signup-error" id="signup-error-rc" style="display: none">
                             <strong><%= __("/ListX/UI/Index/error")%>: </strong> <%- __("/ListX/UI/SignUp/ErrorMessageRC") %>
                         </div>
-                        <div class="alert alert-danger" id="signup-success" style="display: none">
-                            <strong><%= __("/ListX/UI/Index/error")%>: </strong> <%- __("/ListX/UI/SignUp/ErrorMessageRC") %>
+                        <div class="alert alert-success" id="signup-success" style="display: none">
+                            <strong><%= __("/ListX/UI/Index/success")%>: </strong> <%- __("/ListX/UI/SignUp/SuccessMessage") %>
+                        </div>
+                        <div class="alert alert-danger signup-error" id="signup-error-disposable" style="display:none">
+                            <strong><%= __("/ListX/UI/Index/error") %></strong> <%= __("/ListX/UI/SignUp/ErrorMessageDisp")%>
                         </div>
                     </div>
                     <div class="panel-body">
@@ -73,7 +76,7 @@
                             <fieldset>
                                 <div class="form-group">
                                     <label for="form_name"><%= __("/ListX/UI/SignUp/enterYourName") %></label>
-                                    <input type="text" class="form-control" id="form_name" required>
+                                    <input type="text" class="form-control" id="form_name" name="name" required>
                                 </div>
                                 <div class="form-group">
                                     <label for="form_email"><%= __("/ListX/UI/Index/enterEmail") %></label>

@@ -43,24 +43,18 @@ $(document).ready(function(){
 
     function getLists(query) {
 
-        // show preloader gif
+		let listsDiv = $("#list-container");
 
+        // show preloader gif
+		listsDiv.html("<img height=\"20px\" src=\"/images/preloader.gif\" alt='Loading'></img>");
 
 		query = query || "";
     	let url = query === "" ? "/api/users/" + userId + "/lists" : "/api/users/" + userId + "/lists/" + query;
 
-        $.get(url, function (data) {
-            console.log(data);
-
-            if (data.success === true) {
-                console.log("Lists found!");
-                listsArray = [];
-                data.lists.forEach((list) => {
-                    if (!data.lists || data.lists.length === 0) {
-                        listsDiv.html('<div class="alert alert-warning" role="alert"><strong>No Lists found!</strong> Create one!</div>');
-                    }
-                    $.get("/api/lists/" + list._id + "/itemCount", function (itemCount) {
-                        let html = `<div class="col-md-6">
+		let peter = function (list) {
+			return new Promise((resolve, reject) => {
+				$.get("/api/lists/" + list._id + "/itemCount", function (itemCount) {
+					let html = `<div class="col-md-6">
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h3 class="pull-left"><a href="/list/${list._id}" class="list-link">${list.name}</a></h3>
@@ -77,10 +71,30 @@ $(document).ready(function(){
                     </div>
                 </div>
             </div>`;
-						listsArray.push(html);
-                    });
+					resolve(html);
+				});
+			})
+		};
+
+        $.get(url, function (data) {
+            if (data.success === true) {
+                console.log("Lists found!");
+                listsArray = [];
+				let tmp = [];
+                data.lists.forEach((list) => {
+                    if (!data.lists || data.lists.length === 0) {
+                        listsDiv.html('<div class="alert alert-warning" role="alert"><strong>No Lists found!</strong> Create one!</div>');
+                    }
+                    tmp.push(peter(list));
                 });
-                listsDiv.html(listsArray.join("\n"));
+				Promise.all(tmp)
+					.then((listsArray) => {
+						console.log("ListsArray: ", JSON.stringify(listsArray));
+						console.log(listsArray.join("\n"));
+						listsDiv.html(listsArray.join("\n"));
+					})
+
+
             }
             else {
                 console.log("No Lists found! ", data.code);

@@ -1,0 +1,15 @@
+{
+  "domain":"alpha.listx.io",
+  "devMail":"testdevelopment@luca-kiebel.de",
+  "cookieSecret":"a1yON9OMzD@SRIQ964eEqau#LS1qz@cP8XlXzMt&",
+  "mailgun": {
+    "privateKey":"key-7a2e1c0248d4728c528b5f8859ad2f46",
+    "domain":"mail.listx.io"
+  },
+  "mongo": {
+    "address":"localhost:27070/listx"
+  },
+  "reCaptcha": {
+    "privateKey":"6Ld0czoUAAAAABKtI__dQPahjYi4XnRixWh0k08O"
+  }
+}

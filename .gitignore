@@ -61,3 +61,5 @@ typings/
 .idea/
 
 log.txt*
+
+config.json

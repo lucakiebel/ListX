@@ -14,7 +14,14 @@ const express = require('express')                        // Express as a Webser
     , request = require("request")
     , fs = require("fs");
 
-const DOMAIN = "localhost:2850";
+const config = require(path.join(__dirname, "config.json"));
+const DOMAIN = config.domain;
+const DEV_MAIL = config.devMail;
+const COOKIE_SECRET = config.cookieSecret;
+const MG_PRIV_KEY = config.mailgun.privateKey;
+const MG_DOMAIN = config.mailgun.domain;
+const MO_ADDRESS = config.mongo.address;
+const RC_PRIV_KEY = config.reCaptcha.privateKey;
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -29,13 +36,13 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(methodOverride());
 app.use(session({
     cookieName: 'session',
-    secret: 'a1yON9OMzD@SRIQ964eEqau#LS1qz@cP8XlXzMt&', // random cookie secret
+    secret: COOKIE_SECRET, // random cookie secret
     duration: 15 * 86400000, // 15 days
     activeDuration: 30 * 60000, // 30 minutes
     httpOnly: true // prevent session from being intercepted
 }));
 
-const mailgun = mg({apiKey: 'key-7a2e1c0248d4728c528b5f8859ad2f46', domain: 'mail.listx.io'});
+const mailgun = mg({apiKey: MG_PRIV_KEY, domain: MG_DOMAIN});
 
 i18n.configure({
 
@@ -67,7 +74,7 @@ app.use(session({
 app.use(i18n.init);
 
 console.info(i18n.__("/ListX/UI/Welcome"));
-console.info("ListX Started on http://localhost:2850");
+console.info("ListX Started on http://"+DOMAIN);
 
 mail({
     from: `testing-support`,
@@ -79,7 +86,7 @@ mail({
 
 // database setup
 mongoose.Promise = Promise;
-mongoose.connect('mongodb://localhost:27070/listx');	// sudo mongod --dbpath=/var/data --port=27070 --fork --logpath=./log.txt
+mongoose.connect('mongodb://'+MO_ADDRESS);	// sudo mongod --dbpath=/var/data --port=27070 --fork --logpath=./log.txt
 
 const Item = mongoose.model('Item', {
     list: mongoose.Schema.Types.ObjectId,
@@ -1418,7 +1425,7 @@ function recursiveSlugMaker(short) {
 }
 
 function validateReCAPTCHA(gResponse, callback) {
-    const secretKey = "6Ld0czoUAAAAABKtI__dQPahjYi4XnRixWh0k08O";
+    const secretKey = RC_PRIV_KEY;
     console.log(gResponse);
     request.post(
         `https://www.google.com/recaptcha/api/siteverify?secret=${secretKey}&response=${gResponse}`,

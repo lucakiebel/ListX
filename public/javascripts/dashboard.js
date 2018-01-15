@@ -1,10 +1,118 @@
 $(document).ready(function(){
+    const listsDiv = $('#list-container');
+    listsDiv.html("<img height=\"20px\" src=\"/images/preloader.gif\" alt='Loading'></img>");
+	getLists("");
+
+    $(".dropdown").hover(
+        function() {
+            $('.dropdown-menu', this).stop( true, true ).fadeIn("fast");
+            $(this).toggleClass('open');
+            $('b', this).toggleClass("caret caret-up");
+        },
+        function() {
+            $('.dropdown-menu', this).stop( true, true ).fadeOut("fast");
+            $(this).toggleClass('open');
+            $('b', this).toggleClass("caret caret-up");
+        });
+
+    $("#search-lists").on("input change keyup paste", e => {
+    	console.log("event");
+    	e.preventDefault();
+		getLists($("#search-lists").val());
+	});
+
+
+    function deleteList(list) {
+        console.log("Deleting " + list);
+        let delURL,r;
+        if(list.admin === userId) {
+            delURL = "/api/lists/"+list._id+"/admin";
+        } else {
+            delURL = "/api/lists/"+list._id;
+        }
+        $.ajax({
+            url: delURL,
+            type: 'DELETE',
+            success: function(result) {
+            	console.log(result);
+                getLists("");
+            }
+        });
+    }
+
+
+    function getLists(query) {
+
+		let listsDiv = $("#list-container");
+
+        // show preloader gif
+		listsDiv.html("<img height=\"20px\" src=\"/images/preloader.gif\" alt='Loading'></img>");
+
+		query = query || "";
+    	let url = query === "" ? "/api/users/" + userId + "/lists" : "/api/users/" + userId + "/lists/" + query;
+
+		let peter = function (list) {
+			return new Promise((resolve, reject) => {
+				$.get("/api/lists/" + list._id + "/itemCount", function (itemCount) {
+					let html = `<div class="col-md-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="pull-left"><a href="/list/${list._id}" class="list-link">${list.name}</a></h3>
+                        <div class="input-group pull-right">
+                            <button class="btn btn-default" onclick='deleteList(${JSON.stringify(list)})'><i class="glyphicon glyphicon-remove-circle"></i></button>
+                            <button class="btn btn-default" href="/list/${list._id}/settings"><i class="glyphicon glyphicon-wrench"></i></button>
+                        </div>
+                    </div>
+                    <!-- Default panel contents -->
+                    <div class="panel-body">
+                        <h4>
+                            Elements: <span class="label label-danger">${itemCount}</span>
+                        </h4>
+                    </div>
+                </div>
+            </div>`;
+					resolve(html);
+				});
+			})
+		};
+
+        $.get(url, function (data) {
+            if (data.success === true) {
+                console.log("Lists found!");
+                listsArray = [];
+				let tmp = [];
+                data.lists.forEach((list) => {
+                    if (!data.lists || data.lists.length === 0) {
+                        listsDiv.html('<div class="alert alert-warning" role="alert"><strong>No Lists found!</strong> Create one!</div>');
+                    }
+                    tmp.push(peter(list));
+                });
+				Promise.all(tmp)
+					.then((listsArray) => {
+						console.log("ListsArray: ", JSON.stringify(listsArray));
+						console.log(listsArray.join("\n"));
+						listsDiv.html(listsArray.join("\n"));
+					})
+
+
+            }
+            else {
+                console.log("No Lists found! ", data.code);
+                let message = data.error;
+                listsDiv.html('<div class="nolist" style="text-align: center; align-items: center; padding-top: 30px; padding-bottom: 30px"><h2>'+message+'</h2></div>')
+            }
+        });
+    }
+
+
+
+
 
 
 	$(".submenu > a").click(function(e) {
 		e.preventDefault();
-		var $li = $(this).parent("li");
-		var $ul = $(this).next("ul");
+		let $li = $(this).parent("li");
+		let $ul = $(this).next("ul");
 
 		if($li.hasClass("open")) {
 			$ul.slideUp(350);
@@ -18,51 +126,51 @@ $(document).ready(function(){
 	});
 
 	$('[data-toggle="popover"]').popover();
-	
-	// Form Validation
-	// First, make the list without invitations, we are going to need the lists ID to insert invitations
-	$("#new-submit").click(function () {
-		var name = $("#new-name").val();
-		var users = $("#new-users").val();
-		var country = $("#new-country").val();
-		var admin = $("#new-admin").val();
-		users = users.split(",");
-		if(name != ""){
-			$.post("/api/lists", {
-				name: name,
-				country: country,
-				admin: admin
-			}, function (data) {
-				if (data.success === true){
-					var id = data.id;
-					var ids = [{_id: ""}];
-					var i = 0;
-					// Then post to the API with every Invitation
-					users.forEach(function (user) {
-						$.post("/api/invitations", {
-							email: user,
-							list: id
-						}, function (listData) {
-							ids[i]._id = listData._id;
-						});
-					});
-					$.post("/api/lists/"+id, {
-						invitations: ids
-					}, function (updateData) {
-						if (updateData.success === true){
-							// Then add the List to the Users Lists Array
-							$.post("/api/users/"+admin, {
-								$push: {lists: {_id: id}}
-							}, {safe: true, upsert: true, new : true},
-								function (err, user) {
-									if (!err && (user._id === admin)) 
-										$("#new-list-modal").modal("hide");
-							});
+
+    $("#new-submit").click(function () {
+        const name = $("#new-name").val();
+        const users = $("#new-users").val().split(",");
+        const country = $("#new-country").val();
+        const admin = $("#new-admin").val();
+        console.log("Name: "+ name + " Users: " + users + " Country: " + country + " Admin: " +admin);
+        if(name !== ""){
+            $.post("/api/lists", {
+                name: name,
+                country: country,
+                admin: admin
+            }, function (data) {
+                console.log(data);
+                if (data.success === true){
+                    let id = data.id;
+                    $.post("/api/invitations/array", {
+                    	list: id,
+						invs: users
+					}, data => {
+						// data = [inv1,inv2]
+						if (data.success === true) {
+							// add list to all existing clients
+                            let diff = $(users).not(data.invs).get();
+                            console.log("Users: "+users);
+                            console.log("Invs:"+data.invs);
+                            console.log("Difference: "+diff);
+                             $.post("/api/users/addListBulk", {list: id, emails: diff}, data => {
+                             	if (data.success === true) {
+                             		// all lists added to already known users
+									// add list to admin
+									$.post("/api/users/"+admin+"/newList", {lists: [id]}, data => {
+										if (data.success === true) {
+											// list added to admin account, close popup and reload lists
+                                            $("#newListModal").modal("hide");
+                                            getLists("");
+										}
+									});
+								}
+							 });
 						}
 					});
-				}
-			});
-		}
-	});
+                }
+            });
+        }
+    });
 	
 });

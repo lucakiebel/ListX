@@ -10,7 +10,7 @@ function mainController($scope, $http) {
     // when landing on the page, get all todos and show them
     $http.get('/api/items/<?php echo $list ?>')
             .success(function(data) {
-                $scope.items = data;
+                $scope.items = data.items;
                 console.log(data);
             })
             .error(function(data) {
@@ -26,7 +26,7 @@ function mainController($scope, $http) {
 	                $scope.formData = {}; // clear the form so our user is ready to enter another
 					$http.get('/api/items/<?php echo $list ?>')
                             .success(function(data) {
-                                $scope.items = data;
+                                $scope.items = data.items;
                                 console.log(data);
                             })
                             .error(function(data) {
@@ -48,7 +48,7 @@ function mainController($scope, $http) {
             .success(function(data) {
 				$http.get('/api/items/<?php echo $list ?>')
                         .success(function(data) {
-                            $scope.items = data;
+                            $scope.items = data.items;
                             console.log(data);
                         })
                         .error(function(data) {

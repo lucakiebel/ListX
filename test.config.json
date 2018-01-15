@@ -1,0 +1,15 @@
+{
+  "domain":"YOUR_DOMAIN",
+  "devMail":"YOUR_EMAIL",
+  "cookieSecret":"SOME_RANDOM_TEXT",
+  "mailgun": {
+    "privateKey":"YOUR_MAILGUN_KEY",
+    "domain":"YOUR_MAILGUN_DOMAIN"
+  },
+  "mongo": {
+    "address":"YOUR_MONGO_ADDRESS"
+  },
+  "reCaptcha": {
+    "privateKey":"G_RECAPTCHA_PRIVATE_KEY"
+  }
+}

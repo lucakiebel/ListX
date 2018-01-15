@@ -19,6 +19,9 @@
     <!-- Bootstrap Core CSS -->
     <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
+    <!-- Google reCAPTCHA v2 -->
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+
     <!-- Animate CSS -->
     <link rel="stylesheet" href="/stylesheets/animate.css">
 
@@ -29,7 +32,7 @@
     <link href="https://fonts.googleapis.com/css?family=Raleway:400,700" rel="stylesheet" type="text/css">
 
     <!-- Theme CSS -->
-    <link href="/stylesheets/dashboard.css" rel="stylesheet">
+    <link href="/stylesheets/login.css" rel="stylesheet">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -39,71 +42,68 @@
     <![endif]-->
 </head>
 <body class="login-bg">
-<div class="header">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <!-- Logo -->
-                <div class="logo" style="color: white">
-                    <h1><a href="/"><img src="/images/favicon.png" alt="<%=__("/ListX/UI/SiteName") %>" height="40px" style="margin-top: -12px">&nbsp;&nbsp;List<span class="x">X</span> <%= __("/ListX/UI/Index/signUp") %></a></h1>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 
-<div class="page-content container">
-    <div class="row">
+<div class="container">
+    <div class="row vertical-offset-100">
         <div class="col-md-4 col-md-offset-4">
-            <div class="login-wrapper">
-                <div class="box">
-                    <div class="content-wrap">
-                        <h6><%= __("/ListX/UI/Index/signUp") %></h6>
-                        <div class="alert alert-danger" id="signup-error" style="display: none">
-                            <strong><%= __("/ListX/UI/Index/error")%>: </strong> <%- __("/ListX/UI/SignUp/ErrorMessageServer") %>
-                        </div>
-                        <div class="alert alert-danger" id="email-error" style="display: none">
+            <div class="row center vertical-space-20">
+                <a href="/" class="listx">
+                    <h1 style="color: black"><img src="/images/favicon.png" alt="<%=__("/ListX/UI/SiteName") %>" height="40px">List<span class="x">X</span></h1>
+                </a>
+            </div>
+            <div class="row">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="center"><%= __("/ListX/UI/Index/signUp") %></h3>
+                        <div class="alert alert-danger signup-error" id="signup-error-email" style="display: none">
                             <strong><%= __("/ListX/UI/Index/error")%>: </strong> <%= __("/ListX/UI/SignUp/ErrorMessageEmail") %>
                         </div>
-                        <div class="alert alert-danger" id="password-error" style="display: none">
-                            <strong><%= __("/ListX/UI/Index/error")%>: </strong> <%= __("/ListX/UI/SignUp/ErrorMessagePasswordMatch") %>
+                        <div class="alert alert-danger signup-error" id="signup-error-server" style="display: none">
+                            <strong><%= __("/ListX/UI/Index/error")%>: </strong> <%- __("/ListX/UI/SignUp/ErrorMessageServer") %>
                         </div>
-                        <form onsubmit="return signupValidation(this);" method="post" class="form-horizontal" style="text-align: left !important;">
-                            <label for="form_name"><%= __("/ListX/UI/SignUp/enterYourName") %></label>
-                            <input type="text" class="form-control" name="name" id="form_name" required>
-
-                            <label for="form_email"><%= __("/ListX/UI/SignUp/enterYourEmail") %></label>
-                            <input class="form-control" type="email" name="email" id="form_email" required><br>
-
-                            <label for="form_password"><%= __("/ListX/UI/SignUp/enterYourPassword") %></label>
-                            <div class="pull-right" id="show-password"><i id="show-password-i" class="fa fa-eye-slash fa-lg" aria-hidden="true"></i></div>
-                            <input class="form-control" type="text" name="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" id="form_password" required>
-                            <div class="row" style="padding-bottom: 15px">
-                                <div class="col-sm-6">
-                                    <span id="8char" class="glyphicon glyphicon-remove" style="color:#FF0004;"></span> <%= __("/ListX/UI/PasswordRequirements/CharMin") %><br>
-                                    <span id="ucase" class="glyphicon glyphicon-remove" style="color:#FF0004;"></span> <%= __("/ListX/UI/PasswordRequirements/Uppercase") %>
+                        <div class="alert alert-danger signup-error" id="signup-error-rc" style="display: none">
+                            <strong><%= __("/ListX/UI/Index/error")%>: </strong> <%- __("/ListX/UI/SignUp/ErrorMessageRC") %>
+                        </div>
+                        <div class="alert alert-success" id="signup-success" style="display: none">
+                            <strong><%= __("/ListX/UI/Index/success")%>: </strong> <%- __("/ListX/UI/SignUp/SuccessMessage") %>
+                        </div>
+                        <div class="alert alert-danger signup-error" id="signup-error-disposable" style="display:none">
+                            <strong><%= __("/ListX/UI/Index/error") %></strong> <%= __("/ListX/UI/SignUp/ErrorMessageDisp")%>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <form accept-charset="UTF-8" role="form" id="signup-form">
+                            <fieldset>
+                                <div class="form-group">
+                                    <label for="form_name"><%= __("/ListX/UI/SignUp/enterYourName") %></label>
+                                    <input type="text" class="form-control" id="form_name" name="name" required>
                                 </div>
-                                <div class="col-sm-6">
-                                    <span id="lcase" class="glyphicon glyphicon-remove" style="color:#FF0004;"></span> <%= __("/ListX/UI/PasswordRequirements/Lowercase") %><br>
-                                    <span id="num" class="glyphicon glyphicon-remove" style="color:#FF0004;"></span> <%= __("/ListX/UI/PasswordRequirements/Number") %>
+                                <div class="form-group">
+                                    <label for="form_email"><%= __("/ListX/UI/Index/enterEmail") %></label>
+                                    <input class="form-control" id="form_email" name="email" type="email" required>
                                 </div>
-                            </div>
-
-                            <input type="submit" class="form-control btn btn-primary signup" value="<%= __("/ListX/UI/Index/signUp") %>">
+                                <div class="form-group">
+                                    <label for="form_password"><%= __("/ListX/UI/Index/enterPassword") %></label>
+                                    <div class="pull-right" id="show-password"><i id="show-password-i" class="fa fa-eye-slash fa-lg" aria-hidden="true"></i></div>
+                                    <input class="form-control" id="form_password" name="password" type="password" required>
+                                </div>
+                                <div class="g-recaptcha" data-sitekey="6Ld0czoUAAAAAJlIj1qpWg9KyZQlRWcLp58A1Oj2"></div>
+                                <input class="btn btn-lg btn-default btn-block" type="submit" value="<%= __("/ListX/UI/Index/signUp") %>">
+                            </fieldset>
                         </form>
                     </div>
                 </div>
-
                 <div class="already">
-                    <p><%= __("/ListX/UI/SignUp/alreadyAccount") %> </p>
-                    <a href="/login"><%= __("/ListX/UI/Index/logIn") %></a>
+                    <p><%= __("/ListX/UI/SignUp/alreadyAccount") %> <a href="/login" style="color: black"><%= __("/ListX/UI/Index/logIn") %></a></p>
+
                 </div>
             </div>
+
         </div>
     </div>
 </div>
 
-</body>
+
 
 <!-- jQuery -->
 <script src="/vendor/jquery/jquery.js"></script>
@@ -115,7 +115,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
 
 <!-- Theme JavaScript -->
-<script src="/javascripts/dashboard.js"></script>
 <script src="/javascripts/signup.js"></script>
 
+</body>
 </html>

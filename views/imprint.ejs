@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="<%=__("/ListX/UI/htmlLang") %>">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="<%=__("/ListX/UI/Index/SiteTitle") %>">
+    <meta name="author" content="Klequex Software & UX">
+    <meta name="keywords" content="List, Shopping List, Free, Grocery List, Holidays, Planing, Food, ListX">
+    <link rel="alternate" href="/language/en" hreflang="en">
+    <link rel="alternate" href="/language/de" hreflang="de">
+    <link rel="alternate" href="/language/fr" hreflang="fr">
+    <link rel="alternate" href="/language/nl" hreflang="nl">
+
+    <title><%=__("/ListX/UI/Index/SiteTitle") %></title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Animate CSS -->
+    <link rel="stylesheet" href="/stylesheets/animate.css">
+
+    <!-- Custom Fonts -->
+    <link href="/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Raleway:400,700" rel="stylesheet" type="text/css">
+
+    <!-- Theme CSS -->
+    <link href="/stylesheets/index.css" rel="stylesheet">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Cookieconsent for everyone!!! -->
+    <script type="text/javascript">
+        window.cookieconsent_options = {
+            "message": "<%=__("/ListX/UI/Index/Cookieconsent/Message") %>",
+            "dismiss": "<%=__("/ListX/UI/Index/Cookieconsent/Dismiss") %>",
+            "learnMore": "<%=__("/ListX/UI/Index/Cookieconsent/learnMore") %>",
+            "link": "/privacy",
+            "theme": "light-floating"
+        };
+    </script>
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent2/1.0.9/cookieconsent.min.js"></script>
+
+</head>
+
+<body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top" data-responsejs='{"create": [{"prop": "width", "prefix": "min-width- r src", "breakpoints": [0, 320, 481, 641, 961, 1025, 1281]}]}'>
+
+<!-- Navigation -->
+<nav class="navbar navbar-custom navbar-fixed-top" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-main-collapse">
+                Menu <i class="fa fa-bars"></i>
+            </button>
+            <a class="navbar-brand page-scroll color-visible" href="#page-top">
+                <img src="/images/favicon.png" alt="<%=__("/ListX/UI/SiteName") %>" class="navbar-brand-image"> &nbsp;&nbsp; List<span class="x">X</span>
+            </a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse  navbar-main-collapse">
+            <ul class="nav navbar-nav navbar-center">
+                <!-- Hidden li included to remove active class from about link when scrolled up past about section -->
+                <li class="hidden">
+                    <a href="#page-top"></a>
+                </li>
+                <li>
+                    <a class="page-scroll color-visible" href="/#about"><%= __("/ListX/UI/Index/learnMore") %></a>
+                </li>
+                <li>
+                    <a href="/#pricing" class="page-scroll color-visible"><%= __("/ListX/UI/Index/Pricing") %></a>
+                </li>
+                <li>
+                    <a class="color-visible" href="/demo"><%= __("/ListX/UI/Index/demo") %> </a>
+                </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right" id="user-interaction-navbar" style="float: right">
+                <li>
+                    <a href="/dashboard" class=" color-visible <%if(user){%><%="username-visible u-visible"%><%} else {%><%="username-invisible u-invisible"%><%}%>"><%= __("/ListX/UI/Index/dashboard") %></a>
+                    <a href="/signup" class="color-visible <%if(user){%><%="username-invisible u-invisible"%><%} else {%><%="username-visible u-visible"%><%}%>"><%= __("/ListX/UI/Index/signUp") %> </a>
+                </li>
+                <li class="dropdown">
+                    <a href="/user/settings" class="color-visible <%if(user){%><%="username-visible u-visible"%><%} else {%><%="username-invisible u-invisible"%><%}%>" id="login-ready"><%= __("/ListX/UI/Howdy")%><%if(user){%><%=", "+user.name %><%}%></a>
+                    <a href="/login" class="color-visible <%if(user){%><%="username-invisible u-invisible"%><%} else {%><%="username-visible u-visible"%><%}%>" id="login-dropdown-link"><%= __("/ListX/UI/Index/logIn") %> <i class="fa fa-sign-in" aria-hidden="true"></i></a>
+                </li>
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<div class="container">
+    <h1>Legal Disclosure</h1>Information in accordance with section 5 TMG<br /><br />
+    <p>Luca Kiebel<br />
+        Hermelinweg, 5<br />
+        48157 M&uuml;nster<br /></p>
+    <h2>Contact</h2>
+    <p>E-Mail: <a href="mailto:info@listx.io">info@listx.io</a><br />
+        Internetadress: <a href="https://listx.io" target="_blank">listx.io</a><br /></p>
+    <h2>Persons responsible for content in accordance with 55 Abs. 2 RStV</h2>
+    <p>Luca Kiebel <br />
+    </p>
+    <h2>Disclaimer</h2>
+    <h3>Accountability for content<br /></h3>
+    <p>The contents of our pages have been created with the utmost care. However, we cannot guarantee the contents' accuracy, completeness or topicality. According to statutory provisions, we are furthermore responsible for our own content on these web pages. In this context, please note that we are accordingly not obliged to monitor merely the transmitted or saved information of third parties, or investigate circumstances pointing to illegal activity. Our obligations to remove or block the use of information under generally applicable laws remain unaffected by this as per &sect;&sect; 8 to 10 of the Telemedia Act (TMG).</p><br /><br />
+    <h3>Accountability for links<br /></h3>
+    <p>Responsibility for the content of external links (to web pages of third parties) lies solely with the operators of the linked pages. No violations were evident to us at the time of linking. Should any legal infringement become known to us, we will remove the respective link immediately.<br /><br /></p>
+    <h3>Copyright<br /></h3>
+    <p>Our web pages and their contents are subject to German copyright law. Unless expressly permitted by law (&sect; 44a et seq. of the copyright law), every form of utilizing, reproducing or processing works subject to copyright protection on our web pages requires the prior consent of the respective owner of the rights. Individual reproductions of a work are allowed only for private use, so must not serve either directly or indirectly for earnings. Unauthorized utilization of copyrighted works is punishable (&sect; 106 of the copyright law).</p><br /><br />
+</div>
+<!-- Footer -->
+<footer class="footer footer-desktop" id="footer">
+    <div class="legal-logo">
+        <div class="col-md-2 text-left" id="footer-brand">
+            <a class="navbar-brand page-scroll brand-name" href="#page-top">
+                <img src="/images/favicon.png" alt="<%=__("/ListX/UI/Index/SiteName") %>" class="footer-brand-image text-white">&nbsp;&nbsp;<span style="color: white">List</span><span class="x">X</span>
+            </a>
+        </div>
+        <div class="col-md-2 vertical-divider-left" id="footer-links1">
+            <h5 class="footer-heading color-red"><%= __("/ListX/UI/Index/About") %></h5>
+            <a class="footer-link" href="/imprint"><h6><%=__("/ListX/UI/Index/imprint") %></h6></a>
+            <a class="footer-link" href="/privacy"><h6><%=__("/ListX/UI/Index/privacy") %></h6></a>
+            <a class="footer-link" href="/terms"><h6><%=__("/ListX/UI/Index/terms") %></h6></a>
+            <div class="inline  ">
+                <a href="/language/de" class="btn btn-default">DE</a>
+                <a href="/language/en" class="btn btn-default">EN</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-2" id="footer-links2">
+        <h5 class="footer-heading"><a href="/developer" class="color-red"><%=__("/ListX/UI/Index/developers") %></a></h5>
+        <h6><a class="footer-link" href="/docs"><%=__("/ListX/UI/Index/ApiDocs") %></a></h6>
+        <h6><a class="footer-link" href="https://github.com/lucakiebel/ListX"><%=__("/ListX/UI/Index/sourceCode") %></a></h6>
+        <h6><a href="https://npmjs.com/package/listx" class="footer-link">NPM</a></h6>
+        <h6><a href="/faq-dev" class="footer-link"><%=__("/ListX/UI/Index/faqDev")%></a></h6>
+    </div>
+    <div class="col-md-2" id="footer-links3">
+        <h5 class="footer-heading"><%=__("/ListX/UI/Index/resources") %></h5>
+        <h6><a class="footer-link" href="/support"><%=__("/ListX/UI/Index/support") %></a></h6>
+        <h6><a class="footer-link" href="/blog"><%=__("/ListX/UI/Index/blog") %></a></h6>
+        <h6><a class="footer-link" href="/guides"><%=__n("/ListX/UI/Index/guide", 0) %></a></h6>
+    </div>
+    <div class="col-md-2" id="footer-links4">
+        <h5 class="footer-heading">Links</h5>
+        <h6><a href="https://twitter.com/listx.io" class="footer-link">Twitter</a></h6>
+        <h6><a href="/signup" class="footer-link"><%=__("/ListX/UI/Index/signUp") %></a></h6>
+        <h6><a href="/demo" class="footer-link"><%=__("/ListX/UI/Index/demo") %></a></h6>
+        <h6><a href="" class="footer-link"></a></h6>
+    </div>
+    <div class="col-md-2"></div>
+    <div class="col-md-12 text-right bottom" id="companyLogoDiv">
+        <h5><a style="color: white" href="https://luca-kiebel.de" class="pull-right copy" id="companyLogo">&copy; Bleurque Inc.</a></h5>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/vendor/jquery/jquery.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/vendor/bootstrap/js/bootstrap.min.js"></script>
+
+<!-- Plugin JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
+
+<!-- Theme JavaScript -->
+<script src="/javascripts/index.js"></script>
+
+</body>
+</html>

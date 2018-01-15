@@ -77,6 +77,11 @@ a:focus {
   height: 40px;
   margin-top: -12px;
 }
+
+.footer-brand-image {
+  height: 40px;
+  margin-top: -12px;
+}
 .navbar-custom {
   margin-bottom: 0;
   border-bottom: 1px solid rgba(255, 255, 255, 0.3);
@@ -258,6 +263,10 @@ a:focus {
 .content-section {
   padding-top: 100px;
 }
+
+#pricing {
+  padding-top: 100px; !important;
+}
 .showcase-section {
   width: 100%;
   padding: 50px 0;
@@ -324,7 +333,13 @@ footer p {
 }
 footer {
   padding-bottom: 15px;
+  background: #2e3234;
 }
+
+.footer-desktop {
+  height: 32vh;
+}
+
 ::-moz-selection {
   text-shadow: none;
   background: #fcfcfc;
@@ -350,17 +365,26 @@ a.brand-name{
 }
 
 a.footer-link{
-  color: black;
+  color: white;
 
 }
 
 footer {
   padding: 20px;
-  background: white;
+  background: #2e3234;
+  color: white;
 }
 
 .vertical-divider-left {
-  border-left: 1px solid black;
+  border-left: 1px solid white;
+}
+
+@media (max-width: 767px) {
+  .vertical-divider-left {
+    border-left: none;
+    display: block;
+    right: 0 !important;
+  }
 }
 
 .vertical-divider-right {
@@ -413,4 +437,8 @@ a#login-submit:focus {
 .username-visible {
   display: block;
 }
-/*
+@media (max-width: 767px) {
+  .legal-logo {
+    display: inline-flex;
+  }
+}

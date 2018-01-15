@@ -16,20 +16,20 @@
 
     <title><%=__("/ListX/UI/Index/SiteTitle") %></title>
 
+    <link rel="preload" href="/images/preloader.gif" as="image">
+
+
+
     <!-- Bootstrap Core CSS -->
     <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
-    <!-- Animate CSS -->
-    <link rel="stylesheet" href="/stylesheets/animate.css">
+    <link rel="stylesheet" href="/stylesheets/dashboard.css">
 
     <!-- Custom Fonts -->
     <link href="/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Raleway:400,700" rel="stylesheet" type="text/css">
-
-    <!-- Theme CSS -->
-    <link href="/stylesheets/dashboard.css" rel="stylesheet">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -40,71 +40,97 @@
 
     <!-- jQuery -->
     <script src="/vendor/jquery/jquery.js"></script>
+    <!-- Theme JavaScript -->
+    <script src="/javascripts/dashboard.js"></script>
+    <script>
+        const userId = "<%= user._id %>";
+
+    </script>
 </head>
 <body>
+<!-- Navigation -->
+<div class="container">
+    <nav class="navbar navbar-custom navbar-fixed-top" role="navigation" style="margin-top: 14px">
+        <div class="container">
 
-<div class="header">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-5">
-                <!-- Logo -->
-                <div class="logo" style="color: white">
-                    <h1><a href="/"><img src="/images/favicon.png" alt="<%=__("/ListX/UI/SiteName") %>" height="40px" style="margin-top: -12px">&nbsp;&nbsp;List<span class="x">X</span> <%= __("/ListX/UI/Index/dashboard") %></a></h1>
-                </div>
+            <div class="navbar-header">
+                <a href="/" class="header-image">
+                    <img src="/images/favicon.png" alt="<%=__("/ListX/UI/SiteName") %>" height="40px">
+                </a>
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-main-collapse">
+                    Menu <i class="fa fa-bars"></i>
+                </button>
+
             </div>
-            <div class="col-md-5">
-            </div>
-            <div class="col-md-2">
-                <div class="navbar navbar-inverse" role="banner">
-                    <nav class="collapse navbar-collapse bs-navbar-collapse navbar-right" role="navigation">
-                        <ul class="nav navbar-nav">
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><%= __("/ListX/UI/Dashboard/myAccount") %> <b class="caret"></b></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="/user/settings"><%= __("/ListX/UI/Dashboard/Settings") %> <i class="fa fa-cog fa-lg" aria-hidden="true"></i></a></li>
-                                    <li><a href="/feedback"><%= __("/ListX/UI/Dashboard/Feedback") %> <i class="fa fa-commenting fa-lg" aria-hidden="true"></i></a></li>
-                                    <li><a href="/logout"><%= __("/ListX/UI/Dashboard/Logout") %> <i class="fa fa-sign-out fa-lg" aria-hidden="true"></i></a></li>
-                                </ul>
-                            </li>
+
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse  navbar-main-collapse">
+                <ul class="nav navbar-nav">
+                    <!-- Hidden li included to remove active class from about link when scrolled up past about section -->
+                    <li>
+                        <a href="/dashboard"><%= __("/ListX/UI/Dashboard/Lists") %></a>
+                    </li>
+                    <li>
+                        <a href="/devs">Developers</a>
+                    </li>
+                    <li>
+                        <a href="/docs/api">API</a>
+                    </li>
+                    <li>
+                        <a href="/support"><%= __("/ListX/UI/Index/support") %></a>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><%= __("/ListX/UI/Dashboard/myAccount") %> <b class="caret"></b></a>
+                        <ul class="dropdown-menu dropdown-element">
+                            <li><a href="/user/settings"><%= __("/ListX/UI/Dashboard/Settings") %></a></li>
+                            <li><a href="/feedback"><%= __("/ListX/UI/Dashboard/Feedback") %></a></li>
+                            <li><a href="/logout"><%= __("/ListX/UI/Dashboard/Logout") %></a></li>
                         </ul>
-                    </nav>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="page-content">
-    <div class="row">
-        <div class="col-md-2">
-            <div class="sidebar content-box" style="display: block;">
-                <ul class="nav">
-                    <!-- Main menu -->
-                    <li><a href="/"><i class="glyphicon glyphicon-home"></i> <%= __("/ListX/UI/Index/home") %></a></li>
-                    <li class="current"><a href="/dashboard"><i class="glyphicon glyphicon-list-alt"></i> <%= __("/ListX/UI/Dashboard/Lists") %></a></li>
-                    <li><a href="/user"><i class="glyphicon glyphicon-user"></i> <%= user.name %></a></li>
-                    <li><a href="/support"><i class="glyphicon glyphicon-question-sign"></i> <%= __("/ListX/UI/Index/support") %></a></li>
+                    </li>
                 </ul>
             </div>
+            <!-- /.navbar-collapse -->
         </div>
-        <div class="col-md-10">
-            <div class="row">
-                <h2 class="col-sm-1"><%= __("/ListX/UI/Dashboard/Lists") %></h2>
-                <form class="col-sm-3" style="margin-top: 20px">
-                    <input type="text" class="form-control" id="search-input" placeholder="<%= __("/ListX/UI/Dashboard/Search") %>">
-                </form>
+        <!-- /.container -->
+    </nav>
 
-                <h2 class="col-sm-2 pull-right" data-toggle="modal" data-target="#new-list-modal"><i class="fa fa-plus-circle fa-lg" aria-hidden="true"></i> <%= __("/ListX/UI/Dashboard/NewList") %></h2>
+</div>
+<div class="container">
+    <div class="listx-content">
+        <!-- Content -->
+
+        <div class="row">
+            <div class="col-md-4">
+                <h1>Lists</h1>
             </div>
+            <div class="col-md-5 col-md-offset-3">
+                <form class="navbar-form navbar-left" role="search">
+                    <div class="form-group">
+                        <input type="text" class="form-control input-lg" placeholder="Search Lists by Name" id="search-lists">
+                        <a href="#" class="btn btn-lg btn-default" data-toggle="modal" data-target="#newListModal">New List</a>
+                    </div>
+                </form>
+            </div>
+        </div>
 
-            <div class="modal fade" id="new-list-modal" role="dialog">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button class="close" type="button" data-dismiss="modal">&times;</button>
-                            <h4 class="modal-title"> <%= __("/ListX/UI/Dashboard/ListModal/HeaderText") %></h4>
-                        </div>
-                        <div class="modal-body">
+        <hr>
+
+        <div class="container" id="list-container">
+            <!-- Repeat Div for every List -->
+        </div>
+
+
+        <!-- New List Modal -->
+        <div class="modal fade" id="newListModal" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button class="close" type="button" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title"> <%= __("/ListX/UI/Dashboard/ListModal/HeaderText") %></h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
                             <div class="col-md-10 col-md-offset-1">
                                 <form role="form" class="form-horizontal" onsubmit="return false;">
                                     <div class="form-group">
@@ -113,82 +139,29 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="new-users"><a href="javascript:void(0)" data-toggle="popover" data-content="<%= __("/ListX/UI/Dashboard/ListModal/Form/UsersHelper") %>"><%= __("/ListX/UI/Dashboard/ListModal/Form/Users") %> <i class="fa fa-info-circle"></i></a></label>
-                                        <textarea class="form-control" rows="5" id="new-users" name="users" autocorrect="off" autocapitalize="off" spellcheck="false"></textarea>
+                                        <textarea class="form-control" rows="5" id="new-users" name="users" spellcheck="false"></textarea>
                                     </div>
                                     <div class="form-group">
                                         <label for="new-country"><%= __("/ListX/UI/Dashboard/ListModal/Form/Country") %></label>
-                                        <select class="input-medium bfh-countries form-control" id="new-country" data-country="DE" required></select>
+                                        <select class="input-medium bfh-countries form-control" id="new-country" data-country="<%= __("/ListX/UI/htmlLang") %>" required></select>
                                     </div>
                                     <input type="hidden" value="<%= user._id %>" id="new-admin">
                                     <input type="submit" id="new-submit" class="btn btn-default btn-block" value="<%= __("/ListX/UI/Dashboard/ListModal/Form/Submit") %>">
                                 </form>
                             </div>
                         </div>
-                        <div class="modal-footer">
-
-                        </div>
                     </div>
-                </div>
-            </div>
+                    <div class="modal-footer">
 
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="row">
-                        <% if (user.lists.length > 0) { %>
-                        <% for (var i = 0; i <= user.lists.length -1; i++) { %>
-                        <%= user.lists[i]._id %>
-                        <!-- /list/ -->
-                        <div class="col-md-6">
-                            <div class="content-box-header">
-                                <div class="panel-title"><a href="/lists/<%= user.lists[i]._id %>"><%= i._id %></a></div>
-
-                                <div class="panel-options">
-                                    <a href="/lists/<%= user.lists[i]._id %>/settings"><i class="glyphicon glyphicon-cog"></i></a>
-                                    <a href="#" ><i class="glyphicon glyphicon-remove-circle"></i></a>
-                                </div>
-                            </div>
-                            <div class="content-box-large box-with-header">
-                                <h4>Items: <span id="itemCount-<%= user.lists[i]._id %>"></span></h4>
-                                <h4>User: {USERS*4}</h4>
-                                <br>
-                            </div>
-                            <script>
-                                $.get("/api/lists/<%= user.lists[i]._id %>/itemCount", function (data) {
-                                    $("#itemCount-<%= user.lists[i]._id %>").html(data);
-                                });
-                            </script>
-                        </div>
-                        <!-- ./list/ -->
-                        <% }} else { %>
-                            <%- "<div class=\"col-md-6\"><h3>No Lists found, create one!</h3></div>"%>
-                        <% }%>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-md-12 panel-warning">
-                    <div class="content-box-header panel-heading">
-                        <div class="panel-title ">New vs Returning Visitors</div>
-
-                        <div class="panel-options">
-                            <a href="#" data-rel="collapse"><i class="glyphicon glyphicon-refresh"></i></a>
-                            <a href="#" data-rel="reload"><i class="glyphicon glyphicon-cog"></i></a>
-                        </div>
-                    </div>
-                    <div class="content-box-large box-with-header">
-                        <% for (var i in user.lists) { %>
-                        <%= i %>
-                        <% } %>
-                        <br /><br />
                     </div>
                 </div>
             </div>
         </div>
+        <!-- New List Modal -->
+
+
     </div>
 </div>
-
-
 
 
 <!-- Bootstrap Core JavaScript -->
@@ -199,8 +172,6 @@
 <script src="/vendor/bs-form-helpers/js/bootstrap-formhelpers-countries.js"></script>
 <script src="/vendor/bs-form-helpers/js/lang/<%=__("/ListX/UI/Links/JS/CountryPicker")%>"></script>
 
-<!-- Theme JavaScript -->
-<script src="/javascripts/dashboard.js"></script>
 
 
 </body>

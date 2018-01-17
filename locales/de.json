@@ -86,7 +86,7 @@
   "/ListX/UI/Dashboard/Logout": "Ausloggen",
   "/ListX/UI/Dashboard/Lists": "Listen",
   "/ListX/UI/Dashboard/Search": "Suche",
-  "/ListX/UI/Dashboard/NewList": "Neu",
+  "/ListX/UI/Dashboard/NewList": "Neue Liste",
   "/ListX/UI/Dashboard/ListModal/HeaderText": "Erstelle eine neue Liste",
   "/ListX/UI/Dashboard/ListModal/Form/Name":"Name",
   "/ListX/UI/Dashboard/ListModal/Form/Users":"Nutzer Hinzufügen",
@@ -134,6 +134,7 @@
   "/ListX/UI/passwordReset/passwordResetSuccess": "Dein Passwort wurde erfolgreich geändert.",
   "/ListX/UI/resetExpired": "Dein Password-Resetlink ist abgelaufen, bitte gib deine E-Mail erneut ein.",
   "/ListX/UI/Dashboard/Login/loginValidError": "Deine E-Mail Adresse ist noch nicht bestätigt. Bitte überprüfe deinen Posteingang.",
-  "/ListX/UI/SignUp/ErrorMessageDisp": "Bitte keine wegwerf-Email Adressen nutzen!"
+  "/ListX/UI/SignUp/ErrorMessageDisp": "Bitte keine wegwerf-Email Adressen nutzen!",
+  "/ListX/UI/Dashboard/SearchLists": "Suche Listen nach Namen"
 
 }

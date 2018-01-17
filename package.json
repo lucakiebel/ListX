@@ -33,11 +33,5 @@
   },
   "keywords": [
     "Lists"
-  ],
-  "author": "SoluKitchen UG (solukitchen.com)",
-  "license": "LGPL-3.0",
-  "bugs": {
-    "url": "https://github.com/lucakiebek/ListX/issues"
-  },
-  "homepage": "https://listx.io"
+  ]
 }

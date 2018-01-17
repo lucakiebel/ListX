@@ -86,7 +86,7 @@
   "/ListX/UI/Dashboard/Logout": "Logout",
   "/ListX/UI/Dashboard/Lists": "Lists",
   "/ListX/UI/Dashboard/Search": "Search",
-  "/ListX/UI/Dashboard/NewList": "New",
+  "/ListX/UI/Dashboard/NewList": "New List",
   "/ListX/UI/Dashboard/ListModal/HeaderText": "Create a new List",
   "/ListX/UI/Dashboard/ListModal/Form/Name":"Name",
   "/ListX/UI/Dashboard/ListModal/Form/Users":"Add Users",
@@ -134,6 +134,6 @@
   "/ListX/UI/passwordReset/passwordResetSuccess": "Your password was changed successfully.",
   "/ListX/UI/resetExpired": "Your Password reset link has expired, please enter your email again.",
   "/ListX/UI/Dashboard/Login/loginValidError": "Your email address is not validated yet. Please check your inbox.",
-  "/ListX/UI/SignUp/ErrorMessageDisp": "Please use a non-disposable email-address!"
-
+  "/ListX/UI/SignUp/ErrorMessageDisp": "Please use a non-disposable email-address!",
+  "/ListX/UI/Dashboard/SearchLists": "Search lists by name"
 }

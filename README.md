@@ -89,7 +89,7 @@ We use [GitHub](https://github.com) for versioning. For the versions available, 
 
 ## License
 
-This project is licensed under the GNU Lesser General Public License v3.0 - see the [LICENSE.md](LICENSE.md) file for details
+[![License: CC BY-NC-SA 4.0](https://licensebuttons.net/l/by-nc-sa/4.0/80x15.png)](http://creativecommons.org/licenses/by-nc-sa/4.0/)
 
 ## Copyright
 
@@ -98,6 +98,11 @@ ListX is digital property of Luca Kiebel, Copyright © 2017
 ## Acknowledgments
 
 * Hat tip to anyone who's code was used, especially to all the NPM Package authors
+<<<<<<< HEAD
 * Inspiration
 * defaultAcks.md
+=======
+* Feedback from my family and friends who tested the app in Alpha stage
+* Special Thanks to [@julianuphoff](https://github.com/julianuphoff)
+>>>>>>> 4a849f423dacdba5955aed0496702ac8442f9ec9
 

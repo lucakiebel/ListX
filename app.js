@@ -78,7 +78,7 @@ console.info("ListX Started on http://"+DOMAIN);
 
 mail({
     from: `testing-support`,
-    to: "testdevelopment@luca-kiebel.de",
+    to: DEV_MAIL,
     subject: "New ListX instance spawned",
     body: `Hey, friend! \nA new Instance of ListX has just been spawned at ${new Date().toLocaleString()}! \nListX Team`,
     send: true

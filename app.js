@@ -109,6 +109,9 @@ const User = mongoose.model('User', {
     alphaTester: {type: Boolean, default: false},
     betaTester: {type: Boolean, default: false},
     validated: {type: Boolean, default: false},
+    address: String,
+    zipCode: String,
+    country: String,
     additionalFields: []
 });
 
@@ -512,7 +515,7 @@ app.get('/user', requireLogin, (req, res) => {
 
 
 // Invitations page for invited users to join a family and "sign up"
-app.get('/list/:id/invitations/:invId/:email/:name', (req, res) => {
+app.get('/list/:id/invitations/:invId', (req, res) => {
     List.findOne({_id: req.params.id}, function (err, list) {
         if (err) {
             res.render('index', {error: 'List not found!', translate: res});
@@ -526,12 +529,24 @@ app.get('/list/:id/invitations/:invId/:email/:name', (req, res) => {
                     return e._id;
                 }).indexOf(inv._id)) {
                 // List exists and has an invitation for :name
-                res.render('signup', {
-                    list: req.params.id,
-                    email: req.params.email,
-                    name: req.params.name,
-                    translate: res
-                })
+                // find user by inv id
+                User.findOne({email: inv.email}, (err, user) => {
+                    if (user) {
+                        User.findOneAndUpdate({_id: user._id}, {$push: {lists: inv.list}}, (err, update) => {
+                            if (!err) {
+
+                                res.render("login", {email: user.email});
+                            }
+                        });
+                    } else {
+                        res.render('signup', {
+                            list: req.params.id,
+                            email: req.query.email,
+                            name: req.query.name
+                        });
+                    }
+                });
+
             }
             else res.render('index', {error: 'Invitation not associated with List!', translate: res});
         });
@@ -879,7 +894,7 @@ app.get('/api/users/:id/lists/:query', (req, res) => {
                 .then(function (gotLists) {
                     let matching = [];
                     gotLists.forEach(l => {
-                        if (l.name.indexOf(req.params.query) !== -1) {
+                        if (l.name.toLowerCase().indexOf(req.params.query.toLowerCase()) !== -1) {
                             matching.push(l);
                         }
                     });
@@ -987,10 +1002,10 @@ app.post("/api/users/addListBulk", (req, res) => {
 
 // email Change
 app.post("/api/user/changeEmail", (req, res) => {
-    let newEmail = req.body.newEmail;
-    let userId = req.body.userId;
+    const newEmail = req.body.newEmail;
+    const userId = req.body.userId;
     // send verification email to current email address
-    User.findOneById(userId, (err, user) => {
+    User.findById(userId, (err, user) => {
         EmailReset.create({userId:user._id}, (err, reset) => {
             let long = `https://${DOMAIN}/user/change-email/${reset._id}?newEmail=${newEmail}`;
             linkShortener(long, null, (URL) => {
@@ -1001,7 +1016,9 @@ app.post("/api/user/changeEmail", (req, res) => {
                 mailData.subject = `ListX Email Change`;
                 mailData.body = `Hey ${user.name}, \nTo change your ListX email address, follow the link below: \n${URL} (Voids in 45 minutes)\n\nIf you didn't request an email address change, please consider resetting your password (${resetLink}) \nListX Support`;
                 mailData.send = true;
+                mail(mailData);
             });
+            res.json({success:true, set:!!newEmail});
         });
     })
 
@@ -1052,6 +1069,19 @@ app.post("/api/user/changeUsername", (req, res) => {
     });
 });
 
+
+app.post("/api/user/changeAddress", (req, res) => {
+    let addr = {
+        a: req.body.address,
+        z: req.body.zipCode,
+        c: req.body.country
+    };
+    User.findOneAndUpdate({_id: req.body.userId}, {$set: {address:addr.a, zipCode: addr.z, country: addr.c}}, (err, update) => {
+        if (!err && update) {
+            res.json({success:true, update:addr});
+        } 
+    });
+});
 
 // private information deletion
 
@@ -1216,13 +1246,13 @@ function userExists(id, mail) {
 
     function byId(id) {
         User.find({_id: id}, function (err, user) {
-            return !Boolean(err);
+            return !err;
         });
     }
 
     function byMail(mail) {
         User.find({email: mail}, function (err, user) {
-            return !Boolean(err);
+            return !err;
         });
     }
 }

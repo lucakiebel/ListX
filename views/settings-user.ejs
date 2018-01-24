@@ -1,43 +1,10 @@
 <!DOCTYPE html>
 <html lang="<%=__("/ListX/UI/htmlLang") %>">
 <head>
-
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="<%=__("/ListX/UI/Index/SiteTitle") %>">
-    <meta name="author" content="Klequex Software & UX">
-    <meta name="keywords" content="List, Shopping List, Free, Grocery List, Holidays, Planing, Food, ListX">
-    <link rel="alternate" href="/language/en" hreflang="en-uk">
-    <link rel="alternate" href="/language/en" hreflang="en-us">
-    <link rel="alternate" href="/language/de" hreflang="de">
-    <link rel="alternate" href="/language/fr" hreflang="fr">
-    <link rel="alternate" href="/language/nl" hreflang="nl">
-
-    <title><%=__("/ListX/UI/Index/SiteTitle") %></title>
-
-
-
-    <!-- Bootstrap Core CSS -->
-    <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <%- include partials/head.ejs%>
+    <title>User Settings - <%=__("/ListX/UI/Index/SiteTitle") %></title>
 
     <link rel="stylesheet" href="/stylesheets/settings-user.css">
-
-    <!-- Custom Fonts -->
-    <link href="/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/css?family=Raleway:400,700" rel="stylesheet" type="text/css">
-
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-    <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
-    <![endif]-->
-
-    <!-- jQuery -->
-    <script src="/vendor/jquery/jquery.js"></script>
     <!-- Theme JavaScript -->
     <script src="/javascripts/settings-user.js"></script>
     <script>
@@ -46,53 +13,7 @@
 </head>
 <body>
 <!-- Navigation -->
-<div class="container">
-    <nav class="navbar navbar-custom navbar-fixed-top" role="navigation" style="margin-top: 14px">
-        <div class="container">
-
-            <div class="navbar-header">
-                <a href="/" class="header-image">
-                    <img src="/images/favicon.png" alt="<%=__("/ListX/UI/SiteName") %>" height="40px">
-                </a>
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-main-collapse">
-                    Menu <i class="fa fa-bars"></i>
-                </button>
-
-            </div>
-
-
-            <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse  navbar-main-collapse">
-                <ul class="nav navbar-nav">
-                    <!-- Hidden li included to remove active class from about link when scrolled up past about section -->
-                    <li>
-                        <a href="/dashboard"><%= __("/ListX/UI/Dashboard/Lists") %></a>
-                    </li>
-                    <li>
-                        <a href="/devs">Developers</a>
-                    </li>
-                    <li>
-                        <a href="/docs/api">API</a>
-                    </li>
-                    <li>
-                        <a href="/support"><%= __("/ListX/UI/Index/support") %></a>
-                    </li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><%= __("/ListX/UI/Dashboard/myAccount") %> <b class="caret"></b></a>
-                        <ul class="dropdown-menu dropdown-element">
-                            <li><a href="/user/settings"><%= __("/ListX/UI/Dashboard/Settings") %></a></li>
-                            <li><a href="/feedback"><%= __("/ListX/UI/Dashboard/Feedback") %></a></li>
-                            <li><a href="/logout"><%= __("/ListX/UI/Dashboard/Logout") %></a></li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-            <!-- /.navbar-collapse -->
-        </div>
-        <!-- /.container -->
-    </nav>
-
-</div>
+<%- include partials/navigation.ejs %>
 <div class="container">
     <div class="listx-content">
         <!-- Content -->
@@ -110,44 +31,51 @@
                 <div class="form-row">
                     <div class="form-group col-md-4 input-group-lg pr30">
                         <label for="inputEmail">Email</label>
-                        <input type="email" class="form-control" id="inputEmail" placeholder="Email" value="<%=user.email%>">
-                    </div>
-                    <div class="form-group col-md-4 input-group-lg pr30">
-                        <label for="inputName">Name</label>
-                        <input type="text" class="form-control" id="inputName" placeholder="Name" value="<%=user.name%>">
-                    </div>
-                    <div class="form-group col-md-4 input-group-lg pr30">
-                        <label for="inputAddress">Username</label>
-                        <input type="text" class="form-control" id="inputUsername" placeholder="Username" value="<%=user.username ? user.username : "" %>" disabled data-container="body" data-toggle="popover" data-placement="top" data-trigger="click" data-content="You can only change your Username once a year.">
+                        <div class="input-group input-group-lg">
+                            <input type="email" class="form-control" id="inputEmail" placeholder="Email" value="<%=user.email%>" disabled title="Check your current email!" data-placement="top">
+                            <div class="input-group-addon" id="email-change-button"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></div>
+                        </div>
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group col-md-4 input-group-lg pr30">
-                        <label for="inputAddress2">Address</label>
-                        <input type="text" class="form-control" id="inputAddress2" placeholder="1234 Main Blvd">
+                        <label for="inputName">Name</label>
+                        <div class="input-group input-group-lg">
+                            <input type="text" class="form-control" id="inputName" placeholder="Name" value="<%=user.name%>" disabled>
+                            <div class="input-group-addon" id="name-change-button"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></div>
+                        </div>
                     </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-4 input-group-lg pr30">
+                        <label for="inputAddress">Username</label>
+                        <div class="input-group input-group-lg">
+                            <input type="text" class="form-control" id="inputUsername" placeholder="Username" value="<%=user.username ? user.username : "" %>" disabled data-container="body" data-toggle="popover" data-placement="top" data-trigger="click" data-content="You can only change your Username once a year.">
+                            <div class="input-group-addon" id="username-change-button"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="divider"></div>
+                <div class="form-row">
+                    <div class="form-group col-md-4 input-group-lg pr30">
+                        <label for="inputAddress2">Address</label>
+                        <input type="text" class="form-control" id="inputAddress" placeholder="1234 Main Blvd">
+                    </div>
+                </div>
+                <div class="form-row">
                     <div class="form-group col-md-4 input-group-lg pr30">
                         <label for="inputZip">Zip</label>
                         <input type="text" class="form-control" id="inputZip" placeholder="11550">
                     </div>
+                </div>
+                <div class="form-row">
                     <div class="form-group col-md-4 input-group-lg pr30">
                         <label for="inputCountry">Country</label>
                         <input type="text" class="form-control" id="inputCountry" placeholder="United States">
                     </div>
                 </div>
                 <div class="form-row">
-
-                    <div class="form-group col-md-6 input-group-lg pr30">
-                        <label for="inputState">State</label>
-                        <input type="text" class="form-control" id="inputState" placeholder="NY" disabled>
-                    </div>
-                    <div class="form-group col-md-6 input-group-lg pr30">
-                        <label for="inputCity">City</label>
-                        <input type="text" class="form-control" id="inputCity" placeholder="Hempstead" disabled>
-                    </div>
-                </div>
-                <div class="form-row">
-                    <button type="submit" class="btn btn-default btn-lg">Save</button>
+                    <button type="button" id="save-address-button" class="btn btn-default btn-lg">Save Address</button>
                 </div>
                 <br>
                 <hr class="separator">

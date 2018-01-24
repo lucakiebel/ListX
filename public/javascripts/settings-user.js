@@ -19,4 +19,68 @@ $(document).ready(function() {
 			}
 		});
 	});
+
+	/**
+	 * Change-Buttons
+	 */
+	$("#email-change-button").click(() => {
+		let input = $("#inputEmail");
+		input.prop("disabled", false);
+		input.keypress((e) => {
+			if (e.which === 13) {
+				e.preventDefault();
+				$.post("/api/user/changeEmail", {userId: userId, newEmail: input.val()}, (data) => {
+					if (data.success) {
+						input.tooltip('show');
+						setTimeout(() => {input.tooltip('destroy'); input.prop("disabled", true);}, 3000);
+					}
+				});
+			}
+		});
+	});
+
+	$("#name-change-button").click(() => {
+		let input = $("#inputName");
+		input.prop("disabled", false);
+		input.keypress((e) => {
+			if (e.which === 13) {
+				e.preventDefault();
+				$.post("/api/user/changeName", {userId: userId, newEmail: input.val()}, (data) => {
+					if (data.success) {
+						input.tooltip('show');
+						setTimeout(() => {input.tooltip('destroy'); input.prop("disabled", true);}, 3000);
+					}
+				});
+			}
+		});
+	});
+
+	$("#username-change-button").click(() => {
+		let input = $("#inputUsername");
+		input.prop("disabled", false);
+		input.keypress((e) => {
+			if (e.which === 13) {
+				e.preventDefault();
+				$.post("/api/user/changeUserame", {userId: userId, newEmail: input.val()}, (data) => {
+					if (data.success) {
+						input.tooltip('show');
+						setTimeout(() => {input.tooltip('destroy'); input.prop("disabled", true);}, 3000);
+					}
+				});
+			}
+		});
+	});
+
+	$("#save-address-button").click(() => {
+		console.log("Address Save Button Clicked!");
+		let addr = $("#inputAddress");
+		let zip = $("#inputZip");
+		let ctry = $("#inputCountry");
+		$.post("/api/user/changeAddress", {address: addr.val(), zipCode: zip.val(), country: ctry.val()}, (data) => {
+			if (data.success) {
+				console.log("Address successfully changed!")
+			}
+		});
+	});
+
 });

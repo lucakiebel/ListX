@@ -1,55 +1,55 @@
 $(document).ready(function(){
-    const listsDiv = $('#list-container');
-    listsDiv.html("<img height=\"20px\" src=\"/images/preloader.gif\" alt='Loading'></img>");
+	const listsDiv = $('#list-container');
+	listsDiv.html("<img height=\"20px\" src=\"/images/preloader.gif\" alt='Loading'></img>");
 	getLists("");
 
-    $(".dropdown").hover(
-        function() {
-            $('.dropdown-menu', this).stop( true, true ).fadeIn("fast");
-            $(this).toggleClass('open');
-            $('b', this).toggleClass("caret caret-up");
-        },
-        function() {
-            $('.dropdown-menu', this).stop( true, true ).fadeOut("fast");
-            $(this).toggleClass('open');
-            $('b', this).toggleClass("caret caret-up");
-        });
+	$(".dropdown").hover(
+		function() {
+			$('.dropdown-menu', this).stop( true, true ).fadeIn("fast");
+			$(this).toggleClass('open');
+			$('b', this).toggleClass("caret caret-up");
+		},
+		function() {
+			$('.dropdown-menu', this).stop( true, true ).fadeOut("fast");
+			$(this).toggleClass('open');
+			$('b', this).toggleClass("caret caret-up");
+		});
 
-    $("#search-lists").on("input change keyup paste", e => {
-    	console.log("event");
-    	e.preventDefault();
+	$("#search-lists").on("input change keyup paste", e => {
+		console.log("event");
+		e.preventDefault();
 		getLists($("#search-lists").val());
 	});
 
 
-    function deleteList(list) {
-        console.log("Deleting " + list);
-        let delURL,r;
-        if(list.admin === userId) {
-            delURL = "/api/lists/"+list._id+"/admin";
-        } else {
-            delURL = "/api/lists/"+list._id;
-        }
-        $.ajax({
-            url: delURL,
-            type: 'DELETE',
-            success: function(result) {
-            	console.log(result);
-                getLists("");
-            }
-        });
-    }
+	function deleteList(list) {
+		console.log("Deleting " + list);
+		let delURL,r;
+		if(list.admin === userId) {
+			delURL = "/api/lists/"+list._id+"/admin";
+		} else {
+			delURL = "/api/lists/"+list._id;
+		}
+		$.ajax({
+			url: delURL,
+			type: 'DELETE',
+			success: function(result) {
+				console.log(result);
+				getLists("");
+			}
+		});
+	}
 
 
-    function getLists(query) {
+	function getLists(query) {
 
 		let listsDiv = $("#list-container");
 
-        // show preloader gif
+		// show preloader gif
 		listsDiv.html("<img height=\"20px\" src=\"/images/preloader.gif\" alt='Loading'></img>");
 
 		query = query || "";
-    	let url = query === "" ? "/api/users/" + userId + "/lists" : "/api/users/" + userId + "/lists/" + query;
+		let url = query === "" ? "/api/users/" + userId + "/lists" : "/api/users/" + userId + "/lists/" + query;
 
 		let peter = function (list) {
 			return new Promise((resolve, reject) => {
@@ -76,17 +76,17 @@ $(document).ready(function(){
 			})
 		};
 
-        $.get(url, function (data) {
-            if (data.success === true) {
-                console.log("Lists found!");
-                listsArray = [];
+		$.get(url, function (data) {
+			if (data.success === true) {
+				console.log("Lists found!");
+				listsArray = [];
 				let tmp = [];
-                data.lists.forEach((list) => {
-                    if (!data.lists || data.lists.length === 0) {
-                        listsDiv.html('<div class="alert alert-warning" role="alert"><strong>No Lists found!</strong> Create one!</div>');
-                    }
-                    tmp.push(peter(list));
-                });
+				data.lists.forEach((list) => {
+					if (!data.lists || data.lists.length === 0) {
+						listsDiv.html('<div class="alert alert-warning" role="alert"><strong>No Lists found!</strong> Create one!</div>');
+					}
+					tmp.push(peter(list));
+				});
 				Promise.all(tmp)
 					.then((listsArray) => {
 						console.log("ListsArray: ", JSON.stringify(listsArray));
@@ -95,14 +95,14 @@ $(document).ready(function(){
 					})
 
 
-            }
-            else {
-                console.log("No Lists found! ", data.code);
-                let message = data.error;
-                listsDiv.html('<div class="nolist" style="text-align: center; align-items: center; padding-top: 30px; padding-bottom: 30px"><h2>'+message+'</h2></div>')
-            }
-        });
-    }
+			}
+			else {
+				console.log("No Lists found! ", data.code);
+				let message = data.error;
+				listsDiv.html('<div class="nolist" style="text-align: center; align-items: center; padding-top: 30px; padding-bottom: 30px"><h2>'+message+'</h2></div>')
+			}
+		});
+	}
 
 
 
@@ -127,50 +127,50 @@ $(document).ready(function(){
 
 	$('[data-toggle="popover"]').popover();
 
-    $("#new-submit").click(function () {
-        const name = $("#new-name").val();
-        const users = $("#new-users").val().split(",");
-        const country = $("#new-country").val();
-        const admin = $("#new-admin").val();
-        console.log("Name: "+ name + " Users: " + users + " Country: " + country + " Admin: " +admin);
-        if(name !== ""){
-            $.post("/api/lists", {
-                name: name,
-                country: country,
-                admin: admin
-            }, function (data) {
-                console.log(data);
-                if (data.success === true){
-                    let id = data.id;
-                    $.post("/api/invitations/array", {
-                    	list: id,
+	$("#new-submit").click(function () {
+		const name = $("#new-name").val();
+		const users = $("#new-users").tagsinput('items');
+		const country = $("#new-country").val();
+		const admin = $("#new-admin").val();
+		console.log("Name: "+ name + " Users: " + users + " Country: " + country + " Admin: " +admin);
+		if(name !== ""){
+			$.post("/api/lists", {
+				name: name,
+				country: country,
+				admin: admin
+			}, function (data) {
+				console.log(data);
+				if (data.success === true){
+					let id = data.id;
+					$.post("/api/invitations/array", {
+						list: id,
 						invs: users
 					}, data => {
 						// data = [inv1,inv2]
 						if (data.success === true) {
 							// add list to all existing clients
-                            let diff = $(users).not(data.invs).get();
-                            console.log("Users: "+users);
-                            console.log("Invs:"+data.invs);
-                            console.log("Difference: "+diff);
-                             $.post("/api/users/addListBulk", {list: id, emails: diff}, data => {
-                             	if (data.success === true) {
-                             		// all lists added to already known users
+							let diff = $(users).not(data.invs).get();
+							console.log("Users: "+users);
+							console.log("Invs:"+data.invs);
+							console.log("Difference: "+diff);
+							$.post("/api/users/addListBulk", {list: id, emails: diff}, data => {
+								if (data.success === true) {
+									// all lists added to already known users
 									// add list to admin
 									$.post("/api/users/"+admin+"/newList", {lists: [id]}, data => {
 										if (data.success === true) {
 											// list added to admin account, close popup and reload lists
-                                            $("#newListModal").modal("hide");
-                                            getLists("");
+											$("#newListModal").modal("hide");
+											getLists("");
 										}
 									});
 								}
-							 });
+							});
 						}
 					});
-                }
-            });
-        }
-    });
-	
+				}
+			});
+		}
+	});
+
 });

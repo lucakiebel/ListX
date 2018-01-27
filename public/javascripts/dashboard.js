@@ -89,8 +89,6 @@ $(document).ready(function(){
 				});
 				Promise.all(tmp)
 					.then((listsArray) => {
-						console.log("ListsArray: ", JSON.stringify(listsArray));
-						console.log(listsArray.join("\n"));
 						listsDiv.html(listsArray.join("\n"));
 					})
 

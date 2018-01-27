@@ -987,12 +987,14 @@ app.post('/api/users/:id/newList', (req, res) => {
 app.post("/api/users/addListBulk", (req, res) => {
     let {emails, list} = req.body;
     let a = [];
-    emails.forEach(e => {
-        User.findOneAndUpdate({email: e}, {$push: {"lists": list}}, (err, user) => {
-            if (err) res.json({success: false, error: 'Lists not added to User', code: 207});
-            else a.push(e);
+    if (emails) {
+        emails.forEach(e => {
+            User.findOneAndUpdate({email: e}, {$push: {"lists": list}}, (err, user) => {
+                if (err) res.json({success: false, error: 'Lists not added to User', code: 207});
+                else a.push(e);
+            });
         });
-    });
+    }
     res.json({success: true, users: a});
 });
 
@@ -1046,12 +1048,11 @@ app.get("/user/change-email/:id", (req, res) => {
 app.post("/api/user/changeName", (req, res) => {
     let newName = req.body.newName;
     let userId = req.body.userId;
-    User.findById(userId, (err, user) => {
-        // maybe check for how many name-changes the user had
-        User.findOneAndUpdate(user, {$set: {name:newName}}, (err, update) => {
-            if (!err) res.json({success:true, user:update});
-            else res.json({success:false})
-        });
+    // maybe check for how many name-changes the user had
+    console.log("Changing " + userId + "'s name to " + newName);
+    User.findOneAndUpdate({_id:userId}, {$set: {name:newName}}, (err, update) => {
+        if (!err) res.json({success:true, user:update});
+        else res.json({success:false})
     });
 });
 
@@ -1222,15 +1223,18 @@ app.get('/api/invitations/:id', (req, res) => {
 app.post('/api/invitations/array', (req, res) => {
     let inv = [] // invitation
         , l = req.body.list;
-    if (req.body.invs.constructor === Array) {
-        req.body.invs.forEach(i => {
-            createInvite(i, l, inv);
-            console.log("INV: " + inv);
-        });
+    if (req.body.invs) {
+        if (Array.isArray(req.body.invs.constructor) && undefined !== req.body.invs.constructor) {
+            req.body.invs.forEach(i => {
+                createInvite(i, l, inv);
+                console.log("INV: " + inv);
+            });
+        }
+        else {
+            createInvite(req.body.email, l, inv);
+        }
     }
-    else {
-        createInvite(req.body.email, l, inv);
-    }
+
     res.json({invs: inv, success: true});
 
 });

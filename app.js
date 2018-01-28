@@ -88,6 +88,8 @@ mail({
 mongoose.Promise = Promise;
 mongoose.connect('mongodb://'+MO_ADDRESS);	// sudo mongod --dbpath=/var/data --port=27070 --fork --logpath=./log.txt
 
+console.log(mongoose.models);
+
 const Item = mongoose.model('Item', {
     list: mongoose.Schema.Types.ObjectId,
     name: String,
@@ -816,7 +818,7 @@ app.get('/api/users/:id', (req, res) => {
 
 // get single user per mail
 app.get('/api/users/byMail/:mail', (req, res) => {
-    User.findOne({mail: req.params.mail}, function (err, user) {
+    User.findOne({email: req.params.mail}, function (err, user) {
         if (err) {
             res.json({success: false, error: 'User not found', code: 201});
         }
@@ -1038,7 +1040,7 @@ app.get("/user/change-email/:id", (req, res) => {
                    if (!err) res.render("email-change-end", {success:true});
                    else res.render("email-change-end", {success:false});
                })
-           } 
+           }
         });
     });
 });
@@ -1080,7 +1082,7 @@ app.post("/api/user/changeAddress", (req, res) => {
     User.findOneAndUpdate({_id: req.body.userId}, {$set: {address:addr.a, zipCode: addr.z, country: addr.c}}, (err, update) => {
         if (!err && update) {
             res.json({success:true, update:addr});
-        } 
+        }
     });
 });
 

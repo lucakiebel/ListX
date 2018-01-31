@@ -1,9 +1,23 @@
 function loginValidation() {
-	const formData = $("#login-form").serialize();
+	let formData = {};
+	formData.email = $("#form_email").val();
+	try {
+		var hashObj = new jsSHA(
+			"SHA-512",
+			"TEXT",
+			{numRounds: parseInt(1, 10)}
+		);
+		hashObj.update($("#form_password").val());
+		formData.password = hashObj.getHash("HEX");
+	} catch(e) {
+		$("#login-error").css("display", "block");
+		console.log(e.message)
+	}
+	console.log(formData);
 	$.ajax({
 		type: "POST",
 		url: "/login",
-		data: formData,
+		data: `email=${formData.email}&password=${formData.password}`,
 		dataType: "json",
 		success: function(data) {
 			if(data.code) {

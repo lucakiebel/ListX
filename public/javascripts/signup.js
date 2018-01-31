@@ -1,11 +1,24 @@
 function signupValidation() {
 	let eV = emailValid($("#form_email").val());
 	if(eV.valid) {
-        const formData = $("#signup-form").serialize();
+		let formData = {};
+		formData.email = $("#form_email").val();
+		try {
+			var hashObj = new jsSHA(
+				"SHA-512",
+				"TEXT",
+				{numRounds: parseInt(1, 10)}
+			);
+			hashObj.update($("#form_password").val());
+			formData.password = hashObj.getHash("HEX");
+		} catch(e) {
+			$("#login-error").css("display", "block");
+			console.log(e.message)
+		}
         $.ajax({
             type: "POST",
             url: "/signup",
-            data: formData,
+            data: `email=${formData.email}&password=${formData.password}`,
             dataType: "json",
             success: function (data) {
                 if (data.success === true) {

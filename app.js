@@ -88,7 +88,6 @@ mail({
 mongoose.Promise = Promise;
 mongoose.connect('mongodb://'+MO_ADDRESS);	// sudo mongod --dbpath=/var/data --port=27070 --fork --logpath=./log.txt
 
-console.log(mongoose.models);
 
 const Item = mongoose.model('Item', {
     list: mongoose.Schema.Types.ObjectId,
@@ -437,7 +436,7 @@ app.get("/dev", (req, res) => {
 });
 
 app.get("/imprint", (req, res) => {
-    res.render("imprint")
+    res.redirect("/legal/imprint");
 });
 
 app.get("/guides", (req, res) => {
@@ -445,12 +444,36 @@ app.get("/guides", (req, res) => {
 });
 
 app.get("/privacy", (req, res) => {
-    res.render("privacy");
+    res.redirect("/legal/privacy");
 });
 
 app.get("/terms", (req, res) => {
-    res.render("terms")
+    res.redirect("/legal/terms")
 });
+
+app.get("/legal/imprint", (req, res) => {
+    res.render("imprint");
+});
+
+app.get("/legal/privacy", (req, res) => {
+    res.render("privacy");
+});
+
+app.get("/legal/terms", (req, res) => {
+    res.render("terms");
+});
+
+app.get("/legal/passwords", (req, res) => {
+    let lang = req.cookies.preferedLang;
+    let url = "https://blog.luca-kiebel.de/listx-passwords-";
+    if (lang === "en" || lang === "de") {
+        url = url+lang;
+    } else {
+        url = url+"en";
+    }
+    res.redirect(url);
+});
+
 
 /**
  * Stuff which needs authentication
@@ -537,7 +560,7 @@ app.get('/list/:id/invitations/:invId', (req, res) => {
                         User.findOneAndUpdate({_id: user._id}, {$push: {lists: inv.list}}, (err, update) => {
                             if (!err) {
 
-                                res.render("login", {email: user.email});
+                                res.render("login", {email: user.email, list:inv._id});
                             }
                         });
                     } else {
@@ -570,8 +593,8 @@ app.get('/list/:id/invite', requireLogin, (req, res) => {
  */
 
 app.get("/language/:lang", (req, res) => {
-    res.cookie("preferredLang", req.params.lang, {maxAge: 900000, httpOnly: true});
-    let url = req.headers.referer !== undefined ? req.headers.referer : "/";
+    res.cookie("preferredLang", req.params.lang, {maxAge: 9000000, httpOnly: true});
+    let url = req.get('Referrer') !== undefined ? req.get('Referrer') : "/";
     res.redirect(url);
 });
 

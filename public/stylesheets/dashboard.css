@@ -96,3 +96,9 @@ a:focus, a:hover {
 .input-group.pull-right {
     margin-top: 5px;
 }
+
+.preloader-image {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}

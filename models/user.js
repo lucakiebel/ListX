@@ -53,9 +53,37 @@ UserSchema.statics.findByMail = function(mail, safe, callback) {
 
 UserSchema.statics.getLists = function(id, callback) {
   this.findById(id, (err, user) => {
-    let userLists = [];
+    if(user.lists) {
+      mongoose.model("List").find({_id: {$in: user.lists}}).exec()
+          .then(lists => {
+            callback(err, lists);
+          });
+    }
+  });
+};
 
-    callback(err, userLists);
+UserSchema.statics.getListsByQuery = function (id, query, callback) {
+  let matchingLists = [];
+  this.findById(id, (err, user) => {
+    if(user.lists) {
+      mongoose.model("List").find({_id: {$in: user.lists}}).exec()
+          .then(lists => {
+            lists.forEach(list => {
+              if(list.name.toLowerCase().indexOf(query.toLowerCase()) !== -1)
+                  matchingLists.push(list);
+            });
+            callback(err, matchingLists);
+          });
+    }
+  });
+};
+
+UserSchema.statics.actuallyRemove = function (id, callback) {
+  mongoose.model("UserDeletionToken").create({userId: id}, function (err, token) {
+    token = token._id;
+    this.findOne({_id: id}, function (err, user) {
+      
+    })
   })
 };
 

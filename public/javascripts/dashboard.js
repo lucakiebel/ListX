@@ -1,6 +1,5 @@
 $(document).ready(function(){
 	const listsDiv = $('#list-container');
-	listsDiv.html("<img height=\"20px\" src=\"/images/preloader.gif\" alt='Loading'></img>");
 	getLists("");
 
 	$(".dropdown").hover(
@@ -46,7 +45,7 @@ $(document).ready(function(){
 		let listsDiv = $("#list-container");
 
 		// show preloader gif
-		listsDiv.html("<img height=\"20px\" src=\"/images/preloader.gif\" alt='Loading'></img>");
+		listsDiv.html('<div class="col-md-offset-5 col-md-1"><img src="/images/preloader.gif" alt="Loading...." height="20px"></div>');
 
 		query = query || "";
 		let url = query === "" ? "/api/users/" + userId + "/lists" : "/api/users/" + userId + "/lists/" + query;

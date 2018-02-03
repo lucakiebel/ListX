@@ -97,7 +97,9 @@ const Item = mongoose.model('Item', {
     art: String,
     date: {type: String, default: () => {
         return (new Date(Date.now())).toString();
-    }} // 45 Minutes
+    }},
+    remember: Boolean,
+    bought: {type: Boolean, default:false}
 });
 
 const User = mongoose.model('User', {
@@ -452,28 +454,28 @@ app.get("/terms", (req, res) => {
 });
 
 app.get("/legal/imprint", (req, res) => {
-    res.render("imprint");
+    res.render("imprint", {user:req.session.user});
 });
 
 app.get("/legal/privacy", (req, res) => {
-    res.render("privacy");
+    res.render("privacy", {user:req.session.user});
 });
 
 app.get("/legal/terms", (req, res) => {
-    res.render("terms");
+    res.render("terms", {user:req.session.user});
 });
 
 app.get("/legal/passwords", (req, res) => {
     let lang = req.cookies.preferedLang;
     let url = "https://blog.luca-kiebel.de/listx-passwords-";
-    if (lang === "en" || lang === "de") {
-        url = url+lang;
-    } else {
-        url = url+"en";
-    }
+    url += lang || "en";
     res.redirect(url);
 });
 
+
+app.get("/lists", (req, res) => {
+    res.redirect("/dashboard");
+});
 
 /**
  * Stuff which needs authentication
@@ -1086,13 +1088,13 @@ app.post("/api/user/changeName", (req, res) => {
 app.post("/api/user/changeUsername", (req, res) => {
     let newUsername = req.body.newUsername;
     let userId = req.body.userId;
-    User.findById(userId, (err, user) => {
+    //User.findById(userId, (err, user) => {
         // maybe check for how many name-changes the user had
-        User.findOneAndUpdate(user, {$set: {username:newUsername}}, (err, update) => {
+        User.findOneAndUpdate({_id: userId}, {$set: {username:newUsername}}, (err, update) => {
             if (!err) res.json({success:true, user:update});
-            else res.json({success:false})
+            else res.json({success:false, err:err});
         });
-    });
+    //});
 });
 
 
@@ -1151,6 +1153,7 @@ app.post("/api/user/emailInformation", (req, res) => {
     User.findById(userId, (err, user) => {
         if (err) res.json({success:false});
         information.user = user;
+        delete information.user.lists;
         List.find({_id: {$in: user.lists}}).exec()
             .then(lists => {
                 lists.forEach(list => {
@@ -1164,7 +1167,7 @@ app.post("/api/user/emailInformation", (req, res) => {
                     let mailData = {
                         to: user.email,
                         from: "userinformation",
-                        text: `Hey ${user.name}! \nThe requested information can be found in the attachment below. \nListX Support`,
+                        text: "Hey "+user.name+"! \nThe requested information can be found in the attachment below. \nListX Support",
                         attachment:fp,
                         send:true
                     };

@@ -30,6 +30,11 @@
 
     <!-- Theme CSS -->
     <link href="/stylesheets/index.css" rel="stylesheet">
+    <style>
+        .intro {
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(/images/phones/PS1-<%=__("/ListX/UI/htmlLang") %>.png) no-repeat center center scroll;
+        }
+    </style>
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -62,7 +67,7 @@
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-main-collapse">
                 Menu <i class="fa fa-bars"></i>
             </button>
-            <a class="navbar-brand page-scroll color-visible" href="#page-top">
+            <a class="navbar-brand page-scroll color-visible" href="/">
                 <img src="/images/favicon.png" alt="<%=__("/ListX/UI/SiteName") %>" class="navbar-brand-image"> &nbsp;&nbsp; List<span class="x">X</span>
             </a>
         </div>
@@ -99,7 +104,18 @@
     </div>
     <!-- /.container -->
 </nav>
-<div class="container">
+<header class="intro" style="height: 50vh; min-height: 50vh;">
+    <div class="intro-body">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8 col-md-offset-1">
+                    <h1 class="brand-heading" style="text-align: left !important;">Imprint </h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<div class="container" id="legal">
     <h1>Legal Disclosure</h1>Information in accordance with section 5 TMG<br /><br />
     <p>Luca Kiebel<br />
         Hermelinweg, 5<br />

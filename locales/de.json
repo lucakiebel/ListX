@@ -135,6 +135,21 @@
   "/ListX/UI/resetExpired": "Dein Password-Resetlink ist abgelaufen, bitte gib deine E-Mail erneut ein.",
   "/ListX/UI/Dashboard/Login/loginValidError": "Deine E-Mail Adresse ist noch nicht bestätigt. Bitte überprüfe deinen Posteingang.",
   "/ListX/UI/SignUp/ErrorMessageDisp": "Bitte keine wegwerf-Email Adressen nutzen!",
-  "/ListX/UI/Dashboard/SearchLists": "Suche Listen nach Namen"
-
+  "/ListX/UI/Dashboard/SearchLists": "Suche Listen nach Namen",
+  "/ListX/UI/UserSettings": "Benutzereinstellungen",
+  "/ListX/UI/UserSettings/YourInformation": "Deine Daten",
+  "/ListX/UI/UserSettings/InformationLong": "Das hier sind alle Daten, die wir über dich haben, abgesehen von deinen Listen und deren Elementen. In der Zukunft teilen wir eventuell deine PLZ mit Dritten, um dir Läden in deiner Nähe anzuzeigen.",
+  "/ListX/UI/UserSettings/InformationLong2": "<a href='/legal/passwords'>Wir kennen dein Passwort nicht.</a> Solltest du es vergessen haben, kannst du es <a href='/user/reset-password'>hier</a> zurücksetzen.",
+  "/ListX/UI/Email": "Email",
+  "/ListX/UI/Name": "Name",
+  "/ListX/UI/Username": "Nutzername",
+  "/ListX/UI/Address": "Adresse",
+  "/ListX/UI/Zip": "PLZ",
+  "/ListX/UI/Country": "Land",
+  "/ListX/UI/UserSettings/SaveAddress": "Adresse Speichern",
+  "/ListX/UI/UserSettings/SaveInfo": "Sende alle Daten",
+  "/ListX/UI/UserSettings/SaveInfoHelper": "Wir werden dir alle Daten, die wir über dich haben, per Mail (im JSON Format) senden.",
+  "/ListX/UI/UserSettings/DeleteInfo": "Alle Daten löschen",
+  "/ListX/UI/UserSettings/DeleteInfoHelper": "Dies beinhaltet das Löschen aller Listen und aller ihrer Elemente, von denen du der Administrator bist.",
+  "/ListX/UI/UserSettings/DeleteInfoHelperPremium": "<br> Dadurch wird dein Premium-Abonnement auch beenden."
 }

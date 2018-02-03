@@ -2,9 +2,10 @@
 <html lang="<%=__("/ListX/UI/htmlLang") %>">
 <head>
     <%- include partials/head.ejs%>
-    <title>User Settings - <%=__("/ListX/UI/Index/SiteTitle") %></title>
+    <title><%= __("/ListX/UI/UserSettings")%> - <%=__("/ListX/UI/Index/SiteTitle") %></title>
 
     <link rel="stylesheet" href="/stylesheets/settings-user.css">
+    <link rel="stylesheet" href="/vendor/bootstrap/tagsinput/tagsinput.css">
     <!-- Theme JavaScript -->
     <script src="/javascripts/settings-user.js"></script>
     <script>
@@ -20,9 +21,9 @@
 
         <div class="row">
             <div class="col-md-12">
-                <h1>Your Information</h1>
-                <p>This is all information we have about you apart from your Lists and their items. We may share your Zip in order to show you nearby shops in the future.</p>
-                <p><a href="/legal/passwords">We don't know your password.</a> If you forgot it, your password can be reset <a href="/user/reset-password">here</a>.</p>
+                <h1><%= __("/ListX/UI/UserSettings/YourInformation") %></h1>
+                <p><%- __("/ListX/UI/UserSettings/InformationLong") %></p>
+                <p><%- __("/ListX/UI/UserSettings/InformationLong2") %></p>
             </div>
         </div>
         <hr>
@@ -30,27 +31,27 @@
             <form>
                 <div class="form-row">
                     <div class="form-group col-md-4 input-group-lg pr30">
-                        <label for="inputEmail">Email</label>
+                        <label for="inputEmail"><%= __("/ListX/UI/Email")%></label>
                         <div class="input-group input-group-lg">
-                            <input type="email" class="form-control" id="inputEmail" placeholder="Email" value="<%=user.email%>" disabled title="Check your current email!" data-placement="top">
+                            <input type="email" class="form-control" id="inputEmail" placeholder="<%= __("/ListX/UI/Email")%>" value="<%=user.email%>" disabled title="Check your current email!" data-placement="top">
                             <div class="input-group-addon" id="email-change-button"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></div>
                         </div>
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group col-md-4 input-group-lg pr30">
-                        <label for="inputName">Name</label>
+                        <label for="inputName"><%= __("/ListX/UI/Name")%></label>
                         <div class="input-group input-group-lg">
-                            <input type="text" class="form-control" id="inputName" placeholder="Name" value="<%=user.name%>" disabled>
+                            <input type="text" class="form-control" id="inputName" placeholder="<%= __("/ListX/UI/Name")%>" value="<%=user.name%>" disabled>
                             <div class="input-group-addon" id="name-change-button"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></div>
                         </div>
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group col-md-4 input-group-lg pr30">
-                        <label for="inputAddress">Username</label>
+                        <label for="inputAddress"><%= __("/ListX/UI/Username")%></label>
                         <div class="input-group input-group-lg">
-                            <input type="text" class="form-control" id="inputUsername" placeholder="Username" value="<%=user.username ? user.username : "" %>" disabled data-container="body" data-toggle="popover" data-placement="top" data-trigger="click" data-content="You can only change your Username once a year.">
+                            <input type="text" class="form-control" id="inputUsername" placeholder="<%= __("/ListX/UI/Username")%>" value="<%=user.username%>" disabled data-container="body" data-toggle="popover" data-placement="top" data-trigger="click" data-content="You can only change your Username once a year.">
                             <div class="input-group-addon" id="username-change-button"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></div>
                         </div>
                     </div>
@@ -58,36 +59,36 @@
                 <div class="divider"></div>
                 <div class="form-row">
                     <div class="form-group col-md-4 input-group-lg pr30">
-                        <label for="inputAddress2">Address</label>
+                        <label for="inputAddress2"><%= __("/ListX/UI/Address")%></label>
                         <input type="text" class="form-control" id="inputAddress" placeholder="1234 Main Blvd">
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group col-md-4 input-group-lg pr30">
-                        <label for="inputZip">Zip</label>
+                        <label for="inputZip"><%= __("/ListX/UI/Zip")%></label>
                         <input type="text" class="form-control" id="inputZip" placeholder="11550">
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group col-md-4 input-group-lg pr30">
-                        <label for="inputCountry">Country</label>
-                        <input type="text" class="form-control" id="inputCountry" placeholder="United States">
+                        <label for="inputCountry"><%= __("/ListX/UI/Country")%></label>
+                        <select class="bfh-countries form-control" id="new-country" data-country="<%= user.country ? user.country : "US" %>" required></select>
                     </div>
                 </div>
                 <div class="form-row">
-                    <button type="button" id="save-address-button" class="btn btn-default btn-lg">Save Address</button>
+                    <button type="button" id="save-address-button" class="btn btn-default btn-lg"><%= __("/ListX/UI/UserSettings/SaveAddress")%></button>
                 </div>
                 <br>
                 <hr class="separator">
                 <br>
                 <div class="form-row">
                     <div class="controls">
-                        <button type="button" class="btn btn-success" id="getInformationBtn" data-reset="Get all Information" data-loadingText="<i class='fa fa-spinner fa-spin '></i> Getting Information">Get all Information</button>
-                        <p class="help-block">We will send you all data that we have about you per mail (In JSON format)</p>
+                        <button type="button" class="btn btn-success" id="getInformationBtn" data-reset="Get all Information" data-loadingText="<i class='fa fa-spinner fa-spin '></i> Getting Information"><%= __("/ListX/UI/UserSettings/SaveInfo") %></button>
+                        <p class="help-block"><%= __("/ListX/UI/UserSettings/SaveInfoHelper") %></p>
                     </div>
                     <div class="controls">
-                        <button type="button" class="btn btn-danger" id="deleteAccountBtn">Delete all Information</button>
-                        <p class="help-block">This includes deleting your account and all Lists (and all their items) that you are the admin of. <%-user.premium ? "<br> This will also cancel your premium subscription." : "" %></p>
+                        <button type="button" class="btn btn-danger" id="deleteAccountBtn"><%= __("/ListX/UI/UserSettings/DeleteInfo") %></button>
+                        <p class="help-block"><%- __("/ListX/UI/UserSettings/DeleteInfoHelper")%> <%- user.premium ? __("/ListX/UI/UserSettings/DeleteInfoHelperPremium") : ""%></p>
                     </div>
                 </div>
             </form>
@@ -99,11 +100,14 @@
 
 <!-- Bootstrap Core JavaScript -->
 <script src="/vendor/bootstrap/js/bootstrap.min.js"></script>
+<!-- Bootstrap Addons -->
+<script src="/vendor/bootstrap/tagsinput/tagsinput.js"></script>
 
 <!-- Plugin JavaScript -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
 <script src="/vendor/bs-form-helpers/js/bootstrap-formhelpers-countries.js"></script>
 <script src="/vendor/bs-form-helpers/js/lang/<%=__("/ListX/UI/Links/JS/CountryPicker")%>"></script>
+
 
 
 

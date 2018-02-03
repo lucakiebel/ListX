@@ -135,5 +135,22 @@
   "/ListX/UI/resetExpired": "Your Password reset link has expired, please enter your email again.",
   "/ListX/UI/Dashboard/Login/loginValidError": "Your email address is not validated yet. Please check your inbox.",
   "/ListX/UI/SignUp/ErrorMessageDisp": "Please use a non-disposable email-address!",
-  "/ListX/UI/Dashboard/SearchLists": "Search lists by name"
+  "/ListX/UI/Dashboard/SearchLists": "Search lists by name",
+  "/ListX/UI/UserSettings": "User Settings",
+  "/ListX/UI/UserSettings/YourInformation": "Your Information",
+  "/ListX/UI/UserSettings/InformationLong": "This is all information we have about you apart from your Lists and their items. We may share your Zip in order to show you nearby shops in the future.",
+  "/ListX/UI/UserSettings/InformationLong2": "<a href='/legal/passwords'>We don't know your password.</a> If you forgot it, your password can be reset <a href='/user/reset-password'>here</a>.",
+  "/ListX/UI/Email": "Email",
+  "/ListX/UI/Name": "Name",
+  "/ListX/UI/Username": "Username",
+  "/ListX/UI/Address": "Address",
+  "/ListX/UI/Zip": "Zip",
+  "/ListX/UI/Country": "Land",
+  "/ListX/UI/UserSettings/SaveAddress": "Save Address",
+  "/ListX/UI/UserSettings/SaveInfo": "Get all Information",
+  "/ListX/UI/UserSettings/SaveInfoHelper": "We will send you all data that we have about you per mail (In JSON format)",
+  "/ListX/UI/UserSettings/DeleteInfo": "Delete all Information",
+  "/ListX/UI/UserSettings/DeleteInfoHelper": "This includes deleting your account and all Lists (and all their items) that you are the admin of.",
+  "/ListX/UI/UserSettings/DeleteInfoHelperPremium": "<br> This will also cancel your premium subscription."
+
 }

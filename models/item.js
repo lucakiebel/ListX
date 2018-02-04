@@ -7,9 +7,11 @@ let ItemSchema   = new Schema({
     amount: String,
     count: Number,
     art: String,
-    date: {type: Number, default: () => {
-        return (new Date(Date.now()).getTime());
-    }} // 45 Minutes
+    date: {type: String, default: () => {
+        return (new Date(Date.now())).toString();
+    }},
+    remember: Boolean,
+    bought: {type: Boolean, default:false}
 });
 
 ItemSchema.statics.findByList = function(id, callback) {

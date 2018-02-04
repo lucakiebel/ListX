@@ -466,7 +466,7 @@ app.get("/legal/terms", (req, res) => {
 });
 
 app.get("/legal/passwords", (req, res) => {
-    let lang = req.cookies.preferedLang;
+    let lang = req.cookies.preferredLang;
     let url = "https://blog.luca-kiebel.de/listx-passwords-";
     url += lang || "en";
     res.redirect(url);

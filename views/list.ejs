@@ -22,7 +22,8 @@
     <!-- AngularJS -->
     <script src="/vendor/angular/angular-1.0.8.js"></script>
     <!-- Angular App -->
-    <script src="https://sk-cdn.net/websites/listx.io/core.js.php?l=<%=list._id%>"></script>
+    <script>const listId = "<%=list._id%>"</script>
+    <script src="/javascripts/listsController.js"></script>
 </head>
 <body ng-controller="mainController">
 <div class="container">

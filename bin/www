@@ -7,6 +7,15 @@
 const app = require('../app');
 const debug = require('debug')('ListX:server');
 const http = require('http');
+const fs = require("fs");
+const path = require("path");
+
+/**
+ * Check, that config.json is present
+ */
+if (fs.existsSync(path.join(__dirname, ".." , "config.json")) === false) {
+  throw new Error("App not configured, please read the deployment docs at https://github.com/lucakiebel/ListX#deployment");
+}
 
 /**
  * Get port from environment and store in Express.

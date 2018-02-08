@@ -40,34 +40,29 @@ $ npm install
 
 ## Testing
 
-To test the System, run the app in the background, there are several ways to do that, I like using `forever` most,
-start the `mongod` deamon and you are good to go:
-```
-$ npm install -g forever
-$ mongod --port=27070 --dbpath=/var/data --fork --logpath this.log
-$ forever start bin/wwww
-```
-Then use a program like `Postman` or simply `cUrl` to simulate a request to the API:
-
-```
-$ curl -H "Content-Type: application/json" -X POST -d '{"name":"Your Name", "email":"your@email.tld", "password":"superSecret123456789"}' http://localhost:3000/api/users
-```
-
-This should return something like this:
-```
-{
-  "__v": 0,
-  "name": "Your Name",
-  "email": "your@email.tld",
-  "password": "$2a$10$someLongStringProducedByBCrypt",
-  "_id": "58f7a6de0509810215969a18",
-  "lists": []
-}
-```
+TODO: deploy unit testing and continous integration
 
 ## Deployment
 
-In a production environment you should remove the Routes that expose all users, items and lists or else one could delete all your users.
+All [releases](./releases) are essentially ready-for-deployment. To run the App, you'll need a MongoDB Server up-and-running and you need to edit the file `test.config.json` the following way:
+````
+{
+  "domain":"YOUR_DOMAIN",  <-- The domain, that will be used in emails
+  "devMail":"YOUR_EMAIL", <-- An email address to let the developer know when the app restarts
+  "cookieSecret":"SOME_RANDOM_TEXT", <-- The cookie secret, for the randomness, I recommend LastPass: https://lastpass.com/generatepassword.php
+  "mailgun": {
+    "privateKey":"YOUR_MAILGUN_KEY", <-- Set up an account with Mailgun and the the docs to find these: https://mailgun.com
+    "domain":"YOUR_MAILGUN_DOMAIN"
+  },
+  "mongo": {
+    "address":"YOUR_MONGO_ADDRESS" <-- this is the address of your MongoDB Server, including any authentication
+  },
+  "reCaptcha": {
+    "privateKey":"G_RECAPTCHA_PRIVATE_KEY" <-- set up an account with Google reCaptcha: https://www.google.com/recaptcha/admin
+  }
+}
+````
+After that, rename the file to `config.json`.
 
 
 ## Built With
@@ -98,11 +93,6 @@ ListX is digital property of Luca Kiebel, Copyright © 2017
 ## Acknowledgments
 
 * Hat tip to anyone who's code was used, especially to all the NPM Package authors
-<<<<<<< HEAD
 * Inspiration
 * defaultAcks.md
-=======
 * Feedback from my family and friends who tested the app in Alpha stage
-* Special Thanks to [@julianuphoff](https://github.com/julianuphoff)
->>>>>>> 4a849f423dacdba5955aed0496702ac8442f9ec9
-

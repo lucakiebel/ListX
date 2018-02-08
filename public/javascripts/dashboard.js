@@ -1,6 +1,6 @@
 $(document).ready(function(){
 	const listsDiv = $('#list-container');
-	getLists("");
+	getLists();
 
 	$(".dropdown").hover(
 		function() {
@@ -34,7 +34,7 @@ $(document).ready(function(){
 			type: 'DELETE',
 			success: function(result) {
 				console.log(result);
-				getLists("");
+				getLists();
 			}
 		});
 	}
@@ -47,10 +47,9 @@ $(document).ready(function(){
 		// show preloader gif
 		listsDiv.html('<div class="col-md-offset-5 col-md-1"><img src="/images/preloader.gif" alt="Loading...." height="20px"></div>');
 
-		query = query || "";
-		let url = query === "" ? "/api/users/" + userId + "/lists" : "/api/users/" + userId + "/lists/" + query;
+		let url = (query === "" || undefined) ? `/api/users/${userId}/lists` : `/api/users/${userId}/lists/${query}`;
 
-		let peter = function (list) {
+		let buildList = function (list) {
 			return new Promise((resolve, reject) => {
 				$.get("/api/lists/" + list._id + "/itemCount", function (itemCount) {
 					let html = `<div class="col-md-6">
@@ -84,7 +83,7 @@ $(document).ready(function(){
 					if (!data.lists || data.lists.length === 0) {
 						listsDiv.html('<div class="alert alert-warning" role="alert"><strong>No Lists found!</strong> Create one!</div>');
 					}
-					tmp.push(peter(list));
+					tmp.push(buildList(list));
 				});
 				Promise.all(tmp)
 					.then((listsArray) => {
@@ -158,7 +157,7 @@ $(document).ready(function(){
 										if (data.success === true) {
 											// list added to admin account, close popup and reload lists
 											$("#newListModal").modal("hide");
-											getLists("");
+											getLists();
 										}
 									});
 								}

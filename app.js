@@ -12,16 +12,8 @@ const express = require('express')                        // Express as a Webser
     , app = express()
     , mg = require('mailgun-js')
     , request = require("request")
-    , fs = require("fs");
-
-const config = require(path.join(__dirname, "config.json"));
-const DOMAIN = config.domain;
-const DEV_MAIL = config.devMail;
-const COOKIE_SECRET = config.cookieSecret;
-const MG_PRIV_KEY = config.mailgun.privateKey;
-const MG_DOMAIN = config.mailgun.domain;
-const MO_ADDRESS = config.mongo.address;
-const RC_PRIV_KEY = config.reCaptcha.privateKey;
+    , fs = require("fs")
+    , config = require(path.join(__dirname, "config.json"));
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -36,13 +28,13 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(methodOverride());
 app.use(session({
     cookieName: 'session',
-    secret: COOKIE_SECRET, // random cookie secret
+    secret: config.cookieSecret, // random cookie secret
     duration: 15 * 86400000, // 15 days
     activeDuration: 30 * 60000, // 30 minutes
     httpOnly: true // prevent session from being intercepted
 }));
 
-const mailgun = mg({apiKey: MG_PRIV_KEY, domain: MG_DOMAIN});
+const mailgun = mg({apiKey: config.mailgun.privateKey, domain: config.mailgun.domain});
 
 i18n.configure({
 
@@ -74,11 +66,11 @@ app.use(session({
 app.use(i18n.init);
 
 console.info(i18n.__("/ListX/UI/Welcome"));
-console.info("ListX Started on http://"+DOMAIN);
+console.info("ListX Started on http://"+config.domain);
 
 mail({
     from: `testing-support`,
-    to: DEV_MAIL,
+    to: config.devMail,
     subject: "New ListX instance spawned",
     body: `Hey, friend! \nA new Instance of ListX has just been spawned at ${new Date().toLocaleString()}! \nListX Team`,
     send: true
@@ -86,7 +78,7 @@ mail({
 
 // database setup
 mongoose.Promise = Promise;
-mongoose.connect('mongodb://'+MO_ADDRESS);	// sudo mongod --dbpath=/var/data --port=27070 --fork --logpath=./log.txt
+mongoose.connect('mongodb://'+config.mongo.address);	// sudo mongod --dbpath=/var/data --port=27070 --fork --logpath=./log.txt
 
 
 const Item = mongoose.model('Item', {
@@ -220,10 +212,10 @@ app.post('/signup', (req, res) => {
                             console.log("SignUp::---");
                             console.log(user, req.body);
                             if (err) res.json({success: false});
-                            let URL = "https://" + DOMAIN + "/validate/" + valid._id;
+                            let URL = "https://" + config.domain + "/validate/" + valid._id;
                             linkShortener(URL, null, short => {
                                 console.log(short, URL);
-                                short = "https://" + DOMAIN + "/s/"+short.short;
+                                short = "https://" + config.domain + "/s/"+short.short;
                                 let mailData = {};
                                 mailData.to = user.email;
                                 mailData.subject = "ListX Account Activation";
@@ -310,9 +302,9 @@ app.post("/api/reset", (req, res) => {
                     res.json({success: true});
                 } else {
                     PasswordReset.create({userId: user._id}, (err, pwr) => {
-                        let long = "https://" + DOMAIN + "/user/reset-password/" + pwr._id;
+                        let long = "https://" + config.domain + "/user/reset-password/" + pwr._id;
                         linkShortener(long, null, URL => {
-                            URL = "https://" + DOMAIN + "/s/"+URL.short;
+                            URL = "https://" + config.domain + "/s/"+URL.short;
                             let mailData = {
                                 to: user.email,
                                 subject: "ListX Password Reset",
@@ -973,7 +965,7 @@ app.delete('/api/users/:id', (req, res) => {
             if (err) {
                 res.json({success: false, error: 'User not removed', code: 206});
             }
-            let URL = `https://${DOMAIN}/user/delete/${token}`;
+            let URL = `https://${config.domain}/user/delete/${token}`;
             let mailData = {
                 to: user.email,
                 subject: "ListX Account Deletion",
@@ -1036,10 +1028,10 @@ app.post("/api/user/changeEmail", (req, res) => {
     // send verification email to current email address
     User.findById(userId, (err, user) => {
         EmailReset.create({userId:user._id}, (err, reset) => {
-            let long = `https://${DOMAIN}/user/change-email/${reset._id}?newEmail=${newEmail}`;
+            let long = `https://${config.domain}/user/change-email/${reset._id}?newEmail=${newEmail}`;
             linkShortener(long, null, (URL) => {
-                URL = "https://" + DOMAIN + "/s/"+URL.short;
-                let resetLink = `https://${DOMAIN}/user/reset-password`;
+                URL = "https://" + config.domain + "/s/"+URL.short;
+                let resetLink = `https://${config.domain}/user/reset-password`;
                 let mailData = {};
                 mailData.to = user.email;
                 mailData.subject = `ListX Email Change`;
@@ -1303,7 +1295,7 @@ function createInvite(email, list, arr) {
                     let msg = {
                         to: email,
                         subject: `ListX - New Invitation to List ${l.name}!`,
-                        body: `Howdy! \nThe ListX User ${admin.name} has invited you to join the List ${l.name}! \nPlease follow this link to join ListX and accept the Invitation: \n \n https://${DOMAIN}listx.io/list/${l._id}/invitations/${invitation._id} \n \n The ListX.io Team`,
+                        body: `Howdy! \nThe ListX User ${admin.name} has invited you to join the List ${l.name}! \nPlease follow this link to join ListX and accept the Invitation: \n \n https://${config.domain}listx.io/list/${l._id}/invitations/${invitation._id} \n \n The ListX.io Team`,
                         send: true
                     };
 
@@ -1488,7 +1480,7 @@ function recursiveSlugMaker(short) {
 }
 
 function validateReCAPTCHA(gResponse, callback) {
-    const secretKey = RC_PRIV_KEY;
+    const secretKey = config.reCaptcha.privateKey;
     console.log(gResponse);
     request.post(
         `https://www.google.com/recaptcha/api/siteverify?secret=${secretKey}&response=${gResponse}`,

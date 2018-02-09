@@ -377,7 +377,7 @@ app.post('/login', function (req, res) {
                     // sets a cookie with the user's info
                     req.session.user = user;
                     console.info("User " + user.email + " successfully logged in!");
-                    res.json({correct: true, username: user.name});
+                    res.json({correct: true, user: user});
                 } else {
                     console.error("Wrong Password for " + user.name);
                     res.json({correct: false});

@@ -1364,10 +1364,10 @@ function mail(data) {
         let sub = data.subject;
         let body = data.body;
         let html = data.html;
-        let from = data.from;
+        let from = data.from || "noreply";
 
         let msg = {
-            from: "ListX <"+from+"@listx.io>" || 'ListX <noreply@listx.io>',
+            from: "ListX <"+from+"@listx.io>",
             to: to,
             subject: sub,
             text: body

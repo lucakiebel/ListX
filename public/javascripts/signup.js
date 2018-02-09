@@ -3,6 +3,7 @@ function signupValidation() {
 	if(eV.valid) {
 		let formData = {};
 		formData.email = $("#form_email").val();
+		formData.name = $("#form_name").val();
 		try {
 			var hashObj = new jsSHA(
 				"SHA-512",
@@ -18,7 +19,7 @@ function signupValidation() {
         $.ajax({
             type: "POST",
             url: "/signup",
-            data: `email=${formData.email}&password=${formData.password}`,
+            data: `email=${formData.email}&password=${formData.password}&name=${formData.name}`,
             dataType: "json",
             success: function (data) {
                 if (data.success === true) {

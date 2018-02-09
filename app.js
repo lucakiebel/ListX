@@ -120,17 +120,15 @@ const EmailValidation = mongoose.model("EmailValidation", {
     email: String,
     userId: mongoose.Schema.Types.ObjectId,
     expiry: {type: String, default: () => {
-        return (new Date(Date.now() + 45 * 60 * 1000)).toString();
+        return (new Date(Date.now() + 45 * 60 * 1000)).getTime().toString();
     }} // 45 Minutes
 });
 
 const PasswordReset = mongoose.model("PasswordReset", {
     userId: mongoose.Schema.Types.ObjectId,
-    expiry: {
-        type: Date, default: () => {
-            return new Date(Date.now() + 45 * 60 * 1000);
-        }
-    } // 45 Minutes
+    expiry: {type: String, default: () => {
+        return (new Date(Date.now() + 45 * 60 * 1000)).getTime().toString();
+    }} // 45 Minutes
 });
 
 const UserDeletionToken = mongoose.model("UserDeletionToken", {
@@ -140,7 +138,7 @@ const UserDeletionToken = mongoose.model("UserDeletionToken", {
 const EmailReset = mongoose.model("EmailReset", {
     userId: mongoose.Schema.Types.ObjectId,
     expiry: {type: String, default: () => {
-        return (new Date(Date.now() + 45 * 60 * 1000)).toString();
+        return (new Date(Date.now() + 45 * 60 * 1000)).getTime().toString();
     }} // 45 Minutes
 });
 
@@ -163,7 +161,7 @@ const DemoList = mongoose.model('DemoList', {
     name: String,
     language: String,
     expiry: {type: String, default: () => {
-        return (new Date(Date.now() + 12 * 60 * 60 * 1000)).toString();
+        return (new Date(Date.now() + 12 * 60 * 60 * 1000)).getTime().toString();
     }} // 45 Minutes
 });
 
@@ -251,12 +249,11 @@ app.get('/signup', function (req, res) {
  * EMail Validation: Get Validation ID, find Email, see if not expired, set user.validation = true, delete EmailValidation, send success mail, redirect to dashboard
  */
 app.get("/validate/:id", function (req, res) {
-    EmailValidation.find({_id: req.params.id}, (err, valid) => {
+    EmailValidation.findOne({_id: req.params.id}, (err, valid) => {
         if (err) res.json({success: false});
-        console.log("String?",new Date(String("'"+valid.expiry+"'")).getTime());
-        console.log("SoA?", new Date(String(""+valid.expiry)).getTime());
-        console.log("as String", new Date(valid.expiry).getTime());
-        if (new Date(valid.expiry).getTime() >= new Date(Date.now()).getTime()) {
+        console.log("req.params.id: ", req.params.id);
+        console.log("valid: ", valid);
+        if (Number(valid.expiry) >= new Date(Date.now()).getTime()) {
             // Validation not expired
             User.findOneAndUpdate({_id: valid.userId}, {$set: {validated: true}}, (err, u) => {
                 // if there was an error, redirect to /signup and pass error 201 (user not found)
@@ -365,11 +362,12 @@ app.post("/api/passwordreset", (req,res) => {
 
 app.post('/login', function (req, res) {
     User.findOne({email: req.body.email}, function (err, user) {
+      console.log(user);
         if (!user) {
             console.error("No User with Email \"" + req.body.email + "\" found.");
             res.json({correct: false});
         }
-        else if (!user.validated) {
+        else if (false === user.validated) {
             console.error("User not yet validated");
             res.json({correct: false, error: "User not validated", code: 602});
         }

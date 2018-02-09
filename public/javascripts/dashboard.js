@@ -47,7 +47,12 @@ $(document).ready(function(){
 		// show preloader gif
 		listsDiv.html('<div class="col-md-offset-5 col-md-1"><img src="/images/preloader.gif" alt="Loading...." height="20px"></div>');
 
-		let url = (query === "" || undefined) ? `/api/users/${userId}/lists` : `/api/users/${userId}/lists/${query}`;
+		let url;
+		if (query) {
+			url = `/api/users/${userId}/lists/${query}`;
+		} else {
+			url = `/api/users/${userId}/lists`;
+		}
 
 		let buildList = function (list) {
 			return new Promise((resolve, reject) => {

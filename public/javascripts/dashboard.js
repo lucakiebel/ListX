@@ -21,95 +21,6 @@ $(document).ready(function(){
 	});
 
 
-	function deleteList(list) {
-		console.log("Deleting " + list);
-		let delURL,r;
-		if(list.admin === userId) {
-			delURL = "/api/lists/"+list._id+"/admin";
-		} else {
-			delURL = "/api/lists/"+list._id;
-		}
-		$.ajax({
-			url: delURL,
-			type: 'DELETE',
-			success: function(result) {
-				console.log(result);
-				getLists();
-			}
-		});
-	}
-
-
-	function getLists(query) {
-
-		let listsDiv = $("#list-container");
-
-		// show preloader gif
-		listsDiv.html('<div class="col-md-offset-5 col-md-1"><img src="/images/preloader.gif" alt="Loading...." height="20px"></div>');
-
-		let url;
-		if (query) {
-			url = `/api/users/${userId}/lists/${query}`;
-		} else {
-			url = `/api/users/${userId}/lists`;
-		}
-
-		let buildList = function (list) {
-			return new Promise((resolve, reject) => {
-				$.get("/api/lists/" + list._id + "/itemCount", function (itemCount) {
-					let html = `<div class="col-md-6">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="pull-left"><a href="/list/${list._id}" class="list-link">${list.name}</a></h3>
-                        <div class="input-group pull-right">
-                            <button class="btn btn-default" onclick='deleteList(${JSON.stringify(list)})'><i class="glyphicon glyphicon-remove-circle"></i></button>
-                            <button class="btn btn-default" href="/list/${list._id}/settings"><i class="glyphicon glyphicon-wrench"></i></button>
-                        </div>
-                    </div>
-                    <!-- Default panel contents -->
-                    <div class="panel-body">
-                        <h4>
-                            Elements: <span class="label label-danger">${itemCount}</span>
-                        </h4>
-                    </div>
-                </div>
-            </div>`;
-					resolve(html);
-				});
-			})
-		};
-
-		$.get(url, function (data) {
-			if (data.success === true) {
-				console.log("Lists found!");
-				listsArray = [];
-				let tmp = [];
-				data.lists.forEach((list) => {
-					if (!data.lists || data.lists.length === 0) {
-						listsDiv.html('<div class="alert alert-warning" role="alert"><strong>No Lists found!</strong> Create one!</div>');
-					}
-					tmp.push(buildList(list));
-				});
-				Promise.all(tmp)
-					.then((listsArray) => {
-						listsDiv.html(listsArray.join("\n"));
-					})
-
-
-			}
-			else {
-				console.log("No Lists found! ", data.code);
-				let message = data.error;
-				listsDiv.html('<div class="nolist" style="text-align: center; align-items: center; padding-top: 30px; padding-bottom: 30px"><h2>'+message+'</h2></div>')
-			}
-		});
-	}
-
-
-
-
-
-
 	$(".submenu > a").click(function(e) {
 		e.preventDefault();
 		let $li = $(this).parent("li");
@@ -175,3 +86,83 @@ $(document).ready(function(){
 	});
 
 });
+
+function deleteList(list) {
+    console.log("Deleting " + list.name);
+    let delURL,r;
+    if(list.admin === userId) {
+        delURL = "/api/lists/"+list._id+"/admin?user="+userId;
+    } else {
+        delURL = "/api/lists/"+list._id+"?user="+userId;
+    }
+    $.ajax({
+        url: delURL,
+        type: 'DELETE',
+        success: function(result) {
+            console.log(result);
+            getLists();
+        }
+    });
+}
+
+
+function getLists(query) {
+
+    let listsDiv = $("#list-container");
+
+    // show preloader gif
+    listsDiv.html('<div class="col-md-offset-5 col-md-1"><img src="/images/preloader.gif" alt="Loading...." height="20px"></div>');
+
+    let url;
+    url = query ? `/api/users/${userId}/lists/${query}` : `/api/users/${userId}/lists`;
+
+    let buildList = function (list) {
+        return new Promise((resolve, reject) => {
+            $.get("/api/lists/" + list._id + "/itemCount", function (itemCount) {
+                let html = `<div class="col-md-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="pull-left"><a href="/list/${list._id}" class="list-link">${list.name}</a></h3>
+                        <div class="input-group pull-right">
+                            <button class="btn btn-default" onclick='deleteList(${JSON.stringify(list)})'><i class="glyphicon glyphicon-remove-circle"></i></button>
+                            <a class="btn btn-default" href="/list/${list._id}/settings"><i class="glyphicon glyphicon-wrench"></i></a>
+                        </div>
+                    </div>
+                    <!-- Default panel contents -->
+                    <div class="panel-body">
+                        <h4>
+                            Elements: <span class="label label-danger">${itemCount}</span>
+                        </h4>
+                    </div>
+                </div>
+            </div>`;
+                resolve(html);
+            });
+        })
+    };
+
+    $.get(url, function (data) {
+        if (data.success === true) {
+            console.log("Lists found!");
+            listsArray = [];
+            let tmp = [];
+            data.lists.forEach((list) => {
+                if (!data.lists || data.lists.length === 0) {
+                    listsDiv.html('<div class="alert alert-warning" role="alert"><strong>No Lists found!</strong> Create one!</div>');
+                }
+                tmp.push(buildList(list));
+            });
+            Promise.all(tmp)
+                .then((listsArray) => {
+                    listsDiv.html(listsArray.join("\n"));
+                })
+
+
+        }
+        else {
+            console.log("No Lists found! ", data.code);
+            let message = data.error;
+            listsDiv.html('<div class="nolist" style="text-align: center; align-items: center; padding-top: 30px; padding-bottom: 30px"><h2>'+message+'</h2></div>')
+        }
+    });
+}

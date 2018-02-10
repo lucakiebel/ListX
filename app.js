@@ -518,7 +518,7 @@ app.get('/list/:id/settings', requireLogin, function (req, res) {
         }
         else {
             console.log("User " + user.name + " is not member of List " + list.name);
-            res.render('index', {error: 'User not part of List!'});
+            res.redirect("/dashboard");
         }
     });
 });

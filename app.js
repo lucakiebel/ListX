@@ -690,7 +690,7 @@ app.post('/api/lists', (req, res) => {
 
 // remove a list
 app.delete('/api/lists/:id/admin', (req, res) => {
-    let user = req.body.user;
+    let user = req.query.user;
     List.findOne({_id: req.params.id}, (err, l) => {
         if (l.admin === user) {
             List.remove({_id: req.params.id}, function (err, list) {
@@ -705,8 +705,8 @@ app.delete('/api/lists/:id/admin', (req, res) => {
 });
 
 app.delete('/api/lists/:id', (req, res) => {
-    let user = req.body.user;
-    let list = req.body.list;
+    let user = req.query.user;
+    let list = req.params.id;
     User.findOne({_id: user}, (err, u) => {
         if (err) res.json({success: false}); // user not found
         u.lists = u.lists.filter(e => e.id !== list);

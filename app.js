@@ -504,7 +504,7 @@ app.get('/list/:id/settings', requireLogin, function (req, res) {
         }
         if (user.lists.indexOf(list._id)) {
             if (list.admin === user._id) {
-                res.render('list-settings-admin', {
+                res.render('list-settings', {
                     list: list, user: user
                 });
                 console.log("rendering " + list._id + "'s admin settings for user " + user.name);

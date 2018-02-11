@@ -1413,7 +1413,7 @@ app.delete('/api/invitations/list/:id', (req, res) => {
 // Delete invitation for user from list /list/ admin, user
 app.post("/api/invitations/user/list/:list", (req, res) => {
     List.findOne({_id: req.params.list}, (err, list) => {
-        if (list.admin === req.body.admin) {
+        if (list.admin.toString() === req.body.admin.toString()) {
             Invitation.findOneAndRemove({email:req.body.user, list:list._id}, (err, removed) => {
                 !!err && res.json({success:false, err:err});
                 res.json({success:true, user:removed._id});

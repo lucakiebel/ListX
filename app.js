@@ -1340,7 +1340,7 @@ function userExists(id, mail) {
 }
 
 
-function createInvite(email, list, arr) {
+function createInvite(email, list, arr, callback) {
     if (!userExists(null, email)) {
 
         Invitation.create({
@@ -1362,8 +1362,10 @@ function createInvite(email, list, arr) {
 
                     l.invitations.push(invitation._id);
                     List.findOneAndUpdate({_id: list}, {$set: {invitations: l.invitations}}, (err, l2) => {
-                        if (err) return {k: 0, l: l2};
-                        return {l: l2};
+                        if (typeof callback === "function") {
+                            if (err) callback(err, null);
+                            callback(null, l2);
+                        }
                     });
                 });
 

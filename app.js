@@ -686,7 +686,6 @@ app.delete('/api/lists/:id/admin', (req, res) => {
     let user = req.query.user;
     List.findOne({_id: req.params.id}, (err, l) => {
         if (l.admin.toString() === user.toString()) {
-            console.log("User is admin");
             List.remove({_id: req.params.id}, function (err, list) {
                 if (err) {
                     res.json({success: false, error: 'List not removed', code: 404});

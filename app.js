@@ -552,14 +552,13 @@ app.get('/list/:id/invitations/:invId', (req, res) => {
                         User.findOneAndUpdate({_id: user._id}, {$push: {lists: inv.list}}, (err, update) => {
                             if (!err) {
 
-                                res.render("login", {email: user.email, list:inv._id});
+                                res.render("login", {email: user.email, list:list});
                             }
                         });
                     } else {
                         res.render('signup', {
-                            list: req.params.id,
-                            email: req.query.email,
-                            name: req.query.name
+                            list: list,
+                            email: inv.email
                         });
                     }
                 });

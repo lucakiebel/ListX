@@ -1316,7 +1316,10 @@ app.post('/api/invitations/array', (req, res) => {
 
 // create a single invitation
 app.post("/api/invitations", (req, res) => {
-    createInvite(req.body.email, req.body.list, []);
+    createInvite(req.body.email, req.body.list, [], function (err, list) {
+        !!err && res.json({success:false, err:err});
+        res.json({success:true, list:list});
+    });
 });
 
 function userExists(id, mail) {

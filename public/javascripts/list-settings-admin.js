@@ -48,16 +48,54 @@ $(document).ready(function() {
             currentInvitations = data.invitations;
             data.invitations.forEach(i => {
                 i.email && $("#current-invitations").tagsinput("add", i.email);
-            })
+            });
         }
     });
 
+    $('#current-users')
+        .on('beforeItemAdd', function(event) {
+            event.cancel = !currentlyInSetup;
+        })
+        .on('beforeItemRemove', function(event) {
+            let adminUserEmail = currentUsers.filter(function( obj ) {return obj._id === listAdmin;}).email;
+            let yourEmail = currentUsers.filter(function( obj ) {return obj._id === userId;}).email;
+            if ((event.item === adminUserEmail) || (event.item === yourEmail)) {
+                event.cancel = true; //always cancel when removing would also remove current user
+            } else {
+               event.cancel = !(window.confirm("Do you really want to remove " + event.item.toString() + " from the List?"));
+            }
+        })
+        .on('itemRemoved', function (event) {
+            let removeUserId = currentUsers.filter(function( obj ) {return obj.email === event.item;})._id;
+            $.post("/api/users/"+removeUserId+"/removeList", {list:listId, removingUser:userId}, data => {
+                if (data.success) { // user removed
+                    console.log("Removed ", data.user);
+                }
+            });
+        });
+
+    $("#current-invitations")
+        .on("itemAdded", function (event) {
+            // invite user event.item to list
+            $.post("/api/invitations/array", {list:listId, invs:event.item}, data => {
+                if (data.success) {
+                    console.log("Added " + data.invs[0] + " to List")
+                }
+            });
+        })
+        .on("beforeItemRemove", function (event) {
+            event.cancel = !(window.confirm("Do you really want to remove the invitation for " + event.item.toString() + " from the List?"));
+        })
+        .on("itemRemoved", function (event) {
+            let removedUserEmail = event.item;
+            $.post("/api/invitations/user/list/"+listId, {admin:userId, user:removedUserEmail}, data => {
+                if (data.success) {
+                    console.log("Removed " + data.user + " from List")
+                }
+            });
+        });
+
     /**
-     * TODO: [Current Users/Current Invitations]:
-     *      beforeItemRemove (check for admin)
-     *      itemRemoved (remove user)
-     *      beforeItemAdd (sanity check [duplicate])
-     *      itemAdded (add user)
      * TODO: Delete List (modal => confirmation, delete)
      * TODO: Delete Invitations (delete)
      * TODO: Remove Users (modal => confirmation, delete)

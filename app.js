@@ -1306,7 +1306,7 @@ app.post('/api/invitations/array', (req, res) => {
     let inv = [] // invitation
         , l = req.body.list;
     if (req.body.invs) {
-        if (Array.isArray(req.body.invs.constructor) && undefined !== req.body.invs.constructor) {
+        if (Array.isArray(req.body.invs) && undefined !== req.body.invs) {
             req.body.invs.forEach(i => {
                 createInvite(i, l, inv);
                 console.log("INV: " + inv);

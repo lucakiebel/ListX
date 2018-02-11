@@ -717,6 +717,23 @@ app.delete('/api/lists/:id', (req, res) => {
     });
 });
 
+/**
+ * List Settings:
+ */
+
+app.post("/api/lists/update/name", (req, res) => {
+    const {list, newName, admin} = req.body;
+    List.findOne({_id: list}).then(l => {
+        if (l.admin.toString() === admin) {
+            List.update({_id: list}, {$set: {name:newName}}, (err, l2) => {
+               !!err && res.json({success:false, err:err});
+               res.json({success:true}); // realod page in js
+            });
+        }
+    });
+});
+
+
 
 // update a list
 /**

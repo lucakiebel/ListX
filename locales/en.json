@@ -151,6 +151,16 @@
   "/ListX/UI/UserSettings/SaveInfoHelper": "We will send you all data that we have about you per mail (In JSON format)",
   "/ListX/UI/UserSettings/DeleteInfo": "Delete all Information",
   "/ListX/UI/UserSettings/DeleteInfoHelper": "This includes deleting your account and all Lists (and all their items) that you are the admin of.",
-  "/ListX/UI/UserSettings/DeleteInfoHelperPremium": "<br> This will also cancel your premium subscription."
-
+  "/ListX/UI/UserSettings/DeleteInfoHelperPremium": "<br> This will also cancel your premium subscription.",
+  "/ListX/UI/ListSettings": "List Settings",
+  "/ListX/UI/ListSettings/InformationLong": "These are the settings for the list %s. Here you can view some information about this list, and in the Danger Zone, you can leave it. ",
+  "/ListX/UI/ListSettings/Admin": "Admin",
+  "/ListX/UI/ListSettings/CurrentUsers": "Current Users",
+  "/ListX/UI/ListSettings/CurrentInvitations": "Current Invitations",
+  "/ListX/UI/ListSettings/DeleteList": "Delete List",
+  "/ListX/UI/ListSettings/DeleteListHelper": "As the Admin you cannot leave a List, you can only delete it. Doing so will remove all Elements on it. This action can not be reverted.",
+  "/ListX/UI/ListSettings/DeleteInvitations": "Delete Invitations",
+  "/ListX/UI/ListSettings/DeleteInvitationsHelper": "This will remove all open Invitations.",
+  "/ListX/UI/ListSettings/RemoveUsers": "Remove Users",
+  "/ListX/UI/ListSettings/RemoveUsersHelper": "This will remove all users, but not the current Invitations."
 }

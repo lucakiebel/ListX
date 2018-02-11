@@ -1,1 +1,103 @@
-<h1>List Settings</h1>
+<!DOCTYPE html>
+<html lang="<%=__("/ListX/UI/htmlLang") %>">
+<head>
+    <%- include partials/head.ejs%>
+    <title><%= __("/ListX/UI/ListSettings")%> - <%=__("/ListX/UI/Index/SiteTitle") %></title>
+
+    <link rel="stylesheet" href="/stylesheets/list-settings.css">
+    <link rel="stylesheet" href="/vendor/bootstrap/tagsinput/tagsinput.css">
+    <!-- Theme JavaScript -->
+    <script src="/javascripts/list-settings.js"></script>
+    <script>
+        const userId = "<%= user._id %>";
+        const listId = "<%= list._id %>"
+    </script>
+</head>
+<body>
+<!-- Navigation -->
+<%- include partials/navigation.ejs %>
+<div class="container">
+    <div class="listx-content">
+        <!-- Content -->
+
+        <div class="row">
+            <div class="col-md-12">
+                <h1><%= __("/ListX/UI/ListSettings")%></h1>
+                <p><%= __("/ListX/UI/ListSettings/InformationLong", list.name)%></p>
+            </div>
+        </div>
+        <hr>
+        <div class="container">
+            <form>
+                <div class="form-row">
+                    <div class="form-group col-md-4 input-group-lg pr30">
+                        <label for="list-name"><%= __("/ListX/UI/Dashboard/ListModal/Form/Name")%></label>
+                        <div class="input-group input-group-lg">
+                            <input type="text" class="form-control" id="list-name" placeholder="<%= __("/ListX/UI/Dashboard/ListModal/Form/Name")%>" value="<%=list.name%>" disabled>
+                            <div class="input-group-addon" id="name-change-button"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></div>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-4 input-group-lg pr30">
+                        <label for="list-admin"><%= __("/ListX/UI/ListSettings/Admin")%></label>
+                        <input type="email" class="form-control input-lg" id="list-admin" placeholder="<%= __("/ListX/UI/ListSettings/Admin")%>" value="" disabled>
+                    </div>
+                    <div class="form-group col-md-4 input-group-lg pr30">
+                        <label for="list-country"><%= __("/ListX/UI/Dashboard/ListModal/Form/Country")%></label>
+                        <select class="bfh-countries form-control" id="list-country" data-country="<%= list.country ? list.country : (user.country ? user.country : "US") %>" disabled></select>
+                    </div>
+                </div>
+                <hr class="separator">
+                <div class="form-row">
+                    <div class="form-group col-md-12 input-group-lg pr30">
+                        <label for="current-users"><%= __("/ListX/UI/ListSettings/CurrentUsers")%></label>
+                        <div class="input-group input-group-lg">
+                            <input type="text" name="users" class="form-control" data-role="tagsinput" id="current-users" value="t13@luca.lk,mail@luca-kiebel.de,some@listx.user">
+                        </div>
+                    </div>
+                </div>
+                <hr class="separator">
+                <div class="form-row">
+                    <div class="form-group col-md-12 input-group-lg pr30">
+                        <label for="current-invitations"><%= __("/ListX/UI/ListSettings/CurrentInvitations")%></label>
+                        <div class="input-group input-group-lg">
+                            <input type="text" name="invitations" class="form-control" data-role="tagsinput" id="current-invitations" value="newuser@domain.tld,t1@luca-kiebel.de,testaccount@luca-kiebel.de,accountservice@google.com">
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <div class="form-row">
+                    <div class="controls">
+                        <button type="button" class="btn btn-danger" id="getInformationBtn"><%= __("/ListX/UI/ListSettings/DeleteList")%></button>
+                        <p class="help-block"><%= __("/ListX/UI/ListSettings/DeleteListHelper")%></p>
+                    </div>
+                    <div class="controls">
+                        <button type="button" class="btn btn-danger" id="deleteAccountBtn"><%= __("/ListX/UI/ListSettings/DeleteInvitations")%></button>
+                        <p class="help-block"><%= __("/ListX/UI/ListSettings/DeleteInvitationsHelper")%></p>
+                    </div>
+                    <div class="controls">
+                        <button type="button" class="btn btn-danger"><%= __("/ListX/UI/ListSettings/RemoveUsers")%></button>
+                        <p class="help-block"><%= __("/ListX/UI/ListSettings/RemoveUsersHelper")%></p>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/vendor/bootstrap/js/bootstrap.min.js"></script>
+<!-- Bootstrap Addons -->
+<script src="/vendor/bootstrap/tagsinput/tagsinput.js"></script>
+
+<!-- Plugin JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
+<script src="/vendor/bs-form-helpers/js/bootstrap-formhelpers-countries.js"></script>
+<script src="/vendor/bs-form-helpers/js/lang/<%=__("/ListX/UI/Links/JS/CountryPicker")%>"></script>
+
+
+
+
+</body>
+</html>

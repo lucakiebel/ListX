@@ -114,14 +114,36 @@ $(document).ready(function() {
         }
     });
 
-    $("#deleteInvitationsBtn").click(() => {});
+    $("#deleteInvitationsBtn").click(() => {
+        if (window.confirm("Do you really want to delete all Invitations linked to this list? It can be quite hard to invite everyone again...")) {
+            // delete invitations, remove all from invitation input field
+            // /api/invitations/list/:id
+            $.ajax({
+                url: "/api/invitations/list/"+listId+"?user="+userId,
+                type: 'DELETE',
+                success: function(data) {
+                    if (data.success === true) { // invitations removed, reload
+                        window.location.reload(true);
+                    }
+                }
+            });
+        }
+    });
 
-    $("#removeUsersBtn").click(() => {});
-
-    /**
-     * TODO: Delete Invitations (delete)
-     * TODO: Remove Users (modal => confirmation, delete)
-     */
+    $("#removeUsersBtn").click(() => {
+        if (window.confirm("Do you really want to remove all users from this list?")) {
+            // /api/lists/:id/removeAllUser
+            $.ajax({
+                url: "/api/lists/"+listId+"/removeAllUsers?user="+userId,
+                type: 'DELETE',
+                success: function(data) {
+                    if (data.success === true) { // invitations removed, reload
+                        window.location.reload(true);
+                    }
+                }
+            });
+        }
+    });
 
     $("#name-change-button").click(() => {
         let $nameInput = $("#list-name");

@@ -1416,24 +1416,31 @@ app.delete('/api/invitations/:id', (req, res) => {
 app.delete('/api/invitations/list/:id', (req, res) => {
     let inv = [];
     // first grab the Invitations from the list of :id
-    List.find({_id: req.params.id}, function (err, list) {
+    List.findOne({_id: req.params.id}, function (err, list) {
         if (err) {
             res.json({success: false, error: 'List not found'});
         }
-        // bind the invitations
-        let invites = list.invitations;
-        invites.forEach(e => {
-            // remove the invitation bound to e
-            Invitation.remove({_id: e._id}, function (err, invite) {
-                if (err) {
-                    res.json({success: false, error: 'Invitation not deleted'});
-                }
-                inv[i] = invite;
-                i++;
+        if (list.admin !== undefined && list.admin.toString() === req.query.user.toString()) {
+            // bind the invitations
+            Invitation.find({list: list._id}, (err, invites) => {
+                invites.forEach(e => {
+                    // remove the invitation bound to e
+                    console.log("Removing invitation for ", e.email);
+                    Invitation.remove({_id: e._id}, function (err, invite) {
+                        if (err) {
+                            res.json({success: false, error: 'Invitation not deleted'});
+                        }
+                        inv.push(invite._id);
+                    });
+                });
+                res.json({success:true, inv: inv});
             });
-        });
+        } else {
+            res.json({success:false, error: "User not admin of list, this is confusing"});
+        }
+
     });
-    res.json(inv);
+
 });
 
 // Delete invitation for user from list /list/ admin, user

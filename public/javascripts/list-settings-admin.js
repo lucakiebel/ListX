@@ -99,8 +99,26 @@ $(document).ready(function() {
             });
         });
 
+    $("#deleteListBtn").click(() => {
+        if (window.confirm("Do you really want to delete this List? This will delete all items irrevocably")) {
+            // delete the list, redirect to dashboard
+            $.ajax({
+                url: "/api/lists/"+listId+"/admin?user="+userId,
+                type: 'DELETE',
+                success: function(data) {
+                    if (data.success === true) { //list deleted, bye-bye
+                        window.location.replace("/dashboard");
+                    }
+                }
+            });
+        }
+    });
+
+    $("#deleteInvitationsBtn").click(() => {});
+
+    $("#removeUsersBtn").click(() => {});
+
     /**
-     * TODO: Delete List (modal => confirmation, delete)
      * TODO: Delete Invitations (delete)
      * TODO: Remove Users (modal => confirmation, delete)
      */

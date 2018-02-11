@@ -46,7 +46,10 @@
                     </div>
                     <div class="form-group col-md-4 input-group-lg pr30">
                         <label for="list-country"><%= __("/ListX/UI/Dashboard/ListModal/Form/Country")%></label>
-                        <select class="bfh-countries form-control" id="list-country" data-country="<%= list.country ? list.country : (user.country ? user.country : "US") %>" disabled></select>
+                        <div class="input-group input-group-lg">
+                            <select class="bfh-countries form-control" id="list-country" data-country="<%= list.country ? list.country : (user.country ? user.country : "US") %>" disabled></select>
+                            <div class="input-group-addon" id="country-change-button"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></div>
+                        </div>
                     </div>
                 </div>
                 <hr class="separator">

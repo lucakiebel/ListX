@@ -1,9 +1,12 @@
 {
   "name": "listx",
   "version": "0.1.5",
-  "private": false,
+  "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "if (pgrep 'mongod' >/dev/null 2>&1);then node bin/www;fi",
+    "prestart": "if (pgrep 'mongod' >/dev/null 2>&1); then echo 'MongoDB already running'; else sudo mongod --dbpath=/var/data --port=27070 --fork --logpath=./mongo/log.txt;fi",
+    "pretest": "if (pgrep 'mongod' >/dev/null 2>&1); then echo 'MongoDB already running'; else sudo mongod --dbpath=/var/data --port=27070 --fork --logpath=./mongo/log.txt;fi",
+    "test": "jest"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
@@ -27,7 +30,9 @@
   },
   "description": "ListX - Shopping Lists on another level",
   "main": "bin/www",
-  "devDependencies": {},
+  "devDependencies": {
+    "jest": "^22.2.2"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/lucakiebel/ListX.git"

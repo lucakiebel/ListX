@@ -507,13 +507,13 @@ app.get('/list/:id/settings', requireLogin, function (req, res) {
                 res.render('list-settings', {
                     list: list, user: user
                 });
-                console.log("rendering " + list._id + "'s admin settings for user " + user.name);
+                console.log("rendering " + list.name + "'s admin settings for user " + user.name);
             }
             else {
                 res.render('list-settings', {
                     list: list, user: user
                 });
-                console.log("rendering " + list._id + "'s settings for user " + user.name);
+                console.log("rendering " + list.name + "'s settings for user " + user.name);
             }
         }
         else {

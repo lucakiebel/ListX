@@ -719,6 +719,9 @@ app.delete('/api/lists/:id', (req, res) => {
 
 
 // update a list
+/**
+ * @deprecated since v0.10.0
+ */
 app.post('/api/lists/:id', (req, res) => {
     let update = req.body;
     List.findOneAndUpdate({_id: req.params.id}, update, function (err, list) {

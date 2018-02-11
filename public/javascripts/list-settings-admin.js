@@ -15,29 +15,41 @@ $(document).ready(function() {
     let currentUsers; // {email:"String", _id:"objectid"}
     let currentInvitations; // {email:"String", _id:"objectid"}
 
-    $("#name-change-button").click(() => {
-        let $nameInput = $("#list-name");
-        $nameInput.prop("disabled", false);
-        input.keypress(e => {
-            if (e.which === 13) {
-                e.preventDefault();
-                let list = listId, newName = $nameInput.val(), admin = userId;
-                $.post("/api/list/update/name", {list:list, newName:newName, admin:admin}, data => {
-                    if (data.success) {// realod page
-                        window.location.reload(true);
-                    } else {
-                        $("#save-error").show();
-                    }
-                });
-            }
-        });
+    //get admin
+    $.get("/api/lists/"+listId, data => {
+        if (data.admin) {
+            $.get("/api/users/"+data.admin, data => {
+                listAdmin = data._id.toString();
+                $("#list-admin").val(data.email);
+            })
+        }
     });
 
-    
+    //get current users
+    $.get("/api/lists/"+listId+"/userEmails", data => {
+        if (data.users && data.users.length !== 0 && data.success) { // sanity, should never return []. (admin)
+            console.log("Current Users:", data.users);
+            $("#current-users").tagsinput('removeAll');
+            currentUsers = data.users;
+            data.users.forEach(u => {
+                u.email && $("#current-users").tagsinput('add', u.email);
+            });
+        }
+    });
 
+    //get current invitations
+    $.get("/api/lists/"+listId+"/invitationsForSettings", data => {
+        if (data.success) {
+            console.log("Current Invitations:", data.invitations);
+            $("#current-invitations").tagsinput("removeAll");
+            currentInvitations = data.invitations;
+            data.invitations.forEach(i => {
+                i.email && $("#current-invitations").tagsinput("add", i.email);
+            })
+        }
+    });
 
     /**
-     * TODO: Country Changer
      * TODO: [Current Users/Current Invitations]:
      *      beforeItemRemove (check for admin)
      *      itemRemoved (remove user)

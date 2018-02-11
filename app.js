@@ -210,10 +210,10 @@ app.post('/signup', (req, res) => {
                             console.log("SignUp::---");
                             console.log(user, req.body);
                             if (err) res.json({success: false});
-                            let URL = "https://" + config.domain + "/validate/" + valid._id;
+                            let URL = "http://" + config.domain + "/validate/" + valid._id;
                             linkShortener(URL, null, short => {
                                 console.log(short, URL);
-                                short = "https://" + config.domain + "/s/"+short.short;
+                                short = "http://" + config.domain + "/s/"+short.short;
                                 let mailData = {};
                                 mailData.to = user.email;
                                 mailData.subject = "ListX Account Activation";
@@ -292,16 +292,16 @@ app.post("/api/reset", (req, res) => {
                     let mailData = {
                         to: email,
                         subject: "ListX Password Reset Attempt",
-                        body: `You (or someone else) just entered this email address (${email}) when trying to change the password of a ListX account. \n\nHowever there is no user with this email address in our database, thus the password reset attempt failed. \n\nIf you are in fact a ListX customer and were expecting this email, please try again using the email address you gave when opening your account. \n\nIf you are not a ListX customer ignore this email. Someone most likely mistyped his own email address. \n\nFor more information on ListX, please visit https://listx.io. \n\nListX Support`,
+                        body: `You (or someone else) just entered this email address (${email}) when trying to change the password of a ListX account. \n\nHowever there is no user with this email address in our database, thus the password reset attempt failed. \n\nIf you are in fact a ListX customer and were expecting this email, please try again using the email address you gave when opening your account. \n\nIf you are not a ListX customer ignore this email. Someone most likely mistyped his own email address. \n\nFor more information on ListX, please visit http://listx.io. \n\nListX Support`,
                         send: true
                     };
                     mail(mailData);
                     res.json({success: true});
                 } else {
                     PasswordReset.create({userId: user._id}, (err, pwr) => {
-                        let long = "https://" + config.domain + "/user/reset-password/" + pwr._id;
+                        let long = "http://" + config.domain + "/user/reset-password/" + pwr._id;
                         linkShortener(long, null, URL => {
-                            URL = "https://" + config.domain + "/s/"+URL.short;
+                            URL = "http://" + config.domain + "/s/"+URL.short;
                             let mailData = {
                                 to: user.email,
                                 subject: "ListX Password Reset",
@@ -457,7 +457,7 @@ app.get("/legal/terms", (req, res) => {
 
 app.get("/legal/passwords", (req, res) => {
     let lang = req.cookies.preferredLang;
-    let url = "https://blog.luca-kiebel.de/listx-passwords-";
+    let url = "http://blog.luca-kiebel.de/listx-passwords-";
     url += lang || "en";
     res.redirect(url);
 });
@@ -1032,7 +1032,7 @@ app.delete('/api/users/:id', (req, res) => {
             if (err) {
                 res.json({success: false, error: 'User not removed', code: 206});
             }
-            let URL = `https://${config.domain}/user/delete/${token}`;
+            let URL = `http://${config.domain}/user/delete/${token}`;
             let mailData = {
                 to: user.email,
                 subject: "ListX Account Deletion",
@@ -1109,10 +1109,10 @@ app.post("/api/user/changeEmail", (req, res) => {
     // send verification email to current email address
     User.findById(userId, (err, user) => {
         EmailReset.create({userId:user._id}, (err, reset) => {
-            let long = `https://${config.domain}/user/change-email/${reset._id}?newEmail=${newEmail}`;
+            let long = `http://${config.domain}/user/change-email/${reset._id}?newEmail=${newEmail}`;
             linkShortener(long, null, (URL) => {
-                URL = "https://" + config.domain + "/s/"+URL.short;
-                let resetLink = `https://${config.domain}/user/reset-password`;
+                URL = "http://" + config.domain + "/s/"+URL.short;
+                let resetLink = `http://${config.domain}/user/reset-password`;
                 let mailData = {};
                 mailData.to = user.email;
                 mailData.subject = `ListX Email Change`;
@@ -1379,7 +1379,7 @@ function createInvite(email, list, arr, callback) {
                     let msg = {
                         to: email,
                         subject: `ListX - New Invitation to List ${l.name}!`,
-                        body: `Howdy! \nThe ListX User ${admin.name} has invited you to join the List ${l.name}! \nPlease follow this link to join ListX and accept the Invitation: \n \n https://${config.domain}listx.io/list/${l._id}/invitations/${invitation._id} \n \n The ListX.io Team`,
+                        body: `Howdy! \nThe ListX User ${admin.name} has invited you to join the List ${l.name}! \nPlease follow this link to join ListX and accept the Invitation: \n \n http://${config.domain}/list/${l._id}/invitations/${invitation._id} \n \n The ListX.io Team`,
                         send: true
                     };
 

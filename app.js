@@ -697,6 +697,32 @@ app.delete('/api/lists/:id/admin', (req, res) => {
     });
 });
 
+// remove all users except the admin from :list
+app.delete("/api/lists/:id/removeAllUsers", (req, res) => {
+    let user = req.query.user;
+    List.findOne({_id:req.params.id}, (err, list) => {
+        console.log("err",err);
+        !!err && (res.json({success:false, err:err}));
+        if (list.admin.toString() === user.toString()) {
+            User.find({lists: list._id.toString()}, (err, users) => {
+                console.log("users: ", users);
+                users.forEach(user => {
+                    if (list.admin.toString() === user._id.toString()) {
+                        // keep user
+                        console.log("keeping ", user.email);
+                    } else {
+                        User.update({_id: user._id}, {$pull: {lists:list._id}}, (err, update) => {
+                            !!err && res.json({success:false, err:err});
+                            console.log("deleting ", user.email, update.lists)
+                        });
+                    }
+                });
+                res.json({success:true});
+            });
+        }
+    });
+});
+
 app.delete('/api/lists/:id', (req, res) => {
     let user = req.query.user;
     let list = req.params.id;

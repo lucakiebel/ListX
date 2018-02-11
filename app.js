@@ -74,14 +74,6 @@ app.use(i18n.init);
 console.info(i18n.__("/ListX/UI/Welcome"));
 console.info("ListX Started on http://"+config.domain);
 
-mail({
-    from: `testing-support`,
-    to: config.devMail,
-    subject: "New ListX instance spawned",
-    body: `Hey, friend! \nA new Instance of ListX has just been spawned at ${new Date().toLocaleString()}! \nListX Team`,
-    send: true
-});
-
 // database setup
 mongoose.Promise = Promise;
 mongoose.connect('mongodb://'+config.mongo.address);	// sudo mongod --dbpath=/var/data --port=27070 --fork --logpath=./log.txt

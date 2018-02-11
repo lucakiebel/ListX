@@ -78,12 +78,14 @@ $(document).ready(function() {
 
     $("#current-invitations")
         .on("itemAdded", function (event) {
-            // invite user event.item to list
-            $.post("/api/invitations/array", {list:listId, invs:event.item}, data => {
-                if (data.success) {
-                    console.log("Added " + data.invs[0] + " to List")
-                }
-            });
+            if (!currentlyInSetup) {
+                // invite user event.item to list
+                $.post("/api/invitations", {list:listId, email:event.item}, data => {
+                    if (data.success) {
+                        console.log("Added to List:", data.list);
+                    }
+                });
+            }
         })
         .on("beforeItemRemove", function (event) {
             event.cancel = !(window.confirm("Do you really want to remove the invitation for " + event.item.toString() + " from the List?"));

@@ -503,8 +503,8 @@ app.get('/list/:id/settings', requireLogin, function (req, res) {
             res.render('index', {error: 'List not found!'});
         }
         if (user.lists.indexOf(list._id)) {
-            if (list.admin === user._id) {
-                res.render('list-settings', {
+            if (list.admin.toString() === user._id.toString()) {
+                res.render('list-settings-admin', {
                     list: list, user: user
                 });
                 console.log("rendering " + list.name + "'s admin settings for user " + user.name);

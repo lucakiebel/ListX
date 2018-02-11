@@ -12,8 +12,9 @@ $(document).ready(function() {
         });
 
     let listAdmin; // "objectid"
-    let currentUsers; // {email:"String", _id:"objectid"}
-    let currentInvitations; // {email:"String", _id:"objectid"}
+    let currentUsers; // [{email:"String", _id:"objectid"}]
+    let currentInvitations; // [{email:"String", _id:"objectid"}]
+    let currentlyInSetup = false;
 
     //get admin
     $.get("/api/lists/"+listId, data => {
@@ -31,9 +32,11 @@ $(document).ready(function() {
             console.log("Current Users:", data.users);
             $("#current-users").tagsinput('removeAll');
             currentUsers = data.users;
+            currentlyInSetup = true;
             data.users.forEach(u => {
                 u.email && $("#current-users").tagsinput('add', u.email);
             });
+            currentlyInSetup = false;
         }
     });
 

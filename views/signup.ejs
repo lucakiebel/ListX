@@ -80,7 +80,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="form_email"><%= __("/ListX/UI/Index/enterEmail") %></label>
-                                    <input class="form-control" id="form_email" name="email" type="email" required>
+                                    <input class="form-control" id="form_email" name="email" type="email" value="<%= email ? email : ""%>" required>
                                 </div>
                                 <div class="form-group">
                                     <label for="form_password"><%= __("/ListX/UI/Index/enterPassword") %></label>
@@ -88,6 +88,7 @@
                                     <input class="form-control" id="form_password" name="password" type="password" required>
                                 </div>
                                 <div class="g-recaptcha" data-sitekey="6Ld0czoUAAAAAJlIj1qpWg9KyZQlRWcLp58A1Oj2"></div>
+                                <input type="hidden" id="list-from-invitation" value="<%= list ? list._id : ""%>">
                                 <input class="btn btn-lg btn-default btn-block" type="submit" value="<%= __("/ListX/UI/Index/signUp") %>">
                             </fieldset>
                         </form>

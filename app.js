@@ -1414,7 +1414,7 @@ app.delete('/api/invitations/:id', (req, res) => {
 
 // Delete all invitations per list
 app.delete('/api/invitations/list/:id', (req, res) => {
-    let inv = {}, i = 0;
+    let inv = [];
     // first grab the Invitations from the list of :id
     List.find({_id: req.params.id}, function (err, list) {
         if (err) {

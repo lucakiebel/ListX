@@ -5,7 +5,7 @@ function signupValidation() {
 		formData.email = $("#form_email").val();
 		formData.name = $("#form_name").val();
 		try {
-			var hashObj = new jsSHA(
+			let hashObj = new jsSHA(
 				"SHA-512",
 				"TEXT",
 				{numRounds: parseInt(1, 10)}
@@ -16,10 +16,12 @@ function signupValidation() {
 			$("#login-error").css("display", "block");
 			console.log(e.message)
 		}
+		let data = `email=${formData.email}&password=${formData.password}&name=${formData.name}`;
+		if ($("#list-from-invitation").val()) data += "&list="+$("#list-from-invitation").val();
         $.ajax({
             type: "POST",
             url: "/signup",
-            data: `email=${formData.email}&password=${formData.password}&name=${formData.name}`,
+            data: data,
             dataType: "json",
             success: function (data) {
                 if (data.success === true) {

@@ -32,7 +32,7 @@ $(document).ready(function() {
             console.log("Current Users:", data.users);
             $("#current-users").tagsinput('removeAll');
             currentUsers = data.users;
-            currentlyInSetup = true;
+            currentlyInSetup = true; // we want to be able to add users
             data.users.forEach(u => {
                 u.email && $("#current-users").tagsinput('add', u.email);
             });
@@ -46,9 +46,11 @@ $(document).ready(function() {
             console.log("Current Invitations:", data.invitations);
             $("#current-invitations").tagsinput("removeAll");
             currentInvitations = data.invitations;
+            currentlyInSetup = true; // we don't want to re-invite everyone onload
             data.invitations.forEach(i => {
                 i.email && $("#current-invitations").tagsinput("add", i.email);
             });
+            currentlyInSetup = false;
         }
     });
 

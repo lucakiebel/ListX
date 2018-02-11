@@ -80,7 +80,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="form_email"><%= __("/ListX/UI/Index/enterEmail") %></label>
-                                    <input class="form-control" id="form_email" name="email" type="email" value="<%= email ? email : ""%>" required>
+                                    <input class="form-control" id="form_email" name="email" type="email" value="<%= email !== undefined ? email : ""%>" required>
                                 </div>
                                 <div class="form-group">
                                     <label for="form_password"><%= __("/ListX/UI/Index/enterPassword") %></label>

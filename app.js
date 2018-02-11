@@ -236,7 +236,10 @@ app.post('/signup', (req, res) => {
 
 // signup page for users
 app.get('/signup', function (req, res) {
-    res.render('signup');
+    res.render('signup', {
+        email: "",
+        list: null
+    });
 });
 
 /**

@@ -18,7 +18,7 @@ const express = require('express')                        // Express as a Webser
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
-
+app.disable('x-powered-by');
 app.use(favicon(path.join(__dirname, 'public', 'images', 'favicon.png')));
 app.use(logger('short'));
 app.use(bodyParser.json());

@@ -11,6 +11,9 @@ $(document).ready(function() {
             $('b', this).toggleClass("caret caret-up");
         });
 
+    let listAdmin; // "objectid"
+    let currentUsers; // {email:"String", _id:"objectid"}
+    let currentInvitations; // {email:"String", _id:"objectid"}
 
     $("#name-change-button").click(() => {
         let $nameInput = $("#list-name");

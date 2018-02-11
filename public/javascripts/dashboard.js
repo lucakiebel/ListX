@@ -124,7 +124,7 @@ function getLists(query) {
                     <div class="panel-heading">
                         <h3 class="pull-left"><a href="/list/${list._id}" class="list-link">${list.name}</a></h3>
                         <div class="input-group pull-right">
-                            <button class="btn btn-default" onclick='deleteList(${JSON.stringify(list)})'><i class="glyphicon glyphicon-remove-circle"></i></button>
+                            <a class="btn btn-default" href="/list/${list._id}/settings#deleteListBtn"><i class="glyphicon glyphicon-remove-circle"></i></a>
                             <a class="btn btn-default" href="/list/${list._id}/settings"><i class="glyphicon glyphicon-wrench"></i></a>
                         </div>
                     </div>
@@ -142,9 +142,7 @@ function getLists(query) {
     };
 
     $.get(url, function (data) {
-        if (data.success === true) {
-            console.log("Lists found!");
-            listsArray = [];
+        if (data.success === true) {listsArray = [];
             let tmp = [];
             data.lists.forEach((list) => {
                 if (!data.lists || data.lists.length === 0) {

@@ -733,6 +733,17 @@ app.post("/api/lists/update/name", (req, res) => {
     });
 });
 
+app.post("/api/lists/update/country", (req, res) => {
+    const {list, newCountry, admin} = req.body;
+    List.findOne({_id:list}).then(l => {
+        if (l.admin.toString() === admin) {
+            List.update({_id:list}, {$set: {country:newCountry}}, (err, l2) => {
+                !!err && res.json({success:false, err:err});
+                res.json({success:true}); // reload page in js
+            });
+        }
+    });
+});
 
 
 // update a list

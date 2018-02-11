@@ -196,11 +196,13 @@ app.post('/signup', (req, res) => {
         if (success) {
             bCrypt.genSalt(10, (err, salt) => {
                 bCrypt.hash(req.body.password, salt, function (err, hash) {
-                    User.create({
+                    let userData = {
                         name: req.body.name,
                         email: req.body.email,
                         password: hash
-                    }, function (err, user) {
+                    };
+                    if (req.body.list) userData.lists = [req.body.list];
+                    User.create(userData, function (err, user) {
                         if (err) {
                             res.json({success: false});
                         }

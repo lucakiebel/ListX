@@ -28,10 +28,7 @@ UserSchema.statics.findByMail = function(mail, safe, callback) {
       validated: user.validated
     };
     if (!safe) {
-      tmp.password = user.password;
-      user.premium && (tmp.premium = true);
-      user.alphaTester && (tmp.alphaTester = true);
-      user.betaTester && (tmp.betaTester = true);
+      tmp = user;
     }
     callback(err, tmp)
   });

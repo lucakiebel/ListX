@@ -745,6 +745,19 @@ app.post("/api/lists/update/country", (req, res) => {
     });
 });
 
+app.get("/api/lists/:id/userEmails", (req, res) => {
+    User.find({lists: req.params.id}, (err, users) => {
+        !!err && res.json({success:false, err:err});
+        res.json({success:true, users:users.map(u=>{ return {_id:u._id, email:u.email}})});
+    });
+});
+
+app.get("/api/lists/:id/invitationsForSettings", (req, res) => {
+    Invitation.find({list:req.params.id}, (err, invs) => {
+        !!err && res.json({success:false, err:err});
+        res.json({success:true, invitations:invs.map(i=>{return {_id:i._id, email:i.email}})});
+    })
+});
 
 // update a list
 /**

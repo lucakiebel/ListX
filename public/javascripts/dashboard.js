@@ -15,9 +15,9 @@ $(document).ready(function(){
 		});
 
 	$("#search-lists").on("input change keyup paste", e => {
-		console.log("event");
 		e.preventDefault();
-		getLists($("#search-lists").val());
+		let val = $("#search-lists").val().trim();
+		if (val !== "") getLists(val);
 	});
 
 

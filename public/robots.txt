@@ -1,0 +1,7 @@
+User-Agent: *
+Disallow: /api/
+Disallow: /list/
+Disallow: /dashboard
+Disallow: /user/
+
+Sitemap: https://listx.io/sitemap.xml

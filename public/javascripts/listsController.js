@@ -56,8 +56,10 @@ function mainController($scope, $http) {
 
     //! annyang
     if (annyang) {
-    	console.log($scope.items);
+    	console.log("Annyang available");
         // Add our commands to annyang
+		annyang.debug();
+
         annyang.setLanguage("de-DE");
         annyang.addCommands({
             'hallo': function() { alert('Hallo world!'); },
@@ -67,6 +69,7 @@ function mainController($scope, $http) {
 			":n hab ich": removeItem,
 			"entferne :n": removeItem
         });
+
 
         function removeItem(n) {
         	console.log(n)

@@ -11,6 +11,15 @@
     <script>
         const userId = "<%= user._id %>";
         const listId = "<%= list._id %>"
+        function confirmUserRemove(a) {
+            return "<%= __("/ListX/UI/Confirmations/removeUserA")%>"+a+"<%= __("/ListX/UI/Confirmations/removeUserB")%>";
+        }
+        function confirmInvitationDelete(a) {
+            return "<%= __("/ListX/UI/Confirmations/removeInvA")%>"+a+"<%= __("/ListX/UI/Confirmations/removeInvB")%>";
+        }
+        const confirmListDelete = "<%= __("/ListX/UI/Confirmations/deleteList")%>";
+        const confirmInvsDelete = "<%= __("/ListX/UI/Confirmations/deleteInvs")%>";
+        const confirmUsersRemove = "<%= __("/ListX/UI/Confirmations/removeUsers")%>"
     </script>
 </head>
 <body>

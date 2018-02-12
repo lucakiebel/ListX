@@ -32,10 +32,7 @@
                 <div class="form-row">
                     <div class="form-group col-md-4 input-group-lg pr30">
                         <label for="list-name"><%= __("/ListX/UI/Dashboard/ListModal/Form/Name")%></label>
-                        <div class="input-group input-group-lg">
-                            <input type="text" class="form-control" id="list-name" placeholder="<%= __("/ListX/UI/Dashboard/ListModal/Form/Name")%>" value="<%=list.name%>" disabled>
-                            <div class="input-group-addon" id="name-change-button"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></div>
-                        </div>
+                        <input type="text" class="form-control input-lg" id="list-name" placeholder="<%= __("/ListX/UI/Dashboard/ListModal/Form/Name")%>" value="<%=list.name%>" disabled>
                     </div>
                     <div class="form-group col-md-4 input-group-lg pr30">
                         <label for="list-admin"><%= __("/ListX/UI/ListSettings/Admin")%></label>
@@ -55,28 +52,11 @@
                         </div>
                     </div>
                 </div>
-                <hr class="separator">
-                <div class="form-row">
-                    <div class="form-group col-md-12 input-group-lg pr30">
-                        <label for="current-invitations"><%= __("/ListX/UI/ListSettings/CurrentInvitations")%></label>
-                        <div class="input-group input-group-lg">
-                            <input type="text" name="invitations" class="form-control" data-role="tagsinput" id="current-invitations" value="newuser@domain.tld,t1@luca-kiebel.de,testaccount@luca-kiebel.de,accountservice@google.com">
-                        </div>
-                    </div>
-                </div>
                 <hr>
                 <div class="form-row">
                     <div class="controls">
-                        <button type="button" class="btn btn-danger" id="getInformationBtn"><%= __("/ListX/UI/ListSettings/DeleteList")%></button>
-                        <p class="help-block"><%= __("/ListX/UI/ListSettings/DeleteListHelper")%></p>
-                    </div>
-                    <div class="controls">
-                        <button type="button" class="btn btn-danger" id="deleteAccountBtn"><%= __("/ListX/UI/ListSettings/DeleteInvitations")%></button>
-                        <p class="help-block"><%= __("/ListX/UI/ListSettings/DeleteInvitationsHelper")%></p>
-                    </div>
-                    <div class="controls">
-                        <button type="button" class="btn btn-danger"><%= __("/ListX/UI/ListSettings/RemoveUsers")%></button>
-                        <p class="help-block"><%= __("/ListX/UI/ListSettings/RemoveUsersHelper")%></p>
+                        <button type="button" class="btn btn-danger" id="leaveListBtn"><%= __("/ListX/UI/ListSettings/LeaveList")%></button>
+                        <p class="help-block"><%= __("/ListX/UI/ListSettings/LeaveHelper")%></p>
                     </div>
                 </div>
             </form>

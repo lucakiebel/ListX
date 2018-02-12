@@ -1,7 +1,7 @@
 {
   "name": "listx",
-  "version": "0.1.5",
-  "private": true,
+  "version": "v1.0.0",
+  "private": false,
   "scripts": {
     "start": "if (pgrep 'mongod' >/dev/null 2>&1);then node bin/www;fi",
     "prestart": "if (pgrep 'mongod' >/dev/null 2>&1); then echo 'MongoDB already running'; else sudo mongod --dbpath=/var/data --port=27070 --fork --logpath=./mongo/log.txt;fi",

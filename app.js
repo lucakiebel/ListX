@@ -469,6 +469,10 @@ app.get("/legal/passwords", (req, res) => {
     res.redirect(url);
 });
 
+app.get("/api/version", (req, res) => {
+    const {version} = require("./package.json");
+    res.json({"info":"This is the ListX API. The current date is", "date":new Date(Date.now()).toDateString(), "version":version});
+});
 
 app.get("/lists", (req, res) => {
     res.redirect("/dashboard");

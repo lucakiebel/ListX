@@ -2,8 +2,9 @@
 
 
 A free Tool to create Lists for every occasion.
+[![npm](https://img.shields.io/npm/v/listx.svg?style=plastic)](https://alpha.listx.io)
 
-These are the Developer Docs, if you were looking for the App itself, [click here](https://listx.io).
+These are the Developer Docs, if you were looking for the App itself, [click here](https://beta.listx.io).
 
 ## Getting Started
 
@@ -63,6 +64,11 @@ All [releases](./releases) are essentially ready-for-deployment. To run the App,
 }
 ````
 After that, rename the file to `config.json`.
+To then run the app, make sure you have a directory for MongoDB, ListX uses `/var/data`. 
+````
+npm start
+````
+This will make sure, that MongoDB is started correctly, and if not, start it.
 
 
 ## Built With
@@ -71,6 +77,7 @@ After that, rename the file to `config.json`.
 - [Postman](https://www.getpostman.com/) - A big helper in my life as a Developer
 - [Nodemon](https://npmjs.org/package/nodemon) - Node Command Line tool that automatically restarts my App
 - [i18n](https://npmjs.org/package/i18n) - Translation Toolset
+ - [Chrome](https://www.google.com/chrome/browser/canary.html) My browser of choice. It always supports the newest of the newest features
 
 
 
@@ -80,7 +87,7 @@ We use [GitHub](https://github.com) for versioning. For the versions available, 
 
 ## Authors
 
-- **Luca Kiebel** - *Initial work, API, Index* - [Website](https://luca-kiebel.de)
+- **Luca Kiebel** - [Website](https://luca.lk)
 
 ## License
 

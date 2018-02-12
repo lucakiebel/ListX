@@ -1,6 +1,6 @@
 {
   "name": "listx",
-  "version": "v1.0.0",
+  "version": "v1.0.1",
   "private": false,
   "scripts": {
     "start": "if (pgrep 'mongod' >/dev/null 2>&1);then node bin/www;fi",

@@ -111,6 +111,7 @@
   "/ListX/UI/Index/ApiDocs": "API-Dokumentation",
   "/ListX/UI/Currency": "%s,%s €",
   "/ListX/UI/Index/AlphaTesters": "Alpha Tester",
+  "/ListX/UI/Index/BetaTesters": "Beta Tester",
   "/ListX/UI/Lists": {
     "one": "%s Liste",
     "other": "%s Listen"

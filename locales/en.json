@@ -157,6 +157,7 @@
   "/ListX/UI/ListSettings/Admin": "Admin",
   "/ListX/UI/ListSettings/CurrentUsers": "Current Users",
   "/ListX/UI/ListSettings/CurrentInvitations": "Current Invitations",
+  "/ListX/UI/ListSettings/CurrentInvitationsHelper": "You can add new users to this list by entering their email-addresses here.",
   "/ListX/UI/ListSettings/DeleteList": "Delete List",
   "/ListX/UI/ListSettings/DeleteListHelper": "As the Admin you cannot leave a List, you can only delete it. Doing so will remove all Elements on it. This action can not be reverted.",
   "/ListX/UI/ListSettings/DeleteInvitations": "Delete Invitations",

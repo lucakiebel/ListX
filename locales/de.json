@@ -151,5 +151,17 @@
   "/ListX/UI/UserSettings/SaveInfoHelper": "Wir werden dir alle Daten, die wir über dich haben, per Mail (im JSON Format) senden.",
   "/ListX/UI/UserSettings/DeleteInfo": "Alle Daten löschen",
   "/ListX/UI/UserSettings/DeleteInfoHelper": "Dies beinhaltet das Löschen aller Listen und aller ihrer Elemente, von denen du der Administrator bist.",
-  "/ListX/UI/UserSettings/DeleteInfoHelperPremium": "<br> Dadurch wird dein Premium-Abonnement auch beenden."
+  "/ListX/UI/UserSettings/DeleteInfoHelperPremium": "<br> Dadurch wird dein Premium-Abonnement auch beenden.",
+  "/ListX/UI/ListSettings": "Listen-Einstellungen",
+  "/ListX/UI/ListSettings/InformationLong": "Dies sind die Einstellungen für die Liste %s. Hier kannst du einige Informationen über diese Liste einsehen, und in der Gefahrenzone kannst du sie verlassen.",
+  "/ListX/UI/ListSettings/Admin": "Administrator",
+  "/ListX/UI/ListSettings/CurrentUsers": "Aktuelle Nutzer",
+  "/ListX/UI/ListSettings/CurrentInvitations": "Aktuelle Einladungen",
+  "/ListX/UI/ListSettings/CurrentInvitationsHelper":"Du kannst neue Benutzer zu dieser Liste hinzufügen, indem du ihre E-Mail-Adressen hier eingibst.",
+  "/ListX/UI/ListSettings/DeleteList": "Liste Löschen",
+  "/ListX/UI/ListSettings/DeleteListHelper": "Als Administrator kannst du eine Liste nicht verlassen, sondern nur löschen. Wenn du das tust, werden alle Elemente entfernt. Diese Aktion kann nicht rückgängig gemacht werden.",
+  "/ListX/UI/ListSettings/DeleteInvitations": "Einladungen Löschen",
+  "/ListX/UI/ListSettings/DeleteInvitationsHelper": "Dadurch werden alle offenen Einladungen entfernt.",
+  "/ListX/UI/ListSettings/RemoveUsers": "Nutzer entfernen",
+  "/ListX/UI/ListSettings/RemoveUsersHelper": "Dadurch werden alle Benutzer entfernt, aber nicht die aktuellen Einladungen."
 }

@@ -164,5 +164,13 @@
   "/ListX/UI/ListSettings/DeleteInvitationsHelper": "Dadurch werden alle offenen Einladungen entfernt.",
   "/ListX/UI/ListSettings/RemoveUsers": "Nutzer entfernen",
   "/ListX/UI/ListSettings/RemoveUsersHelper": "Dadurch werden alle Benutzer entfernt, aber nicht die aktuellen Einladungen.",
-  "/ListX/UI/404": "Kehre zur vorherigen Seite zurück."
+  "/ListX/UI/404": "Kehre zur vorherigen Seite zurück.",
+  "/ListX/UI/Confirmations/leaveList": "Willst du diese Liste wirklich verlassen? Du musst vom Admin neu eingeladen werden.",
+  "/ListX/UI/Confirmations/removeUserA": "Willst du wirklich ",
+  "/ListX/UI/Confirmations/removeUserB": " von dieser Liste entfernen?",
+  "/ListX/UI/Confirmations/removeInvA": "Willst du wirklich die Einladung für ",
+  "/ListX/UI/Confirmations/removeInvB": " von der Liste entfernen?",
+  "/ListX/UI/Confirmations/deleteList": "Willst du diese Liste wirklich löschen? Dadurch werden alle Artikel unwiderruflich gelöscht.",
+  "/ListX/UI/Confirmations/deleteInvs": "Willst du wirklich alle Einladungen löschen, die mit dieser Liste verknüpft sind? Es kann recht schwierig sein, alle wieder einzuladen....",
+  "/ListX/UI/Confirmations/removeUsers": "Willst du wirklich alle Benutzer von dieser Liste entfernen?"
 }

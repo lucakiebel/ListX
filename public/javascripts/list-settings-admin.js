@@ -64,7 +64,7 @@ $(document).ready(function() {
             if ((event.item === adminUserEmail) || (event.item === yourEmail)) {
                 event.cancel = true; //always cancel when removing would also remove current user
             } else {
-               event.cancel = !(window.confirm("Do you really want to remove " + event.item.toString() + " from the List?"));
+               event.cancel = !(window.confirm(confirmUserRemove(event.item.toString())));
             }
         })
         .on('itemRemoved', function (event) {
@@ -89,7 +89,7 @@ $(document).ready(function() {
             }
         })
         .on("beforeItemRemove", function (event) {
-            event.cancel = !(window.confirm("Do you really want to remove the invitation for " + event.item.toString() + " from the List?"));
+            event.cancel = !(window.confirm(confirmInvitationDelete(event.item.toString())));
         })
         .on("itemRemoved", function (event) {
             let removedUserEmail = event.item;
@@ -101,7 +101,7 @@ $(document).ready(function() {
         });
 
     $("#deleteListBtn").click(() => {
-        if (window.confirm("Do you really want to delete this List? This will delete all items irrevocably")) {
+        if (window.confirm(confirmListDelete)) {
             // delete the list, redirect to dashboard
             $.ajax({
                 url: "/api/lists/"+listId+"/admin?user="+userId,
@@ -116,7 +116,7 @@ $(document).ready(function() {
     });
 
     $("#deleteInvitationsBtn").click(() => {
-        if (window.confirm("Do you really want to delete all Invitations linked to this list? It can be quite hard to invite everyone again...")) {
+        if (window.confirm(confirmInvsDelete)) {
             // delete invitations, remove all from invitation input field
             // /api/invitations/list/:id
             $.ajax({
@@ -132,7 +132,7 @@ $(document).ready(function() {
     });
 
     $("#removeUsersBtn").click(() => {
-        if (window.confirm("Do you really want to remove all users from this list?")) {
+        if (window.confirm(confirmUsersRemove)) {
             // /api/lists/:id/removeAllUser
             $.ajax({
                 url: "/api/lists/"+listId+"/removeAllUsers?user="+userId,

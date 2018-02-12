@@ -65,7 +65,7 @@ $(document).ready(function() {
         });
 
     $("#leaveListBtn").click(function () {
-       if (window.confirm("Do you really want to leave this list? You will have to be re-invited by the admin.")) {
+       if (window.confirm(leaveConfirmation)) {
            $.post("/api/lists/"+listId+"/removeMeFromList", {"user":userId}, data => {
                if (data.success) {
                    window.location.replace("/dashboard");

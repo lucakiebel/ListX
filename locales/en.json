@@ -164,5 +164,13 @@
   "/ListX/UI/ListSettings/DeleteInvitationsHelper": "This will remove all open Invitations.",
   "/ListX/UI/ListSettings/RemoveUsers": "Remove Users",
   "/ListX/UI/ListSettings/RemoveUsersHelper": "This will remove all users, but not the current Invitations.",
-  "/ListX/UI/404": "Return to the previous page."
+  "/ListX/UI/404": "Return to the previous page.",
+  "/ListX/UI/Confirmations/leaveList": "Do you really want to leave this list? You will have to be re-invited by the admin.",
+  "/ListX/UI/Confirmations/removeUserA": "Do you really want to remove ",
+  "/ListX/UI/Confirmations/removeUserB": " from the List?",
+  "/ListX/UI/Confirmations/removeInvA": "Do you really want to remove the Invitation for ",
+  "/ListX/UI/Confirmations/removeInvB": " from the List?",
+  "/ListX/UI/Confirmations/deleteList": "Do you really want to delete this List? This will delete all items irrevocably.",
+  "/ListX/UI/Confirmations/deleteInvs": "Do you really want to delete all Invitations linked to this list? It can be quite hard to invite everyone again...",
+  "/ListX/UI/Confirmations/removeUsers": "Do you really want to remove all users from this list?"
 }

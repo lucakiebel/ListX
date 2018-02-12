@@ -711,7 +711,7 @@ app.delete('/api/lists/:id/admin', (req, res) => {
 
 // remove all users except the admin from :list
 app.delete("/api/lists/:id/removeAllUsers", (req, res) => {
-    let user = req.query.user;
+    let user = req.query.user === req.session.user._id.toString() ? req.query.user : "";
     List.findOne({_id:req.params.id}, (err, list) => {
         console.log("err",err);
         !!err && (res.json({success:false, err:err}));
@@ -736,7 +736,7 @@ app.delete("/api/lists/:id/removeAllUsers", (req, res) => {
 });
 
 app.delete('/api/lists/:id', (req, res) => {
-    let user = req.query.user;
+    let user = req.query.user === req.session.user._id.toString() ? req.query.user : "";
     let list = req.params.id;
     User.findOne({_id: user}, (err, u) => {
         if (err) res.json({success: false}); // user not found
@@ -754,8 +754,9 @@ app.delete('/api/lists/:id', (req, res) => {
 
 app.post("/api/lists/update/name", (req, res) => {
     const {list, newName, admin} = req.body;
+    let user = admin === req.session.user._id.toString() ? admin : "";
     List.findOne({_id: list}).then(l => {
-        if (l.admin.toString() === admin) {
+        if (l.admin.toString() === user) {
             List.update({_id: list}, {$set: {name:newName}}, (err, l2) => {
                !!err && res.json({success:false, err:err});
                res.json({success:true}); // reload page in js
@@ -1432,7 +1433,8 @@ app.delete('/api/invitations/list/:id', (req, res) => {
         if (err) {
             res.json({success: false, error: 'List not found'});
         }
-        if (list.admin !== undefined && list.admin.toString() === req.query.user.toString()) {
+        let user = req.query.user === req.session.user._id.toString() ? req.query.user : "";
+        if (list.admin !== undefined && list.admin.toString() === user.toString()) {
             // bind the invitations
             Invitation.find({list: list._id}, (err, invites) => {
                 invites.forEach(e => {

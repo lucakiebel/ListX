@@ -1086,7 +1086,7 @@ app.post('/api/users/:id/newList', (req, res) => {
 // update a user removing a list
 app.post("/api/users/:id/removeList", (req, res) => {
     List.findOne({_id: req.body.list}, (err, list) => {
-        if (req.body.removingUser === list.admin) {
+        if (req.body.removingUser.toString() === list.admin.toString()) {
             User.findOneAndUpdate({_id: req.params.id}, {$pull: {lists: req.body.list}}, (err, update) => {
                 !!err && res.json({success:false, err:err});
                 res.json({success:true, user:update._id});

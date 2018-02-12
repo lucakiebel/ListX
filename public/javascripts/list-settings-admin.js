@@ -59,8 +59,8 @@ $(document).ready(function() {
             event.cancel = !currentlyInSetup;
         })
         .on('beforeItemRemove', function(event) {
-            let adminUserEmail = currentUsers.filter(function( obj ) {return obj._id === listAdmin;})[0].email;
-            let yourEmail = currentUsers.filter(function( obj ) {return obj._id === userId;})[0].email;
+            let adminUserEmail = currentUsers.filter(function( obj ) {return obj._id.toString() === listAdmin;})[0].email;
+            let yourEmail = currentUsers.filter(function( obj ) {return obj._id.toString() === userId;})[0].email;
             if ((event.item === adminUserEmail) || (event.item === yourEmail)) {
                 event.cancel = true; //always cancel when removing would also remove current user
             } else {
@@ -68,6 +68,7 @@ $(document).ready(function() {
             }
         })
         .on('itemRemoved', function (event) {
+            console.log(currentUsers.filter(function( obj ) {return obj.email === event.item;}));
             let removeUserId = currentUsers.filter(function( obj ) {return obj.email === event.item;})[0]._id;
             $.post("/api/users/"+removeUserId+"/removeList", {list:listId, removingUser:userId}, data => {
                 if (data.success) { // user removed

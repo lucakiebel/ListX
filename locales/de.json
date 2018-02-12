@@ -163,5 +163,6 @@
   "/ListX/UI/ListSettings/DeleteInvitations": "Einladungen Löschen",
   "/ListX/UI/ListSettings/DeleteInvitationsHelper": "Dadurch werden alle offenen Einladungen entfernt.",
   "/ListX/UI/ListSettings/RemoveUsers": "Nutzer entfernen",
-  "/ListX/UI/ListSettings/RemoveUsersHelper": "Dadurch werden alle Benutzer entfernt, aber nicht die aktuellen Einladungen."
+  "/ListX/UI/ListSettings/RemoveUsersHelper": "Dadurch werden alle Benutzer entfernt, aber nicht die aktuellen Einladungen.",
+  "/ListX/UI/404": "Kehre zur vorherigen Seite zurück."
 }

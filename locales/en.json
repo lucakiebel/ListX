@@ -163,5 +163,6 @@
   "/ListX/UI/ListSettings/DeleteInvitations": "Delete Invitations",
   "/ListX/UI/ListSettings/DeleteInvitationsHelper": "This will remove all open Invitations.",
   "/ListX/UI/ListSettings/RemoveUsers": "Remove Users",
-  "/ListX/UI/ListSettings/RemoveUsersHelper": "This will remove all users, but not the current Invitations."
+  "/ListX/UI/ListSettings/RemoveUsersHelper": "This will remove all users, but not the current Invitations.",
+  "/ListX/UI/404": "Return to the previous page."
 }

@@ -425,6 +425,10 @@ app.get("/demo/:id", (req, res) => {
     });
 });
 
+app.get("/support", (req, res) => {
+    res.redirect("https://github.com/lucakiebel/ListX-Alpha/issues/new");
+});
+
 // Developer Page
 app.get("/dev", (req, res) => {
     res.render("index-dev");
@@ -1621,21 +1625,16 @@ function makeSlug() {
 }
 
 // catch 404 and forward to error handler
-app.use(function (req, res, next) {
+app.use(function (req, res) {
+    console.log(req.app.get('env'));
     let err = new Error('Not Found');
     err.status = 404;
-    next(err);
-});
-
-// error handler
-app.use(function (err, req, res) {
-    console.log(req.app.get('env'));
-    // set locals, only providing error in development
     res.locals.message = err.message;
     res.locals.error = req.app.get('env') === 'development' ? err : {};
 
     // render the error page
-    res.render('error');
+    res.render('error', {msg:err.message, url:req.get('Referrer') !== undefined ? req.get('Referrer') : "/"});
 });
+
 
 module.exports = app;

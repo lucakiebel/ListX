@@ -38,6 +38,6 @@
     "url": "git+https://github.com/lucakiebel/ListX.git"
   },
   "keywords": [
-    "Lists"
+    "Lists", "Shopping", "Express", "mongoDB"
   ]
 }

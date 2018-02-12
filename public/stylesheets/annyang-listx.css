@@ -50,24 +50,24 @@ label#skitt-toggle-button__label {
 
 @-webkit-keyframes "listen_pulse" {
     0% {
-        background-color: #F39C12
+        background-color: #FF4C4C;
     }
 
     50% {
-        background-color: #F1C40F
+        background-color: #E54444
     }
 
     100% {
-        background-color: #F39C12
+        background-color: #CC3C3C
     }
 }
 
 .skitt-ui--not-listening #skitt-toggle-button:hover {
-    background-color: #F1C40F
+    background-color: #E54444
 }
 
 .skitt-ui--listening #skitt-toggle-button:hover {
-    background-color: #F1C40F
+    background-color: #E54444
 }
 
 #skitt-listening-box {

@@ -562,8 +562,7 @@ app.get('/list/:id/invitations/:invId', (req, res) => {
                     if (user) {
                         User.findOneAndUpdate({_id: user._id}, {$push: {lists: inv.list}}, (err, update) => {
                             if (!err) {
-
-                                res.render("login", {email: user.email, list:list});
+                                res.redirect("/dashboard?newlist");
                             }
                         });
                     } else {

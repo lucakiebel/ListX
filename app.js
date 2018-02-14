@@ -1393,29 +1393,40 @@ function createInvite(email, list, arr, callback) {
             list: list
         }, function (err, invitation) {
             arr.push(invitation.email);
-            List.findById(list, (err, l) => {
-                User.findById(l.admin, (err, admin) => {
-                    let msg = {
-                        to: email,
-                        subject: `ListX - New Invitation to List ${l.name}!`,
-                        body: `Howdy! \nThe ListX User ${admin.name} has invited you to join the List ${l.name}! \nPlease follow this link to join ListX and accept the Invitation: \n \n http://${config.domain}/list/${l._id}/invitations/${invitation._id} \n \n The ListX.io Team`,
-                        send: true
-                    };
+            User.findOne({email:email}, (err, user) => {
+                let greeting,invite;
+                if(user.email === email || err) {
+                    greeting = `Howdy ${user.name}!`;
+                    invite = `log in`;
+                } else {
+                    greeting = `Howdy!`;
+                    invite = `sign up, join ListX`;
+                }
+                List.findById(list, (err, l) => {
+                    User.findById(l.admin, (err, admin) => {
+                        let msg = {
+                            to: email,
+                            subject: `ListX - New Invitation to List ${l.name}!`,
+                            body: `${greeting} \nThe ListX User ${admin.name} has invited you to join the List ${l.name}! \nPlease follow this link to ${invite} and accept the Invitation: \n \n http://${config.domain}/list/${l._id}/invitations/${invitation._id} \n \n The ListX.io Team`,
+                            send: true
+                        };
 
-                    console.log("Sending Invitation Email:");
-                    mail(msg);
+                        console.log("Sending Invitation Email:");
+                        mail(msg);
 
-                    l.invitations.push(invitation._id);
-                    List.findOneAndUpdate({_id: list}, {$set: {invitations: l.invitations}}, (err, l2) => {
-                        if (typeof callback === "function") {
-                            if (err) callback(err, null);
-                            callback(null, l2);
-                        }
+                        l.invitations.push(invitation._id);
+                        List.findOneAndUpdate({_id: list}, {$set: {invitations: l.invitations}}, (err, l2) => {
+                            if (typeof callback === "function") {
+                                if (err) callback(err, null);
+                                callback(null, l2);
+                            }
+                        });
                     });
+
+
                 });
-
-
             });
+
         });
 
     }

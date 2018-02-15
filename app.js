@@ -182,7 +182,6 @@ app.get("/s/:short", (req, res) => {
  */
 
 app.post('/signup', (req, res) => {
-    console.log("Req.body", req.body);
     validateReCAPTCHA(req.body["g-recaptcha-response"], (err, success) => {
         if (success) {
             bCrypt.genSalt(10, (err, salt) => {
@@ -198,12 +197,9 @@ app.post('/signup', (req, res) => {
                             res.json({success: false});
                         }
                         EmailValidation.create({email: user.email, userId: user._id}, (err, valid) => {
-                            console.log("SignUp::---");
-                            console.log(user, req.body);
                             if (err) res.json({success: false});
                             let URL = "http://" + config.domain + "/validate/" + valid._id;
                             linkShortener(URL, null, short => {
-                                console.log(short, URL);
                                 short = "http://" + config.domain + "/s/"+short.short;
                                 let mailData = {};
                                 mailData.to = user.email;
@@ -239,8 +235,6 @@ app.get('/signup', function (req, res) {
 app.get("/validate/:id", function (req, res) {
     EmailValidation.findOne({_id: req.params.id}, (err, valid) => {
         if (err) res.json({success: false});
-        console.log("req.params.id: ", req.params.id);
-        console.log("valid: ", valid);
         if (Number(valid.expiry) >= new Date(Date.now()).getTime()) {
             // Validation not expired
             User.findOneAndUpdate({_id: valid.userId}, {$set: {validated: true}}, (err, u) => {
@@ -278,7 +272,6 @@ app.get("/user/reset-password", (req, res) => {
  */
 app.post("/api/reset", (req, res) => {
     const email = req.body.email;
-    console.log("Req.body", req.body);
     validateReCAPTCHA(req.body.recRes, (err, success) => {
         if (err === null) {
             User.findOne({email: email}, function (err, user) {
@@ -481,16 +474,11 @@ app.get('/list/:id/settings', requireLogin, function (req, res) {
 
 
 // Users Dashboard
-app.get('/dashboard', requireLogin, (req, res) => {
-    console.log(req.session.user.lists);
-    res.render('dashboard', {user: req.session.user});
-});
+app.get('/dashboard', requireLogin, (req, res) => { res.render('dashboard', {user: req.session.user}); });
 
 
 // User Profile
-app.get('/user', requireLogin, (req, res) => {
-    res.render('settings-user', {user: req.session.user});
-});
+app.get('/user', requireLogin, (req, res) => { res.render('settings-user', {user: req.session.user}); });
 
 
 // Invitations page for invited users to join a family and "sign up"

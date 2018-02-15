@@ -1617,12 +1617,11 @@ function recursiveSlugMaker(short) {
 
 function validateReCAPTCHA(gResponse, callback) {
     const secretKey = config.reCaptcha.privateKey;
-    console.log(gResponse);
     request.post(
         `https://www.google.com/recaptcha/api/siteverify?secret=${secretKey}&response=${gResponse}`,
         function (error, response, body) {
-            console.log(body);
-            callback(null, true);
+            body = JSON.parse(body);
+            callback(null, body.success);
         }
     );
 }

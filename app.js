@@ -149,20 +149,11 @@ const Invitation = mongoose.model('Invitation', {
 });
 
 
-const DemoList = mongoose.model('DemoList', {
-    name: String,
-    language: String,
-    expiry: {type: String, default: () => {
-        return (new Date(Date.now() + 12 * 60 * 60 * 1000)).getTime().toString();
-    }} // 45 Minutes
-});
-
 const ShortDomain = mongoose.model('ShortDomain', {
     short: String,
     long: String,
     hits: {type: Number, default: 0}
 });
-
 
 
 app.get("/api/short/:short", (req, res) => {
@@ -403,80 +394,40 @@ app.get('/logout', (req, res) => {
  */
 
 
-// Demo Page
-app.get("/demo", (req, res) => {
-    res.render("demo");
-});
-
-// Demo List
-app.get("/demo/:id", (req, res) => {
-    DemoList.findOne({_id: req.params.id}, (err, list) => {
-        // if list has not yet expired
-        if (list.expiry.getTime() > new Date().getTime()) {
-            // display list
-            res.render('list', {
-                list: list, user: {name: "anonymous"}
-            });
-        }
-        else {
-            // if list has expired, redirect to signup
-            res.redirect("/signup?demo");
-        }
-    });
-});
-
-app.get("/support", (req, res) => {
-    res.redirect("https://github.com/lucakiebel/ListX-Alpha/issues/new");
-});
+app.get("/support", (req, res) => { res.redirect("https://github.com/lucakiebel/ListX-Alpha/issues/new"); });
 
 // Developer Page
-app.get("/dev", (req, res) => {
-    res.render("index-dev");
-});
+app.get("/dev", (req, res) => { res.render("index-dev"); });
 
-app.get("/imprint", (req, res) => {
-    res.redirect("/legal/imprint");
-});
+app.get("/imprint", (req, res) => { res.redirect("/legal/imprint"); });
 
-app.get("/guides", (req, res) => {
-    res.render("guides");
-});
+app.get("/guides", (req, res) => { res.render("guides"); });
 
-app.get("/privacy", (req, res) => {
-    res.redirect("/legal/privacy");
-});
+app.get("/privacy", (req, res) => { res.redirect("/legal/privacy"); });
 
-app.get("/terms", (req, res) => {
-    res.redirect("/legal/terms")
-});
+app.get("/terms", (req, res) => { res.redirect("/legal/terms") });
 
-app.get("/legal/imprint", (req, res) => {
-    res.render("imprint", {user:req.session.user});
-});
+app.get("/legal/imprint", (req, res) => { res.render("imprint", {user:req.session.user}); });
 
-app.get("/legal/privacy", (req, res) => {
-    res.render("privacy", {user:req.session.user});
-});
+app.get("/legal/privacy", (req, res) => { res.render("privacy", {user:req.session.user}); });
 
-app.get("/legal/terms", (req, res) => {
-    res.render("terms", {user:req.session.user});
-});
+app.get("/legal/terms", (req, res) => { res.render("terms", {user:req.session.user}); });
 
 app.get("/legal/passwords", (req, res) => {
-    let lang = req.cookies.preferredLang;
+    const lang = req.cookies.preferredLang;
     let url = "http://blog.luca-kiebel.de/listx-passwords-";
     url += lang || "en";
     res.redirect(url);
 });
 
-app.get("/api/version", (req, res) => {
-    const {version} = require("./package.json");
-    res.json({"info":"This is the ListX API. The current date is", "date":new Date(Date.now()).toDateString(), "version":version});
-});
+app.get("/api/version", (req, res) => { res.json(
+    {"info":"This is the ListX API. The current date is",
+        "date":new Date(Date.now()).toDateString(),
+        "version":require("./package.json").version
+    }
+); });
 
-app.get("/lists", (req, res) => {
-    res.redirect("/dashboard");
-});
+app.get("/lists", (req, res) => { res.redirect("/dashboard"); });
 
 /**
  * Stuff which needs authentication

@@ -1395,7 +1395,7 @@ function createInvite(email, list, arr, callback) {
             arr.push(invitation.email);
             User.findOne({email:email}, (err, user) => {
                 let greeting,invite;
-                if(user.email === email || err) {
+                if(user && user.email === email) {
                     greeting = `Howdy ${user.name}!`;
                     invite = `log in`;
                 } else {

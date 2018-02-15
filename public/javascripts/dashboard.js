@@ -1,32 +1,31 @@
-$(document).ready(function(){
-	const listsDiv = $('#list-container');
+$(document).ready(function() {
 	getLists();
 
 	$(".dropdown").hover(
-		function() {
-			$('.dropdown-menu', this).stop( true, true ).fadeIn("fast");
+		function () {
+			$('.dropdown-menu', this).stop(true, true).fadeIn("fast");
 			$(this).toggleClass('open');
 			$('b', this).toggleClass("caret caret-up");
 		},
-		function() {
-			$('.dropdown-menu', this).stop( true, true ).fadeOut("fast");
+		function () {
+			$('.dropdown-menu', this).stop(true, true).fadeOut("fast");
 			$(this).toggleClass('open');
 			$('b', this).toggleClass("caret caret-up");
 		});
 
 	$("#search-lists").on("input change keyup paste", e => {
 		e.preventDefault();
-		let val = $("#search-lists").val().trim();
-		if (val !== "") getLists(val);
+		const val = $("#search-lists").val().trim();
+		!!val && getLists(val);
 	});
 
 
-	$(".submenu > a").click(function(e) {
+	$(".submenu > a").click(function (e) {
 		e.preventDefault();
 		let $li = $(this).parent("li");
 		let $ul = $(this).next("ul");
 
-		if($li.hasClass("open")) {
+		if ($li.hasClass("open")) {
 			$ul.slideUp(350);
 			$li.removeClass("open");
 		} else {
@@ -43,16 +42,15 @@ $(document).ready(function(){
 		const name = $("#new-name").val();
 		const users = $("#new-users").tagsinput('items');
 		const country = $("#new-country").val();
-		const admin = $("#new-admin").val();
-		console.log("Name: "+ name + " Users: " + users + " Country: " + country + " Admin: " +admin);
-		if(name !== ""){
+		console.log("Name: " + name + " Users: " + users + " Country: " + country + " Admin: " + userId);
+		if (name) {
 			$.post("/api/lists", {
 				name: name,
 				country: country,
-				admin: admin
+				admin: userId
 			}, function (data) {
 				console.log(data);
-				if (data.success === true){
+				if (data.success === true) {
 					let id = data.id;
 					$.post("/api/invitations/array", {
 						list: id,
@@ -60,22 +58,11 @@ $(document).ready(function(){
 					}, data => {
 						// data = [inv1,inv2]
 						if (data.success === true) {
-							// add list to all existing clients
-							let diff = $(users).not(data.invs).get();
-							console.log("Users: "+users);
-							console.log("Invs:"+data.invs);
-							console.log("Difference: "+diff);
-							$.post("/api/users/addListBulk", {list: id, emails: diff}, data => {
+							$.post("/api/users/" + userId + "/newList", {lists: [id]}, data => {
 								if (data.success === true) {
-									// all lists added to already known users
-									// add list to admin
-									$.post("/api/users/"+admin+"/newList", {lists: [id]}, data => {
-										if (data.success === true) {
-											// list added to admin account, close popup and reload lists
-											$("#newListModal").modal("hide");
-											getLists();
-										}
-									});
+									// list added to admin account, close popup and reload lists
+									$("#newListModal").modal("hide");
+									getLists();
 								}
 							});
 						}
@@ -86,25 +73,6 @@ $(document).ready(function(){
 	});
 
 });
-
-function deleteList(list) {
-    console.log("Deleting " + list.name);
-    let delURL,r;
-    if(list.admin === userId) {
-        delURL = "/api/lists/"+list._id+"/admin?user="+userId;
-    } else {
-        delURL = "/api/lists/"+list._id+"?user="+userId;
-    }
-    $.ajax({
-        url: delURL,
-        type: 'DELETE',
-        success: function(result) {
-            console.log(result);
-            getLists();
-        }
-    });
-}
-
 
 function getLists(query) {
 
@@ -131,7 +99,7 @@ function getLists(query) {
                     <!-- Default panel contents -->
                     <div class="panel-body">
                         <h4>
-                            Elements: <span class="label label-danger">${itemCount}</span>
+                            ${elements}: <span class="label label-danger">${itemCount}</span>
                         </h4>
                     </div>
                 </div>
@@ -140,10 +108,10 @@ function getLists(query) {
             });
         })
     };
-
-    $.get(url, function (data) {
-        if (data.success === true) {listsArray = [];
-            let tmp = [];
+	
+	$.get(url, function (data) {
+        if (data.success === true) {
+			let tmp = [];
             data.lists.forEach((list) => {
                 if (!data.lists || data.lists.length === 0) {
                     listsDiv.html('<div class="alert alert-warning" role="alert"><strong>No Lists found!</strong> Create one!</div>');

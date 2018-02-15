@@ -173,5 +173,7 @@
   "/ListX/UI/Confirmations/removeInvB": " von der Liste entfernen?",
   "/ListX/UI/Confirmations/deleteList": "Willst du diese Liste wirklich löschen? Dadurch werden alle Artikel unwiderruflich gelöscht.",
   "/ListX/UI/Confirmations/deleteInvs": "Willst du wirklich alle Einladungen löschen, die mit dieser Liste verknüpft sind? Es kann recht schwierig sein, alle wieder einzuladen....",
-  "/ListX/UI/Confirmations/removeUsers": "Willst du wirklich alle Benutzer von dieser Liste entfernen?"
+  "/ListX/UI/Confirmations/removeUsers": "Willst du wirklich alle Benutzer von dieser Liste entfernen?",
+  "/ListX/UI/ListSettings/LeaveList": "Liste Verlassen",
+  "/ListX/UI/ListSettings/LeaveListHelper": "Dies wird dich von der Liste entfernen."
 }

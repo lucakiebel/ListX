@@ -57,7 +57,7 @@
   "/ListX/UI/Index/sourceCode": "Source Code",
   "/ListX/UI/Index/aboutProjectName":"About List<span class='color-red'>X</span>",
   "/ListX/UI/Index/aboutProjectLongText":"List<span class='color-red'>X</span> is a free tool to create and maintain Lists for every occasion. Whether it's for your monthly groceries or for the next big vacation - we've got you covered!",
-  "/ListX/UI/Index/aboutProjectShortText":"Give it a try now and plan your next shopping trip on the <a href='/demo'>Demo Page</a>!",
+  "/ListX/UI/Index/aboutProjectShortText":"<a href='/signup'>Sign Up</a> now and plan your next shopping trip!",
   "/ListX/UI/Index/support": "Support",
   "/ListX/UI/Index/blog": "Blog",
   "/ListX/UI/Index/Cookieconsent/Message": "This website uses cookies to provide you with the best possible functionality.",

@@ -2,7 +2,7 @@
 
 
 A free Tool to create Lists for every occasion.
-[![npm](https://img.shields.io/npm/v/listx.svg?style=plastic)](https://alpha.listx.io)
+[![npm](https://img.shields.io/npm/v/listx.svg?style=plastic)](https://beta.listx.io)
 
 These are the Developer Docs, if you were looking for the App itself, [click here](https://beta.listx.io).
 
@@ -45,7 +45,7 @@ TODO: deploy unit testing and continous integration
 
 ## Deployment
 
-All [releases](./releases) are essentially ready-for-deployment. To run the App, you'll need a MongoDB Server up-and-running and you need to edit the file `test.config.json` the following way:
+All [releases](https://github.com/lucakiebel/ListX/releases) are essentially ready-for-deployment. To run the App, you'll need a MongoDB Server up-and-running and you need to edit the file `test.config.json` the following way:
 ````
 {
   "domain":"YOUR_DOMAIN",  <-- The domain, that will be used in emails

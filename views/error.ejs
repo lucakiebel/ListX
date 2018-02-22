@@ -10,14 +10,16 @@
 <!-- Navigation -->
 <%- include partials/navigation.ejs %>
 <div class="container">
-    <div class="row">
-        <div class="col-md-12">
-            <h1><%= __("/ListX/UI/Index/error")%></h1>
-        </div>
-    </div>
     <div class="listx-content">
         <div class="row">
-            <p><%=msg%> <a href="<%=url%>"><%= __("/ListX/UI/404")%></a></p>
+            <div class="col-md-12">
+                <h1><%= __("/ListX/UI/Index/error")%></h1>
+            </div>
+        </div>
+        <div class="listx-content">
+            <div class="row">
+                <p><%=msg%> <a href="<%=url%>"><%= __("/ListX/UI/404")%></a></p>
+            </div>
         </div>
     </div>
 

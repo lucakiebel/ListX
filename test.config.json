@@ -11,5 +11,6 @@
   },
   "reCaptcha": {
     "privateKey":"G_RECAPTCHA_PRIVATE_KEY"
-  }
+  },
+  "slugLength": 5
 }

@@ -1450,9 +1450,9 @@ function mail(data) {
         msg.attachment = data.attachment || undefined;
 
 
-        mailgun.messages().send(msg, (error) => {
+        mailgun.messages().send(msg, error => {
             if (error) console.error(error);
-            console.log(`Mail sent to ${data.to} at ${new Date().getTime()}`, msg)
+            console.log(`Mail sent to ${data.to} at ${new Date().toLocaleDateString()}`, msg)
         });
     }
 }

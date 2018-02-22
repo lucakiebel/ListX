@@ -1557,13 +1557,11 @@ function validateReCAPTCHA(gResponse, callback) {
 }
 
 function makeSlug() {
-    let text = "";
+    let text = [];
     const possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz123456789";
-
-    for (let i = 0; i < 5; i++)
-        text += possible.charAt(Math.floor(Math.random() * possible.length));
-
-    return text;
+    for (let i = 0; i < config.slugLength; i++)
+        text.push(possible.charAt(Math.floor(Math.random() * possible.length)));
+    return text.join("");
 }
 
 // catch 404 and forward to error handler

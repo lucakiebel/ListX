@@ -1545,17 +1545,6 @@ function linkShortener(long, short, callback) {
 
 }
 
-function recursiveSlugMaker(short) {
-    if (!short) short = makeSlug();
-    ShortDomain.findOne({short:short}).exec().then((sl) => {
-        if (!sl) {
-            // not found
-            return short;
-        }
-        recursiveSlugMaker();
-    });
-}
-
 function validateReCAPTCHA(gResponse, callback) {
     const secretKey = config.reCaptcha.privateKey;
     request.post(

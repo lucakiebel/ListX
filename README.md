@@ -6,6 +6,9 @@ A free Tool to create Lists for every occasion.
 
 These are the Developer Docs, if you were looking for the App itself, [click here](https://beta.listx.io).
 
+![ListX Dashboard](https://sk-cdn.net/websites/listx.io/gifs/listx-dashboard-ad.gif)
+
+
 ## Getting Started
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.

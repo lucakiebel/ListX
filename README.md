@@ -1,4 +1,4 @@
-<h1>List<span style="color: red;">X</span> - Shopping Lists on another level </h1> [![T](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text=Free+%23ShoppingLists+on+another+Level&url=https://beta.listx.io&via=listxio&hashtags=listx)
+# ListX - Shopping Lists on another level [![T](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text=Free+%23ShoppingLists+on+another+Level&url=https://beta.listx.io&via=listxio&hashtags=listx)
 
 
 A free Tool to create Lists for every occasion.

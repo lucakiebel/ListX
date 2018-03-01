@@ -1,0 +1,15 @@
+{
+  "domain":"alpha.listx.io",
+  "devMail":"spam@alpha.listx.io",
+  "cookieSecret":"jehfuewher7893749836zeghf8u334",
+  "mailgun": {
+    "privateKey":"key-7a2e1c0248d4728c528b5f8859ad2f46",
+    "domain":"mail.listx.io"
+  },
+  "mongo": {
+    "address":"listx:X2jgNZY67AXZpYzumRhjv64c@ds263367.mlab.com:63367/listx-alpha"
+  },
+  "reCaptcha": {
+    "privateKey":"6Ld0czoUAAAAABKtI__dQPahjYi4XnRixWh0k08O"
+  }
+}

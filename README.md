@@ -2,7 +2,8 @@
 
 
 A free Tool to create Lists for every occasion.
-[![npm](https://img.shields.io/npm/v/listx.svg?style=plastic)](https://beta.listx.io)
+
+[![npm](https://img.shields.io/npm/v/listx.svg?style=plastic)](https://beta.listx.io) ![npm](https://img.shields.io/npm/dt/listx.svg?style=plastic)
 
 These are the Developer Docs, if you were looking for the App itself, [click here](https://beta.listx.io).
 

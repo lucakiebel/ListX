@@ -232,13 +232,15 @@ app.post('/signup', (req, res) => {
 // signup page for users
 app.get('/signup', function (req, res) {
 	if (req.query.p === "✓") { /** premium signup **/
+
+	} else if (req.query.b === "✓") { /** beta signup **/
+		
+	} else {
+        res.render('signup', {
+            email: "",
+            list: null
+        });
 	}
-	if (req.query.b === "✓") { /** beta signup **/
-	}
-	res.render('signup', {
-		email: "",
-		list: null
-	});
 });
 
 /**

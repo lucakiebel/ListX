@@ -2,7 +2,7 @@
 
 A free Tool to create Lists for every occasion.
 
-![Twitter Follow](https://img.shields.io/twitter/follow/listxio.svg?style=plastic&logo=twitter&label=Follow) [![npm](https://img.shields.io/npm/v/listx.svg?style=plastic)](https://beta.listx.io) ![npm](https://img.shields.io/npm/dt/listx.svg?style=plastic) ![Twitter URL](https://img.shields.io/twitter/url/http/listx.io.svg?style=plastic&logo=twitter)
+![Twitter Follow](https://img.shields.io/twitter/follow/listxio.svg?style=plastic&logo=twitter&label=Follow) [![npm](https://img.shields.io/npm/v/listx.svg?style=plastic)](https://beta.listx.io) ![npm](https://img.shields.io/npm/dt/listx.svg?style=plastic) [![Twitter URL](https://img.shields.io/twitter/url/http/listx.io.svg?style=plastic&logo=twitter)](https://twitter.com/intent/tweet?text=Free+%23ShoppingLists+on+another+Level&url=https://beta.listx.io&via=listxio&hashtags=listx)
 
 These are the Developer Docs, if you were looking for the App itself, [click here](https://beta.listx.io).
 

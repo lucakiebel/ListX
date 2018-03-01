@@ -234,13 +234,12 @@ app.get('/signup', function (req, res) {
 	if (req.query.p === "✓") { /** premium signup **/
 
 	} else if (req.query.b === "✓") { /** beta signup **/
-		
-	} else {
-        res.render('signup', {
-            email: "",
-            list: null
-        });
+
 	}
+	res.render('signup', {
+		email: "",
+		list: null
+	});
 });
 
 /**

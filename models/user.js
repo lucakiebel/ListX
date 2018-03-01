@@ -7,7 +7,7 @@ let UserSchema = new Schema({
   name: String,
   email: String,
   password: String,
-  lists: [], // 1 User => 0+ Lists
+  lists: [], // 1 User => * Lists
   premium: {type: Boolean, default: false},
   alphaTester: {type: Boolean, default: false},
   betaTester: {type: Boolean, default: false},
@@ -17,8 +17,14 @@ let UserSchema = new Schema({
   country: String
 });
 
+/**
+ * Find a User by their Email-Address
+ * @param mail The Email to search for
+ * @param safe Whether or not to return the !complete user
+ * @param callback Function gets the err object and the User as parameters
+ */
 UserSchema.statics.findByMail = function(mail, safe, callback) {
-  this.findOne({email:mail}, (err, user) => {
+  this.findOne({email:mail}, function (err, user) {
     let tmp;
     tmp = { // do not include password and user status
       _id: user._id,
@@ -34,8 +40,13 @@ UserSchema.statics.findByMail = function(mail, safe, callback) {
   });
 };
 
+/**
+ * Get all Lists a User has
+ * @param id The ID of the User
+ * @param callback Function gets the err and the lists as an Array as parameters
+ */
 UserSchema.statics.getLists = function(id, callback) {
-  this.findById(id, (err, user) => {
+  this.findById(id, function (err, user) {
     if(user.lists) {
       mongoose.model("List").find({_id: {$in: user.lists}}).exec()
           .then(lists => {
@@ -45,9 +56,15 @@ UserSchema.statics.getLists = function(id, callback) {
   });
 };
 
+/**
+ * Get the Lists a User has that contain query
+ * @param id The ID of the User
+ * @param query The query/search parameter
+ * @param callback Function gets the err and the matching Lists as an Array as parameters
+ */
 UserSchema.statics.getListsByQuery = function (id, query, callback) {
   let matchingLists = [];
-  this.findById(id, (err, user) => {
+  this.findById(id, function (err, user) {
     if(user.lists) {
       mongoose.model("List").find({_id: {$in: user.lists}}).exec()
           .then(lists => {
@@ -61,10 +78,14 @@ UserSchema.statics.getListsByQuery = function (id, query, callback) {
   });
 };
 
-UserSchema.validate = function (id, ) {
-    
-}
 
+//TODO: validation process, like deletion process
+
+/**
+ * Start the User removal process by sending the token per mail
+ * @param id The ID of the User
+ * @param callback Function gets err|false and the mailData as parameters
+ */
 UserSchema.statics.actuallyRemoveCreate = function (id, callback) {
   mongoose.model("UserDeletionToken").create({userId: id}, function (err, token) {
     err && callback(err);
@@ -85,14 +106,46 @@ UserSchema.statics.actuallyRemoveCreate = function (id, callback) {
   })
 };
 
+/**
+ * Finish the User removal process by removing the User and deleting all data of the User in the process
+ * @param id The ID of the User
+ * @param callback Function gets err|false, the deleted User (unsafe) and an Object containing more information on the deletion process
+ * TODO: delete all data of the User
+ */
 UserSchema.statics.actuallyRemoveDo = function (id, callback) {
-    mongoose.model("UserDeletionToken").findOne({_id: id}, function (err, token) {
+    mongoose.model("UserDeletionToken").findOneAndRemove({_id: id}, function (err, token) {
         err && callback(err);
-        this.remove({_id: token.userId}, function (err, user) {
+        this.remove({_id: token.userId}, (err, user) => {
             err && callback(err);
             callback(false, user, {success: true});
         });
+        mongoose.model("List").remove({admin:token.userId}, (err, lists) => { //this should also delete all the items of that list
+            err && callback(err);
+        });
     });
+};
+
+/**
+ * Start the User Email change process by sending token per mail
+ * @param id The ID of the User
+ * @param newMail The new Email that should be set for the User
+ * @param callback Function gets err|false, the Mail Data and the new Email as parameters
+ */
+UserSchema.statics.changeMailCreate = function (id, newMail, callback) {
+    this.findById(id, (err, user) => {
+        err && callback(err);
+        mongoose.model("EmailReset").create({userId: user._id}, function (err, reset) {
+            err && callback(err);
+            let URL = `http://${config.domain}/user/change-email/${reset._id}?newEmail=${newMail}`;
+            let resetLink = `http://${config.domain}/user/reset-password`;
+            let mailData = {};
+            mailData.to = user.email;
+            mailData.subject = `ListX Email Change`;
+            mailData.body = `Hey ${user.name}, \nTo change your ListX email address, follow the link below: \n${URL} (Voids in 45 minutes)\n\nIf you didn't request an email address change, please consider resetting your password (${resetLink}) \nListX Support`;
+            mailData.send = true;
+            callback(false, mailData, newMail);
+        });
+    })
 };
 
 module.exports = mongoose.model('User', UserSchema);

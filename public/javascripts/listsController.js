@@ -72,7 +72,7 @@ function mainController($scope, $http) {
 
 
         function removeItem(n) {
-        	console.log(n)
+        	console.log(n);
         	console.log($scope.items.filter(function (o) {return o.name === n}));
             $scope.deleteTodo($scope.items.filter(function (o) {return o.name === n})[0]._id)
 		}

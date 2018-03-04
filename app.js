@@ -179,7 +179,7 @@ app.get("/api/short/:short/metrics", (req, res) => {
 app.get("/s/:short", (req, res) => {
 	// increment the hits-counter by one and redirect to LONG
 	ShortDomain.findOneAndUpdate({short: req.params.short}, {$inc: {hits: 1}}, (err, url) => {
-		if (err) res.redirect("/");
+		if (err || !url || !url.long) return res.redirect("/error");
 		res.redirect(url.long);
 	});
 });

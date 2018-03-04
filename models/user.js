@@ -115,13 +115,20 @@ UserSchema.statics.actuallyRemoveCreate = function (id, callback) {
 UserSchema.statics.actuallyRemoveDo = function (id, callback) {
     mongoose.model("UserDeletionToken").findOneAndRemove({_id: id}, function (err, token) {
         err && callback(err);
+        this.user = {};
         this.remove({_id: token.userId}, (err, user) => {
             err && callback(err);
-            callback(false, user, {success: true});
+            this.user = user;
         });
-        mongoose.model("List").remove({admin:token.userId}, (err, lists) => { //this should also delete all the items of that list
+        mongoose.model("List").remove({admin:token.userId}, (err, lists) => {
             err && callback(err);
+            lists.forEach(list => {
+                mongoose.model("Item").remove({list:list._id}, (err, items) => {
+                    err && callback(err);
+                });
+            });
         });
+        callback(false, this.user, {success: true});
     });
 };
 

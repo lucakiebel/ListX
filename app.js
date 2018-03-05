@@ -206,17 +206,14 @@ app.post('/signup', (req, res) => {
 						}
 						EmailValidation.create({email: user.email, userId: user._id}, (err, valid) => {
 							if (err) res.json({success: false});
-							let URL = "http://" + config.domain + "/validate/" + valid._id;
-							linkShortener(URL, null, short => {
-								short = "http://" + config.domain + "/s/" + short.short;
-								let mailData = {};
-								mailData.to = user.email;
-								mailData.subject = "ListX Account Activation";
-								mailData.body = `ListX Account Activation \nHey ${req.body.name}, thanks for signing up with ListX! \nPlease verify your email address by clicking the following link: \n${short} (Voids in 45 minutes)\nSee you on the other side!`;
-								mailData.send = true;
-								mail(mailData);
-								res.json({success: true, user: user, validation: valid});
-							});
+                            short = "http://" + config.domain + "/validate/" + valid._id;
+							let mailData = {};
+							mailData.to = user.email;
+							mailData.subject = "ListX Account Activation";
+							mailData.body = `ListX Account Activation \nHey ${req.body.name}, thanks for signing up with ListX! \nPlease verify your email address by clicking the following link: \n${short} (Voids in 45 minutes)\nSee you on the other side!`;
+							mailData.send = true;
+							mail(mailData);
+							res.json({success: true, user: user, validation: valid});
 
 						});
 					});

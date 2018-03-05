@@ -1597,6 +1597,7 @@ function validateReCAPTCHA(gResponse, callback) {
 		`https://www.google.com/recaptcha/api/siteverify?secret=${secretKey}&response=${gResponse}`,
 		function (error, response, body) {
 			body = JSON.parse(body);
+			console.log(body);
 			callback(null, body.success);
 		}
 	);

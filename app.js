@@ -206,21 +206,21 @@ app.post('/signup', (req, res) => {
 						}
 						EmailValidation.create({email: user.email, userId: user._id}, (err, valid) => {
 							if (err) res.json({success: false});
-                            short = "http://" + config.domain + "/validate/" + valid._id;
+                            const short = "http://" + config.domain + "/validate/" + valid._id;
 							let mailData = {};
 							mailData.to = user.email;
 							mailData.subject = "ListX Account Activation";
 							mailData.body = `ListX Account Activation \nHey ${req.body.name}, thanks for signing up with ListX! \nPlease verify your email address by clicking the following link: \n${short} (Voids in 45 minutes)\nSee you on the other side!`;
 							mailData.send = true;
 							mail(mailData);
+							console.log("Signup Proccess complete: " + !!user);
 							res.json({success: true, user: user, validation: valid});
-
 						});
 					});
 				});
 			});
 		} else {
-			res.json({success: false, error: err});
+			res.json({success: false, error: err, code:701});
 		}
 	});
 

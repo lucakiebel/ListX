@@ -446,7 +446,7 @@ app.get("/legal/passwords", (req, res) => {
 app.get("/api/version", (req, res) => {
 	res.json(
 		{
-			"info": "This is the ListX API. The current date is",
+			"info": "ListX API Version Manager. Copyright 2017 Bleurque, Inc.",
 			"date": new Date(Date.now()).toDateString(),
 			"version": require("./package.json").version
 		}

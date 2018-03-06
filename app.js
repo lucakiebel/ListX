@@ -1064,9 +1064,16 @@ app.get("/user/delete/:token", (req, res) => {
 
 // update a user adding new lists TODO: This should not add lists, but rather make invitations
 app.post('/api/users/:id/newList', (req, res) => {
-	User.findOneAndUpdate({_id: req.params.id}, {$push: {"lists": {$each: req.body.lists}}}, function (err, user) {
+	User.findOne({_id: req.params.id}, function (err, user) {
 		if (err) res.json({success: false, error: 'Lists not added to User', code: 207});
-		else res.json({success: true, id: user._id});
+		else {
+			req.body.lists.forEach(list => {
+				createInvite(user.email, list._id, [], (err, list) => {
+					err && res.json({success:false, err:err});
+				});
+			});
+			res.json({success: true, id: user._id});
+		}
 	});
 });
 

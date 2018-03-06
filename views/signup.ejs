@@ -57,18 +57,33 @@
                         <h3 class="center"><%= __("/ListX/UI/Index/signUp") %></h3>
                         <div class="alert alert-danger signup-error" id="signup-error-email" style="display: none">
                             <strong><%= __("/ListX/UI/Index/error")%>: </strong> <%= __("/ListX/UI/SignUp/ErrorMessageEmail") %>
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
                         </div>
                         <div class="alert alert-danger signup-error" id="signup-error-server" style="display: none">
                             <strong><%= __("/ListX/UI/Index/error")%>: </strong> <%- __("/ListX/UI/SignUp/ErrorMessageServer") %>
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
                         </div>
                         <div class="alert alert-danger signup-error" id="signup-error-rc" style="display: none">
                             <strong><%= __("/ListX/UI/Index/error")%>: </strong> <%- __("/ListX/UI/SignUp/ErrorMessageRC") %>
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
                         </div>
                         <div class="alert alert-success" id="signup-success" style="display: none">
                             <strong><%= __("/ListX/UI/Index/success")%>: </strong> <%- __("/ListX/UI/SignUp/SuccessMessage") %>
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
                         </div>
                         <div class="alert alert-danger signup-error" id="signup-error-disposable" style="display:none">
                             <strong><%= __("/ListX/UI/Index/error") %></strong> <%= __("/ListX/UI/SignUp/ErrorMessageDisp")%>
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
                         </div>
                     </div>
                     <div class="panel-body">

@@ -16,7 +16,7 @@ function signupValidation() {
 			$("#login-error").css("display", "block");
 			console.log(e.message)
 		}
-		let data = `email=${formData.email}&password=${formData.password}&name=${formData.name}`;
+		let data = `email=${formData.email}&password=${formData.password}&name=${formData.name}&g-recaptcha-response=${grecaptcha.getResponse()}`;
 		if ($("#list-from-invitation").val()) data += "&list="+$("#list-from-invitation").val();
         $.ajax({
             type: "POST",

@@ -72,7 +72,6 @@ app.use(session({
 
 app.use(i18n.init);
 
-console.info(i18n.__("/ListX/UI/Welcome"));
 console.info("ListX Started on http://" + config.domain);
 
 // database setup

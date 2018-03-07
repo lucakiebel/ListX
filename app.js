@@ -1208,9 +1208,9 @@ app.post("/api/user/changeName", requireAuthentication, (req, res) => {
 
 // username change
 
-app.post("/api/user/changeUsername", (req, res) => {
+app.post("/api/user/changeUsername", requireAuthentication, (req, res) => {
 	let newUsername = req.body.newUsername;
-	let userId = req.body.userId;
+	let userId = req.authentication.user._id;
 	//User.findById(userId, (err, user) => {
 	// maybe check for how many name-changes the user had
 	User.findOneAndUpdate({_id: userId}, {$set: {username: newUsername}}, (err, update) => {

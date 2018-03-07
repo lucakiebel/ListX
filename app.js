@@ -952,7 +952,7 @@ app.get('/api/users/:id', requireAuthentication, (req, res) => {
 });
 
 // get single user per mail
-app.get('/api/users/byMail/:mail', (req, res) => {
+app.get('/api/users/byMail/:mail', requireAuthentication, (req, res) => {
 	User.findOne({email: req.params.mail}, function (err, user) {
 		if (err) {
 			res.json({success: false, error: 'User not found', code: 201});

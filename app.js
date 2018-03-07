@@ -1140,9 +1140,8 @@ app.post("/api/users/addListBulk", (req, res) => {
 	let a = [];
 	if (emails) {
 		emails.forEach(e => {
-			User.findOneAndUpdate({email: e}, {$push: {"lists": list}}, (err, user) => {
-				if (err) res.json({success: false, error: 'Lists not added to User', code: 207});
-				else a.push(e);
+			createInvite(e, list, a, (err, list) => {
+				err && res.json({success:false, err:err});
 			});
 		});
 	}

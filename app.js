@@ -1070,7 +1070,7 @@ app.post('/api/users', deprecate, (req, res) => {
 });
 
 // remove a user
-app.delete('/api/users/:id', (req, res) => {
+app.delete('/api/users/:id', requireAuthentication, (req, res) => {
 	// send email to user with delete token //
 	UserDeletionToken.create({userId: req.params.id}, function (err, token) {
 		if (err) res.json({succes: false, error: 'User not removed', code: 206});

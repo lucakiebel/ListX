@@ -336,18 +336,18 @@ app.get("/user/reset-password/:id", (req, res) => {
 });
 
 app.post("/api/passwordreset", (req, res) => {
-	let {pwrId, userId, password} = req.body;
+	let {pwrId, password} = req.body;
 	bCrypt.hash(password, 10, function (err, hashedpassword) {
 		PasswordReset.findOneAndRemove({_id: pwrId}, (err, pwr) => {
 			if (err) res.json({success: false, code: 101});
+			User.findOneAndUpdate({_id: pwr.userId}, {$set: {password: hashedpassword}}, (err, user) => {
+				if (err) res.json({success: false, error: 201});
+				console.log("Passwordreset for: ", user.email);
+				res.json({success: true});
+			});
 		});
-		User.findOneAndUpdate({_id: userId}, {$set: {password: hashedpassword}}, (err, user) => {
-			if (err) res.json({success: false, error: 201});
-			console.log("Passwordreset for: ", user.email);
-			res.json({success: true});
-		});
+		
 	});
-
 });
 
 app.post('/login', function (req, res) {

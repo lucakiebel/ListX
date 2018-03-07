@@ -925,7 +925,7 @@ app.get('/api/users', requireAuthentication, (req, res) => {
 });
 
 // get single user
-app.get('/api/users/:id', (req, res) => {
+app.get('/api/users/:id', requireAuthentication, (req, res) => {
 	User.findOne({_id: req.params.id}, function (err, user) {
 
 		// if there is an error retrieving, send the error. nothing after res.send(err) will execute

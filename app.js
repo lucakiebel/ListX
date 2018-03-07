@@ -282,7 +282,7 @@ app.get("/user/reset-password", (req, res) => {
 app.post("/api/reset", (req, res) => {
 	const email = req.body.email;
 	validateReCAPTCHA(req.body.recRes, (err, success) => {
-		if (err === null) {
+		if (success) {
 			User.findOne({email: email}, function (err, user) {
 				if (err || !user) {
 					let mailData = {

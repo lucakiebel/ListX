@@ -381,14 +381,19 @@ app.post('/login', function (req, res) {
 
 
 app.get('/login', (req, res) => {
-	if (req.session.user) {
-		res.redirect("/dashboard");
-	}
-	res.render("login");
+	verifyJWT(req.cookies.token, (err, userId) => {
+		if (userId) {
+			User.findOne({_id: userId}, (err, user) => {
+				if (user) res.redirect("/dashboard")
+			});
+		} else {
+			res.render("login");
+		}
+	});
 });
 
 app.get('/logout', (req, res) => {
-	req.session.destroy();
+	res.clearCookie("token");
 	res.redirect("/");
 });
 

@@ -393,7 +393,7 @@ app.get('/login', (req, res) => {
 });
 
 app.get('/logout', (req, res) => {
-	res.clearCookie("token");
+	res.cookie("token", "", {maxAge:new Date(0)});
 	res.redirect("/");
 });
 

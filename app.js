@@ -1108,25 +1108,23 @@ app.get("/user/delete/:token", (req, res) => {
 
 
 // update a user adding new lists TODO: This should not add lists, but rather make invitations
-app.post('/api/users/:id/newList', (req, res) => {
+app.post('/api/users/:id/newList', requireAuthentication, (req, res) => {
 	User.findOne({_id: req.params.id}, function (err, user) {
 		if (err) res.json({success: false, error: 'Lists not added to User', code: 207});
 		else {
-			req.body.lists.forEach(list => {
-				createInvite(user.email, list._id, [], (err, list) => {
-					err && res.json({success:false, err:err});
-				});
+			User.update({_id:user._id}, {$push:{lists:req.body.lists}}, (err, update) => {
+				!err && res.json({success: true, id: update._id});
+
 			});
-			res.json({success: true, id: user._id});
 		}
 	});
 });
 
 
 // update a user removing a list
-app.post("/api/users/:id/removeList", (req, res) => {
+app.post("/api/users/:id/removeList", requireAuthentication, (req, res) => {
 	List.findOne({_id: req.body.list}, (err, list) => {
-		if (req.body.removingUser.toString() === list.admin.toString()) {
+		if (req.authentication.user._id.toString() === list.admin.toString()) {
 			User.findOneAndUpdate({_id: req.params.id}, {$pull: {lists: req.body.list}}, (err, update) => {
 				!!err && res.json({success: false, err: err});
 				res.json({success: true, user: update._id});

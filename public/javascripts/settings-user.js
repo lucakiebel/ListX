@@ -79,7 +79,8 @@ $(document).ready(function() {
 		console.log("Address Save Button Clicked!");
 		let addr = $("#inputAddress").val();
 		let zip = $("#inputZip").val();
-		let ctry = $("#inputCountry").val();
+		let ctry = $("#new-country").val();
+		console.log(addr,zip,ctry);
 		$.post("/api/user/changeAddress", {address: addr, zipCode: zip, country: ctry}, (data) => {
 			if (data.success) {
 				console.log("Address successfully changed!")

@@ -794,33 +794,37 @@ app.post("/api/lists/update/country", requireAuthentication, (req, res) => {
 	});
 });
 
-app.get("/api/lists/:id/userEmails", (req, res) => {
+app.get("/api/lists/:id/userEmails", requireAuthentication, (req, res) => {
 	User.find({lists: req.params.id}, (err, users) => {
-		!!err && res.json({success: false, err: err});
-		res.json({
-			success: true, users: users.map(u=> {
-				return {_id: u._id, email: u.email}
-			})
-		});
+		if(req.authentication.user.lists.indexOf(req.params.id) >= 0) {
+			!!err && res.json({success: false, err: err});
+			res.json({
+				success: true, users: users.map(u=> {
+					return {_id: u._id, email: u.email}
+				})
+			});
+		}
 	});
 });
 
-app.get("/api/lists/:id/invitationsForSettings", (req, res) => {
+app.get("/api/lists/:id/invitationsForSettings", requireAuthentication, (req, res) => {
 	Invitation.find({list: req.params.id}, (err, invs) => {
-		!!err && res.json({success: false, err: err});
-		res.json({
-			success: true, invitations: invs.map(i=> {
-				return {_id: i._id, email: i.email}
-			})
-		});
-	})
+		if(req.authentication.user.lists.indexOf(req.params.id) >= 0) {
+			!!err && res.json({success: false, err: err});
+			res.json({
+				success: true, invitations: invs.map(i=> {
+					return {_id: i._id, email: i.email}
+				})
+			});
+		}
+	});
 });
 
 // update a list
 /**
  * @deprecated since v0.10.0
  */
-app.post('/api/lists/:id', (req, res) => {
+app.post('/api/lists/:id', deprecate, (req, res) => {
 	let update = req.body;
 	List.findOneAndUpdate({_id: req.params.id}, update, function (err, list) {
 		if (err) {

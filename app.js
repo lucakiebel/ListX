@@ -1178,15 +1178,18 @@ app.post("/api/user/changeEmail", requireAuthentication, (req, res) => {
 
 app.get("/user/change-email/:id", (req, res) => {
 	let newEmail = req.query.newEmail;
-	let resetId = req.body.id;
+	let resetId = req.params.id;
 	EmailReset.findOne({_id:resetId}, (err, er) => {
 		let userId = er.userId;
 		User.findOne({_id:userId}, (err, user) => {
-			if (er.expiry.getTime() >= new Date(Date.now()).getTime()) {
+			if (er.expiry >= Date.now()) {
 				// not expired
-				User.findOneAndUpdate(user, {$set: {email: newEmail}}, (err, update) => {
+				User.update({_id:user._id}, {$set: {email: newEmail}}, (err, update) => {
 					if (!err) res.render("email-change-end", {success: true});
-					else res.render("email-change-end", {success: false});
+					else {
+						res.render("email-change-end", {success: false});
+						console.log(update, err)
+					}
 				})
 			}
 		});

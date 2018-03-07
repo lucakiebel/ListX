@@ -583,18 +583,8 @@ app.get('/list/:id/invitations/:invId', (req, res) => {
 					}
 				});
 			}
-			else res.render('index', {error: 'Invitation not associated with List!', translate: res});
+			else res.render('index', {error: 'Invitation not associated with List!'});
 		});
-	});
-});
-
-// page for family members to invite new ppl
-app.get('/list/:id/invite', requireLogin, (req, res) => {
-	List.findOne({_id: req.params.id}, function (err, list) {
-		if (err) {
-			res.render('index', {error: 'List not found!', translate: res});
-		}
-		res.render('invite', {list: list._id, translate: res})
 	});
 });
 

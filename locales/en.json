@@ -175,5 +175,6 @@
   "/ListX/UI/Confirmations/deleteInvs": "Do you really want to delete all Invitations linked to this list? It can be quite hard to invite everyone again...",
   "/ListX/UI/Confirmations/removeUsers": "Do you really want to remove all users from this list?",
   "/ListX/UI/ListSettings/LeaveList": "Leave List",
-  "/ListX/UI/ListSettings/LeaveListHelper": "This will remove you from this List."
+  "/ListX/UI/ListSettings/LeaveListHelper": "This will remove you from this List.",
+  "/ListX/UI/Navigation/loggedInAs": "Logged in as "
 }

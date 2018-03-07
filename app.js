@@ -1478,14 +1478,14 @@ app.delete('/api/invitations/:id', requireAuthentication, (req, res) => {
 });
 
 // Delete all invitations per list
-app.delete('/api/invitations/list/:id', (req, res) => {
+app.delete('/api/invitations/list/:id', requireAuthentication, (req, res) => {
 	let inv = [];
 	// first grab the Invitations from the list of :id
 	List.findOne({_id: req.params.id}, function (err, list) {
 		if (err) {
 			res.json({success: false, error: 'List not found'});
 		}
-		let user = req.query.user === req.session.user._id.toString() ? req.query.user : "";
+		let user = req.authentication.user._id;
 		if (list.admin !== undefined && list.admin.toString() === user.toString()) {
 			// bind the invitations
 			Invitation.find({list: list._id}, (err, invites) => {

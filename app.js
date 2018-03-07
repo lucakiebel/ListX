@@ -768,9 +768,9 @@ app.delete('/api/lists/:id', requireAuthentication, (req, res) => {
  * List Settings:
  */
 
-app.post("/api/lists/update/name", (req, res) => {
-	const {list, newName, admin} = req.body;
-	let user = admin === req.session.user._id.toString() ? admin : "";
+app.post("/api/lists/update/name", requireAuthentication, (req, res) => {
+	const {list, newName} = req.body;
+	let user = req.authentication.user._id.toString();
 	List.findOne({_id: list}).then(l => {
 		if (l.admin.toString() === user) {
 			List.update({_id: list}, {$set: {name: newName}}, (err, l2) => {

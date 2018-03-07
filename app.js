@@ -1629,8 +1629,10 @@ function linkShortener(long, short, callback) {
 
 		});
 	});
+}
 
-
+function deprecate(req, res, next) {
+	res.json({"sucess":false, msg:"This Route/Function is deprecated, please refrain from using it."});
 }
 
 function validateReCAPTCHA(gResponse, callback) {

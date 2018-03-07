@@ -1195,9 +1195,9 @@ app.get("/user/change-email/:id", (req, res) => {
 
 // name change
 
-app.post("/api/user/changeName", (req, res) => {
+app.post("/api/user/changeName", requireAuthentication, (req, res) => {
 	let newName = req.body.newName;
-	let userId = req.body.userId;
+	let userId = req.authentication.user._id;
 	// maybe check for how many name-changes the user had
 	console.log("Changing " + userId + "'s name to " + newName);
 	User.findOneAndUpdate({_id: userId}, {$set: {name: newName}}, (err, update) => {

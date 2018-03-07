@@ -13,6 +13,7 @@ const express = require('express')                        // Express as a Webser
 	, mg = require('mailgun-js')
 	, request = require("request")
 	, fs = require("fs")
+	, jwt = require("jsonwebtoken")
 	, config = require(path.join(__dirname, "config.json"));
 
 // view engine setup

@@ -750,8 +750,9 @@ app.delete("/api/lists/:id/removeAllUsers", requireAuthentication, (req, res) =>
 	});
 });
 
-app.delete('/api/lists/:id', (req, res) => {
-	let user = req.query.user === req.session.user._id.toString() ? req.query.user : "";
+// delete list
+app.delete('/api/lists/:id', requireAuthentication, (req, res) => {
+	let user = req.authentication.user._id.toString();
 	let list = req.params.id;
 	User.findOne({_id: user}, (err, u) => {
 		if (err) res.json({success: false}); // user not found

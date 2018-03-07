@@ -479,60 +479,76 @@ app.get("/lists", (req, res) => {
 // List index per List if $user is part of it
 app.get('/list/:id', requireLogin, (req, res) => {
 	List.findOne({_id: req.params.id}, (err, list) => {
-		let user = req.session.user;
 		if (err) {
 			res.render('index', {error: 'List not found!'});
 		}
-		if (user.lists.indexOf(list._id)) {
-			res.render('list', {
-				list: list, user: user
-			});
-		}
-		else {
-			console.log("User " + user.name + " is not member of List " + list.name);
-			res.render('index', {error: 'User not part of List!'});
-		}
+		verifyJWT(req.cookies.token, (err, userId) => {
+			if(userId) {
+				User.findOne({_id: userId}, (err, user) => {
+					if (user.lists.indexOf(list._id) >= 0) {
+						res.render('list', {
+							list: list, user: user
+						});
+					}
+					else {
+						console.log("User " + user.name + " is not member of List " + list.name);
+						res.render('index', {error: 'User not part of List!'});
+					}
+				});
+			}
+		});
 	});
 });
 
 // List Settings. If $user is list.admin render admin settings
 app.get('/list/:id/settings', requireLogin, function (req, res) {
 	List.findOne({_id: req.params.id}, function (err, list) {
-		let user = req.session.user;
 		if (err) {
 			res.render('index', {error: 'List not found!'});
 		}
-		if (user.lists.indexOf(list._id)) {
-			if (list.admin.toString() === user._id.toString()) {
-				res.render('list-settings-admin', {
-					list: list, user: user
-				});
-				console.log("rendering " + list.name + "'s admin settings for user " + user.name);
-			}
-			else {
-				res.render('list-settings', {
-					list: list, user: user
-				});
-				console.log("rendering " + list.name + "'s settings for user " + user.name);
-			}
-		}
-		else {
-			console.log("User " + user.name + " is not member of List " + list.name);
-			res.redirect("/dashboard");
-		}
+		verifyJWT(req.cookies.token, (err, userId) => {
+			User.findOne({_id:userId}, (err, user) => {
+				if (user.lists.indexOf(list._id) >= 0) {
+					if (list.admin.toString() === user._id.toString()) {
+						res.render('list-settings-admin', {
+							list: list, user: user
+						});
+						console.log("rendering " + list.name + "'s admin settings for user " + user.name);
+					}
+					else {
+						res.render('list-settings', {
+							list: list, user: user
+						});
+						console.log("rendering " + list.name + "'s settings for user " + user.name);
+					}
+				}
+				else {
+					console.log("User " + user.name + " is not member of List " + list.name);
+					res.redirect("/dashboard");
+				}
+			});
+		});
 	});
 });
 
 
 // Users Dashboard
 app.get('/dashboard', requireLogin, (req, res) => {
-	res.render('dashboard', {user: req.session.user});
+	verifyJWT(req.cookies.token, (err, userId) => {
+		User.findOne({_id:userId}, (err, user) => {
+			res.render('dashboard', {user: user});
+		});
+	});
 });
 
 
 // User Profile
 app.get('/user', requireLogin, (req, res) => {
-	res.render('settings-user', {user: req.session.user});
+	verifyJWT(req.cookies.token, (err, userId) => {
+		User.findOne({_id:userId}, (err, user) => {
+			res.render('settings-user', {user: user});
+		});
+	});
 });
 
 

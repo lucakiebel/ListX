@@ -429,15 +429,27 @@ app.get("/terms", (req, res) => {
 });
 
 app.get("/legal/imprint", (req, res) => {
-	res.render("imprint", {user: req.session.user});
+	verifyJWT(req.cookies.token, (err, userId) => {
+		User.findOne({_id:userId}, (err, user) => {
+			res.render("imprint", {user: user||{}});
+		});
+	});
 });
 
 app.get("/legal/privacy", (req, res) => {
-	res.render("privacy", {user: req.session.user});
+	verifyJWT(req.cookies.token, (err, userId) => {
+		User.findOne({_id:userId}, (err, user) => {
+			res.render("privacy", {user: user||{}});
+		});
+	});
 });
 
 app.get("/legal/terms", (req, res) => {
-	res.render("terms", {user: req.session.user});
+	verifyJWT(req.cookies.token, (err, userId) => {
+		User.findOne({_id:userId}, (err, user) => {
+			res.render("terms", {user: user||{}});
+		});
+	});
 });
 
 app.get("/legal/passwords", (req, res) => {

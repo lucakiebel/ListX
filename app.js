@@ -1584,14 +1584,42 @@ function verifyJWT(jwt_token, callback) {
  * @param next The next handler
  */
 function requireLogin(req, res, next) {
-	if (!req.session.user) {
-		// redirect to login page
-		res.redirect('/login');
-	} else {
-		next();
-	}
+	verifyJWT(req.cookies.token, (err, userId) => {
+		console.log(userId);
+		User.findOne({_id: userId}, (err, user) => {
+			if (!user) {
+				res.redirect('/login');
+			} else {
+				next();
+			}
+		});
+	});
 }
 
+/**
+ * reuireAuthentication for user-specific API routes
+ * @param req
+ * @param res
+ * @param next
+ */
+function requireAuthentication(req, res, next) {
+	let tk = req.body.token || req.query.token || req.headers['x-access-token'] || req.cookies.token;
+	if(!tk) res.json({success:false, msg:"Failed to authenticate with Token."});
+	verifyJWT(tk, (err, userId) => {
+		User.findOne({_id:userId}, (err, user) => {
+			if (user) {
+				req.authentication = {
+					user:user,
+					token:tk
+				};
+				next();
+			} else {
+				res.end(JSON.stringify({success:false, msg:"Failed to authenticate with Token."}));
+				console.log("API Access without Authentication. Token: ", tk)
+			}
+		});
+	});
+}
 
 function slugMaker() {
 	// get all shortlinks

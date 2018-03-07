@@ -1423,7 +1423,6 @@ function userExists(id, mail) {
 
 function createInvite(email, list, arr, callback) {
 	if (!userExists(null, email)) {
-
 		Invitation.create({
 			email: email,
 			list: list
@@ -1438,8 +1437,8 @@ function createInvite(email, list, arr, callback) {
 					greeting = `Howdy!`;
 					invite = `sign up, join ListX`;
 				}
-				List.findById(list, (err, l) => {
-					User.findById(l.admin, (err, admin) => {
+				List.findOne({_id:list}, (err, l) => {
+					User.findOne({_id:l.admin}, (err, admin) => {
 						let msg = {
 							to: email,
 							subject: `ListX - New Invitation to List ${l.name}!`,

@@ -1153,11 +1153,11 @@ app.post("/api/users/addListBulk", (req, res) => {
  */
 
 // email Change
-app.post("/api/user/changeEmail", (req, res) => {
+app.post("/api/user/changeEmail", requireAuthentication, (req, res) => {
 	const newEmail = req.body.newEmail;
-	const userId = req.body.userId;
+	const userId = req.authentication.user._id;
 	// send verification email to current email address
-	User.findById(userId, (err, user) => {
+	User.findOne({_id:userId}, (err, user) => {
 		EmailReset.create({userId: user._id}, (err, reset) => {
 			let long = `http://${config.domain}/user/change-email/${reset._id}?newEmail=${newEmail}`;
 			linkShortener(long, null, (URL) => {

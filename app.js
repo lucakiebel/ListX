@@ -1361,7 +1361,7 @@ app.get('/api/invitations', requireAuthentication, (req, res) => {
 });
 
 // get single invitation
-app.get('/api/invitations/:id', (req, res) => {
+app.get('/api/invitations/:id', requireAuthentication, (req, res) => {
 	Invitation.find({_id: req.params.id}, function (err, invitation) {
 		if (err) {
 			res.json({success: false, error: 'Invitation not found'});

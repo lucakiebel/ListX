@@ -1306,8 +1306,8 @@ app.post("/api/user/emailInformation", requireAuthentication, (req, res) => {
 
 
 // delete all lists, items, and personal data
-app.post("/api/user/deletePersonalInformation", (req, res) => {
-	let userId = req.body.userId;
+app.post("/api/user/deletePersonalInformation", requireAuthentication, (req, res) => {
+	let userId = req.authentication.user._id;
 	let password = req.body.password;
 	let confirmation = req.body.confirmation;
 	if (confirmation) {

@@ -603,8 +603,13 @@ app.get("/language/:lang", (req, res) => {
  */
 
 app.all('/', (req, res) => {
-	if (req.session.user) res.render('index', {user: req.session.user});
-	else res.render('index', {user: false});
+	verifyJWT(req.cookies.token, (err, userId) => {
+		err && res.render("index", {user:false});
+		User.findOne({_id:userId}, (err, user) => {
+			if (user) res.render('index', {user: user});
+			else res.render('index', {user: false});
+		});
+	});
 });
 
 

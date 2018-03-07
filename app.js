@@ -1558,23 +1558,24 @@ function mail(data) {
 
 // authentication
 app.use(function (req, res, next) {
-	if (req.session && req.session.user) {
-		User.findOne({email: req.session.user.email}, function (err, user) {
-			if (user) {
-				req.user = user;
-				delete req.user.password; // delete the password from the session
-				req.session.user = user;  //refresh the session value
-				res.locals.user = user;   // refresh locals value
-			}
-			// finishing processing the middleware and run the route
+	verifyJWT(req.cookie.token, (err, userId) => {
+		if (userId) {
+			User.findOne({_id: userId}, function (err, user) {
+				err && console.log(err);
+				next();
+			});
+		} else {
 			next();
-		});
-	} else {
-		//res.redirect("/login");
-		next();
-	}
+		}
+	});
 });
 
+function verifyJWT(jwt_token, callback) {
+	jwt.verify(jwt_token, config.jwtSecret, (e,u) => {
+		if (u && u.id) callback(e, u.id);
+		else callback(e);
+	});
+}
 
 /**
  * requireLogin for User Specific areas

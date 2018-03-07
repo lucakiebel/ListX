@@ -725,8 +725,8 @@ app.delete('/api/lists/:id/admin', requireAuthentication, (req, res) => {
 });
 
 // remove all users except the admin from :list
-app.delete("/api/lists/:id/removeAllUsers", (req, res) => {
-	let user = req.query.user === req.session.user._id.toString() ? req.query.user : "";
+app.delete("/api/lists/:id/removeAllUsers", requireAuthentication, (req, res) => {
+	let user = req.authentication.user._id;
 	List.findOne({_id: req.params.id}, (err, list) => {
 		console.log("err", err);
 		!!err && (res.json({success: false, err: err}));

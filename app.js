@@ -701,17 +701,16 @@ app.post('/api/lists', requireAuthentication, (req, res) => {
 });
 
 // let a user remove themselves from a list
-app.post("/api/lists/:id/removeMeFromList", (req, res) => {
-	let user = req.session.user._id || req.body.user;
-	User.findOneAndUpdate({_id: user}, {$pull: {lists: req.params.id}}, (err, user) => {
+app.post("/api/lists/:id/removeMeFromList", requireAuthentication, (req, res) => {
+	User.findOneAndUpdate({_id: req.authentication.user._id}, {$pull: {lists: req.params.id}}, (err, user) => {
 		!!err && res.json({success: false, err: err});
 		res.json({success: true});
-	})
+	});
 });
 
 // remove a list
-app.delete('/api/lists/:id/admin', (req, res) => {
-	let user = req.query.user === req.session.user._id.toString() ? req.query.user : "";
+app.delete('/api/lists/:id/admin', requireAuthentication, (req, res) => {
+	let user = req.authentication.user._id;
 	List.findOne({_id: req.params.id}, (err, l) => {
 		if (l.admin.toString() === user.toString()) {
 			List.remove({_id: req.params.id}, function (err, list) {

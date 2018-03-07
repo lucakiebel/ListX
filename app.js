@@ -1371,27 +1371,32 @@ app.get('/api/invitations/:id', requireAuthentication, (req, res) => {
 });
 
 // create invitation from array
-app.post('/api/invitations/array', (req, res) => {
+app.post('/api/invitations/array', requireAuthentication, (req, res) => {
 	let inv = [] // invitation
 		, l = req.body.list;
-	if (req.body.invs) {
-		if (Array.isArray(req.body.invs) && undefined !== req.body.invs) {
-			req.body.invs.forEach(i => {
-				createInvite(i, l, inv);
-				console.log("INV: " + inv);
-			});
+	if(req.authentication.user.lists.indexOf(req.body.list) >= 0) {
+		if (req.body.invs) {
+			if (Array.isArray(req.body.invs)) {
+				req.body.invs.forEach(i => {
+					createInvite(i, l, inv);
+					console.log("INV: " + inv);
+				});
+			}
+			else {
+				if (req.body.email) {
+					console.log("List in array", l);
+					createInvite(req.body.email, l, inv);
+				} else res.json({success:true});
+				
+			}
 		}
-		else {
-			createInvite(req.body.email, l, inv);
-		}
-	}
 
-	res.json({invs: inv, success: true});
-
+		res.json({invs: inv, success: true});
+	} else res.json({success:false, msg:"You may only create Invitations for Lists that you are a member of!"})
 });
 
 // create a single invitation
-app.post("/api/invitations", (req, res) => {
+app.post("/api/invitations", requireAuthentication, (req, res) => {
 	createInvite(req.body.email, req.body.list, [], function (err, list) {
 		!!err && res.json({success: false, err: err});
 		res.json({success: true, list: list});

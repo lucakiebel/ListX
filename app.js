@@ -781,8 +781,9 @@ app.post("/api/lists/update/name", requireAuthentication, (req, res) => {
 	});
 });
 
-app.post("/api/lists/update/country", (req, res) => {
-	const {list, newCountry, admin} = req.body;
+app.post("/api/lists/update/country", requireAuthentication, (req, res) => {
+	let {list, newCountry, admin} = req.body;
+	admin = req.authentication.user._id.toString();
 	List.findOne({_id: list}).then(l => {
 		if (l.admin.toString() === admin) {
 			List.update({_id: list}, {$set: {country: newCountry}}, (err, l2) => {

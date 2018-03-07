@@ -1221,29 +1221,23 @@ app.post("/api/user/changeUsername", requireAuthentication, (req, res) => {
 });
 
 
-app.post("/api/user/changeAddress", (req, res) => {
-	let addr = {
-		a: req.body.address,
-		z: req.body.zipCode,
-		c: req.body.country
-	};
-	User.findOneAndUpdate({_id: req.body.userId}, {
+app.post("/api/user/changeAddress", requireAuthentication, (req, res) => {
+	User.findOneAndUpdate({_id: req.authentication.user._id}, {
 		$set: {
-			address: addr.a,
-			zipCode: addr.z,
-			country: addr.c
+			address: req.body.address,
+			zipCode: req.body.zipCode,
+			country: req.body.country
 		}
 	}, (err, update) => {
 		if (!err && update) {
-			res.json({success: true, update: addr});
+			res.json({success: true, update: update});
 		}
 	});
 });
 
 // private information deletion
-
-app.post("/api/user/deleteUser", (req, res) => {
-	let userId = req.body.userId;
+app.post("/api/user/deleteUser", requireAuthentication, (req, res) => {
+	let userId = req.authentication.user._id;
 	let password = req.body.password;
 	let confirmation = req.body.confirmation;
 	if (confirmation) {

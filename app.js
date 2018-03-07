@@ -27,13 +27,13 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(methodOverride());
-app.use(session({
-	cookieName: 'session',
-	secret: config.cookieSecret, // random cookie secret
-	duration: 15 * 86400000, // 15 days
-	activeDuration: 30 * 60000, // 30 minutes
-	httpOnly: true // prevent session from being intercepted
-}));
+// app.use(session({
+// 	cookieName: 'session',
+// 	secret: config.cookieSecret, // random cookie secret
+// 	duration: 15 * 86400000, // 15 days
+// 	activeDuration: 30 * 60000, // 30 minutes
+// 	httpOnly: true // prevent session from being intercepted
+// }));
 
 // app.use(function(req, res, next) {
 //   res.header("Access-Control-Allow-Origin", "*");

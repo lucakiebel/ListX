@@ -1349,7 +1349,7 @@ app.post("/api/user/deletePersonalInformation", requireAuthentication, (req, res
 
 
 // get all invitations
-app.get('/api/invitations', (req, res) => {
+app.get('/api/invitations', requireAuthentication, (req, res) => {
 	if (req.app.get('env') === 'development') {
 		Invitation.find(function (err, invitations) {
 			if (err) {

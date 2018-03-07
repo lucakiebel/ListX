@@ -641,47 +641,52 @@ app.get('/api/lists', requireAuthentication, (req, res) => {
 });
 
 // get single list
-app.get('/api/lists/:id', (req, res) => {
+app.get('/api/lists/:id', requireAuthentication, (req, res) => {
 	List.findOne({_id: req.params.id}, function (err, list) {
+		if(req.authentication.user.lists.indexOf(list._id) >= 0) {
+			// if there is an error retrieving, send the error, nothing after res.send(err) will execute
+			if (err) {
+				res.json({success: false, error: 'List not found', code: 401})
+			}
 
-		// if there is an error retrieving, send the error, nothing after res.send(err) will execute
-		if (err) {
-			res.json({success: false, error: 'List not found', code: 401})
+
+			res.json(list); // return the List in JSON format
+			console.log(list);
 		}
-
-
-		res.json(list); // return the List in JSON format
-		console.log(list);
 	});
 });
 
 // get item-count of a list
-app.get('/api/lists/:id/itemCount', (req, res) => {
+app.get('/api/lists/:id/itemCount', requireAuthentication, (req, res) => {
 	List.findOne({_id: req.params.id}, function (err, list) {
-		if (err) {
-			res.json({success: false, error: 'List not found', code: 401})
-		}
-		Item.find({list: list._id}, function (err, items) {
+		if(req.authentication.user.lists.indexOf(list._id) >= 0) {
 			if (err) {
-				res.json({success: false, error: 'Items not found', code: 300})
+				res.json({success: false, error: 'List not found', code: 401})
 			}
-			res.json(items.length);
-		});
+			Item.find({list: list._id}, function (err, items) {
+				if (err) {
+					res.json({success: false, error: 'Items not found', code: 300})
+				}
+				res.json(items.length);
+			});
+		}
 	});
 });
 
 // get all invitaions for a list
-app.get('/api/lists/:id/invitations', (req, res) => {
+app.get('/api/lists/:id/invitations', requireAuthentication, (req, res) => {
 	Invitation.find({list: req.params.id}, function (err, invitations) {
-		if (err) {
-			res.json({success: false, error: 'No Invitations found for this List', code: 402});
+		if(req.authentication.user.lists.indexOf(req.params.id) >= 0) {
+			if (err) {
+				res.json({success: false, error: 'No Invitations found for this List', code: 402});
+			}
+			res.json(invitations);
 		}
-		res.json(invitations);
 	});
 });
 
 // create list
-app.post('/api/lists', (req, res) => {
+app.post('/api/lists', requireAuthentication, (req, res) => {
 	List.create({
 		name: req.body.name,
 		country: req.body.country,

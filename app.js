@@ -623,7 +623,7 @@ app.all('/', (req, res) => {
  */
 
 // get all lists
-app.get('/api/lists', (req, res) => {
+app.get('/api/lists', requireAuthentication, (req, res) => {
 	if (req.app.get('env') === 'development') {
 		// use mongoose to get all lists in the database
 		List.find(function (err, list) {

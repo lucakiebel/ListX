@@ -840,48 +840,57 @@ app.post('/api/lists/:id', deprecate, (req, res) => {
  */
 
 // get all items per list
-app.get('/api/items/:id', (req, res) => {
-	// use mongoose to get all items in the database
-	Item.find({list: req.params.id}, function (err, items) {
+app.get('/api/items/:id', requireAuthentication, (req, res) => {
+	if(req.authentication.user.lists.indexOf(req.params.id) >= 0) {
+		// use mongoose to get all items in the database
+		Item.find({list: req.params.id}, function (err, items) {
 
-		// if there is an error retrieving, send the error. nothing after res.send(err) will execute
-		if (err) {
-			res.json({success: false, error: 'Items not found', code: 300});
-		}
+			// if there is an error retrieving, send the error. nothing after res.send(err) will execute
+			if (err) {
+				res.json({success: false, error: 'Items not found', code: 300});
+			}
 
 
-		res.json({success: true, items: items}); // return all items in JSON format
-		console.log(items);
-	});
+			res.json({success: true, items: items}); // return all items in JSON format
+			console.log(items);
+		});
+	}
 });
 
 // create item
-app.post('/api/items', (req, res) => {
-	Item.create({
-		list: req.body.list,
-		name: req.body.name,
-		amount: req.body.amount,
-		art: req.body.art
-	}, function (err, item) {
-		if (err) {
-			res.json({success: false, error: 'Item not created', code: 301});
-		}
-		res.json(item);
-	});
+app.post('/api/items', requireAuthentication, (req, res) => {
+	if(req.authentication.user.lists.indexOf(req.body.list) >= 0) {
+		Item.create({
+			list: req.body.list,
+			name: req.body.name,
+			amount: req.body.amount,
+			art: req.body.art
+		}, function (err, item) {
+			if (err) {
+				res.json({success: false, error: 'Item not created', code: 301});
+			}
+			res.json(item);
+		});
+	}
+	// TODO: don't add preset fields to list, loop through a mask and add the parameters that way
 });
 
 // remove an item
-app.delete('/api/items/:id', (req, res) => {
-	Item.remove({_id: req.params.id}, function (err, item) {
-		if (err) {
-			res.json({success: false, error: 'Item not removed', code: 302});
+app.delete('/api/items/:id', requireAuthentication, (req, res) => {
+	Item.findOne({_id: req.params.id}, function (err, item) {
+		if(req.authentication.user.lists.indexOf(item.list.toString()) >= 0) {
+			Item.remove({_id:item._id}, (err, item) => {
+				if (err) {
+					res.json({success: false, error: 'Item not removed', code: 302});
+				}
+				res.json(item);
+			});
 		}
-		res.json(item);
 	});
 });
 
 // update an item
-app.post('/api/items/:id', (req, res) => {
+app.post('/api/items/:id', requireAuthentication, (req, res) => {
 	let update = req.body;
 	Item.findOneAndUpdate({_id: req.params.id}, update, function (err, item) {
 		if (err) {

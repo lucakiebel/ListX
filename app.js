@@ -364,8 +364,10 @@ app.post('/login', function (req, res) {
 		else {
 			bCrypt.compare(req.body.password, user.password, function (err, bc) {
 				if (bc) {
-					// sets a cookie with the user's info
-					req.session.user = user;
+					// sets a cookie with the user's id
+					res.cookie('token', jwt.sign({id:user._id}, config.jwtSecret, {expiresIn:"90d"}), {});
+					//req.cookies.token = jwt.sign({id:user._id}, config.jwtSecret, {expiresIn:"90d"});
+
 					console.info("User " + user.email + " successfully logged in!");
 					res.json({correct: true, user: user});
 				} else {

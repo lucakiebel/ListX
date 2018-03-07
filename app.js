@@ -1464,7 +1464,7 @@ function createInvite(email, list, arr, callback) {
 }
 
 // Delete an invitation
-app.delete('/api/invitations/:id', (req, res) => {
+app.delete('/api/invitations/:id', requireAuthentication, (req, res) => {
 	Invitation.remove({_id: req.params.id}, function (err, invitation) {
 		if (err) {
 			res.json({success: false, error: 'Invitation not deleted'});

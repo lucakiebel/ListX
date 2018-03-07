@@ -1270,8 +1270,8 @@ app.post("/api/user/deleteUser", requireAuthentication, (req, res) => {
 /**
  * private information includes the user, all lists, all items on those lists
  */
-app.post("/api/user/emailInformation", (req, res) => {
-	let userId = req.body.userId;
+app.post("/api/user/emailInformation", requireAuthentication, (req, res) => {
+	let userId = req.authentication.user._id;
 	let information = {};
 	User.findById(userId, (err, user) => {
 		if (err) res.json({success: false});

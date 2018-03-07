@@ -1,6 +1,6 @@
 {
   "name": "listx",
-  "version": "v1.0.2",
+  "version": "v1.0.3",
   "private": false,
   "scripts": {
     "start": "if (pgrep 'mongod' >/dev/null 2>&1);then node bin/www;fi",
@@ -17,7 +17,9 @@
     "debug": "~2.6.0",
     "ejs": "~2.5.5",
     "express": "~4.14.1",
+    "express-jwt": "^5.3.0",
     "i18n": "^0.8.3",
+    "jsonwebtoken": "^8.2.0",
     "mailgun-js": "^0.13.1",
     "method-override": "~2.3.8",
     "mongoose": "~4.9.4",
@@ -38,6 +40,9 @@
     "url": "git+https://github.com/lucakiebel/ListX.git"
   },
   "keywords": [
-    "Lists", "Shopping", "Express", "mongoDB"
+    "Lists",
+    "Shopping",
+    "Express",
+    "mongoDB"
   ]
 }

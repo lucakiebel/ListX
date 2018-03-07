@@ -42,23 +42,27 @@ $(document).ready(function() {
 		const name = $("#new-name").val();
 		const users = $("#new-users").tagsinput('items');
 		const country = $("#new-country").val();
+		let cookie = {};document.cookie.split("; ").forEach(c => {let a = c.split("="); cookie[a[0]]=a[1]});
 		console.log("Name: " + name + " Users: " + users + " Country: " + country + " Admin: " + userId);
 		if (name) {
 			$.post("/api/lists", {
 				name: name,
 				country: country,
-				admin: userId
+				admin: userId,
+				token: cookie.token
 			}, function (data) {
 				console.log(data);
 				if (data.success === true) {
 					let id = data.id;
-					$.post("/api/invitations/array", {
-						list: id,
-						invs: users
-					}, data => {
+					//
+					$.post("/api/users/" + userId + "/newList", {lists: [id], token: cookie.token}, data => {
 						// data = [inv1,inv2]
 						if (data.success === true) {
-							$.post("/api/users/" + userId + "/newList", {lists: [id]}, data => {
+							$.post("/api/invitations/array", {
+								list: id,
+								invs: users,
+								token: cookie.token
+							}, data => {
 								if (data.success === true) {
 									// list added to admin account, close popup and reload lists
 									$("#newListModal").modal("hide");

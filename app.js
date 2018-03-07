@@ -978,81 +978,77 @@ app.get('/api/users/byMail/:mail', requireAuthentication, (req, res) => {
 });
 
 // get all lists per user
-app.get('/api/users/:id/lists', (req, res) => {
-	User.findOne({_id: req.params.id}, function (err, user) {
-		if (err) res.json({success: false, error: err, code: 202});
-		console.log(err);
+app.get('/api/users/:id/lists', requireAuthentication, (req, res) => {
+	if (req.authentication.user._id.toString() === req.params.id.toString()) {
+		User.findOne({_id: req.params.id}, function (err, user) {
+			if (err) res.json({success: false, error: err, code: 202});
+			console.log(err);
 
-		let lists = [];
+			let lists = [];
 
-		if (user.lists) {
+			if (user.lists) {
 
-			// first off, make an Array from the Users "list" Object
-			lists = user.lists;
+				// first off, make an Array from the Users "list" Object
+				lists = user.lists;
 
-			console.log("Lists");
+				console.log("Lists");
 
-			// then use that Array to get all Lists in it
-			List.find({_id: {$in: lists}}).exec()
-				.then(function (gotLists) {
-					console.info("Lists: " + gotLists);
-					if (gotLists.length === 0) res.json({
-						success: false,
-						error: "No lists found, create one!",
-						code: 203
+				// then use that Array to get all Lists in it
+				List.find({_id: {$in: lists}}).exec()
+					.then(function (gotLists) {
+						console.info("Lists: " + gotLists);
+						if (gotLists.length === 0) res.json({
+							success: false,
+							error: "No lists found, create one!",
+							code: 203
+						});
+						else res.json({lists: gotLists, success: true});
 					});
-					else res.json({lists: gotLists, success: true});
-				});
-		}
-		else res.json({success: false, error: 101});
+			}
+			else res.json({success: false, error: 101});
 
 
-	});
+		});
+	} else res.json({success:false, msg:"You can only view your own Lists."});
 });
 
 // get all lists per user that contain :query
 app.get('/api/users/:id/lists/:query', (req, res) => {
-	User.findOne({_id: req.params.id}, function (err, user) {
-		if (err) res.json({success: false, error: err, code: 202});
-		console.log(err);
+	if (req.authentication.user._id.toString() === req.params.id.toString()) {
+		User.findOne({_id: req.params.id}, function (err, user) {
+			if (err) res.json({success: false, error: err, code: 202});
+			console.log(err);
+			let lists = [];
+			if (user.lists) {
+				// first off, make an Array from the Users "list" Object
+				lists = user.lists;
+				console.log("Lists matching");
+				// then use that Array to get all Lists in it
+				List.find({_id: {$in: lists}}).exec()
+					.then(function (gotLists) {
+						let matching = [];
+						gotLists.forEach(l => {
+							if (l.name.toLowerCase().indexOf(req.params.query.toLowerCase()) !== -1) {
+								matching.push(l);
+							}
+						});
+						if (matching.length === 0) res.json({
+							success: false,
+							error: "No List found matching " + req.params.query,
+							code: 208
+						});
+						else res.json({lists: matching, success: true});
 
-		let lists = [];
 
-		if (user.lists) {
-
-			// first off, make an Array from the Users "list" Object
-			lists = user.lists;
-
-			console.log("Lists matching");
-
-
-			// then use that Array to get all Lists in it
-			List.find({_id: {$in: lists}}).exec()
-				.then(function (gotLists) {
-					let matching = [];
-					gotLists.forEach(l => {
-						if (l.name.toLowerCase().indexOf(req.params.query.toLowerCase()) !== -1) {
-							matching.push(l);
-						}
 					});
-					if (matching.length === 0) res.json({
-						success: false,
-						error: "No List found matching " + req.params.query,
-						code: 208
-					});
-					else res.json({lists: matching, success: true});
-
-
-				});
-		}
-		else res.json({success: false, error: 101});
-
-
-	});
+			}
+			else res.json({success: false, error: 101});
+		});
+	} else res.json({success:false, msg:"You can only view your own Lists."});
 });
 
 // create user
-app.post('/api/users', (req, res) => {
+app.post('/api/users', deprecate, (req, res) => {
 	bCrypt.hash(req.body.password, 10, function (err, hash) {
 		if (err) res.json({success: false, error: "Password Error", code: 101});
 		User.find({email: req.body.email}, function (err, user) {

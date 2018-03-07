@@ -1287,6 +1287,7 @@ app.post("/api/user/emailInformation", requireAuthentication, (req, res) => {
 				information.lists = lists;
 				let fp = path.join(__dirname, "data", "userInfo", user._id + "-information.json");
 				fs.writeFile(fp, information, (err) => {
+					console.log("Information-writing error: ", err);
 					let mailData = {
 						to: user.email,
 						from: "userinformation",

@@ -398,6 +398,12 @@ app.get('/logout', (req, res) => {
 	res.render("logout", {domain:config.domain});
 });
 
+app.get("/auth/logout", (req, res) => {
+	res.cookie("token", "", {maxAge:new Date(0), domain: config.domain, path: "/"});
+	res.clearCookie("token");
+	res.render("logout", {domain:config.domain});
+});
+
 
 /**
  * Nav Element Routes

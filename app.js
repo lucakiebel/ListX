@@ -395,8 +395,7 @@ app.get('/login', (req, res) => {
 app.get('/logout', (req, res) => {
 	res.cookie("token", "", {maxAge:new Date(0), domain: config.domain, path: "/"});
 	res.clearCookie("token");
-	console.log("Cookie: ", req.cookies.token);
-	res.redirect("/");
+	res.render("logout", {domain:config.domain});
 });
 
 

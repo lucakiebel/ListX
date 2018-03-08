@@ -29,7 +29,7 @@
 <div class="container">
 
     <div class="jumbotron text-center">
-        <h1><%=list.name%></h1>
+        <h1><%=list.name.substr(0,40)%></h1>
         <h2><%= __("/ListX/UI/List/Elements")%>: <span class="label label-danger">{{ items.length }}</span></h2>
     </div>
 

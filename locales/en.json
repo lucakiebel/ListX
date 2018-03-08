@@ -176,5 +176,6 @@
   "/ListX/UI/Confirmations/removeUsers": "Do you really want to remove all users from this list?",
   "/ListX/UI/ListSettings/LeaveList": "Leave List",
   "/ListX/UI/ListSettings/LeaveListHelper": "This will remove you from this List.",
-  "/ListX/UI/Navigation/loggedInAs": "Logged in as "
+  "/ListX/UI/Navigation/loggedInAs": "Logged in as ",
+  "/ListX/UI/logout/loggingYouOut": "Logging you out...."
 }

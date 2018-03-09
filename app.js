@@ -1301,10 +1301,11 @@ app.post("/api/user/emailInformation", requireAuthentication, (req, res) => {
 					let mailData = {
 						to: user.email,
 						from: "userinformation",
-						text: "Hey " + user.name + "! \nThe requested information can be found in the attachment below. \nListX Support",
+						text: `Hey ${user.name}! \nThe requested information about your account can be found in the attachment. \nListX Support`,
 						attachment: filePath,
 						send: true
 					};
+					if(mailData.text === undefined) console.log("It's in the route");
 					mail(mailData);
 					fs.unlink(filePath, (err) => {
 					    if (!(err)) res.json({success: true});
@@ -1541,8 +1542,8 @@ app.post("/api/invitations/user/list/:list", requireAuthentication, (req, res) =
 function mail(data) {
 	if (data.send === true) {
 		let to = data.to;
-		let sub = data.subject;
-		let body = data.body;
+		let sub = data.subject; 
+		let body = data.body || data.text;
 		let html = data.html;
 		let from = data.from || "noreply";
 

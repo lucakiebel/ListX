@@ -610,13 +610,16 @@ app.get("/language/:lang", (req, res) => {
  */
 
 app.all('/', (req, res) => {
-	verifyJWT(req.cookies.token, (err, userId) => {
-		err && res.render("index", {user:false});
-		User.findOne({_id:userId}, (err, user) => {
-			if (user) res.render('index', {user: user});
-			else res.render('index', {user: false});
-		});
-	});
+    if(req.cookies.token) {
+        verifyJWT(req.cookies.token, (err, userId) => {
+            err && res.render("index", {user:false});
+            User.findOne({_id:userId}, (err, user) => {
+                if (user) res.render('index', {user: user});
+                else res.render('index', {user: false});
+            });
+        });
+    } else res.render('index', {user: false});
+
 });
 
 

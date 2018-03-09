@@ -1283,7 +1283,7 @@ app.post("/api/user/deleteUser", requireAuthentication, (req, res) => {
 app.post("/api/user/emailInformation", requireAuthentication, (req, res) => {
 	let userId = req.authentication.user._id;
 	let information = {};
-	User.findById(userId, (err, user) => {
+	User.findOne({_id:userId}, (err, user) => {
 		if (err) res.json({success: false});
 		information.user = user;
 		delete information.user.lists;
@@ -1295,18 +1295,21 @@ app.post("/api/user/emailInformation", requireAuthentication, (req, res) => {
 					});
 				});
 				information.lists = lists;
-				let fp = path.join(__dirname, "data", "userInfo", user._id + "-information.json");
-				fs.writeFile(fp, information, (err) => {
+				let filePath = path.join(__dirname, "data", "userInfo", user._id + "-information.json");
+				fs.writeFile(filePath, information, (err) => {
 					console.log("Information-writing error: ", err);
 					let mailData = {
 						to: user.email,
 						from: "userinformation",
 						text: "Hey " + user.name + "! \nThe requested information can be found in the attachment below. \nListX Support",
-						attachment: fp,
+						attachment: filePath,
 						send: true
 					};
 					mail(mailData);
-					res.json({success: true});
+					fs.unlink(filePath, (err) => {
+					    if (!(err)) res.json({success: true});
+                        else res.json({success:false, error:err, msg:"Deleting the file didn't work."})
+                    });
 				});
 			}).catch(err => {
 			res.json({success: false, error: err});

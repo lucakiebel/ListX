@@ -1023,7 +1023,7 @@ app.get('/api/users/:id/lists', requireAuthentication, (req, res) => {
 });
 
 // get all lists per user that contain :query
-app.get('/api/users/:id/lists/:query', (req, res) => {
+app.get('/api/users/:id/lists/:query', requireAuthentication, (req, res) => {
 	if (req.authentication.user._id.toString() === req.params.id.toString()) {
 		User.findOne({_id: req.authentication.user._id}, function (err, user) {
 			if (err) res.json({success: false, error: err, code: 202});

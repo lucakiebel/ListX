@@ -96,7 +96,7 @@
                     <a href="/signup" class="color-visible <%if(user){%><%="username-invisible u-invisible"%><%} else {%><%="username-visible u-visible"%><%}%>"><%= __("/ListX/UI/Index/signUp") %> </a>
                 </li>
                 <li class="dropdown">
-                    <a href="/user" class="color-visible <%if(user){%><%="username-visible u-visible"%><%} else {%><%="username-invisible u-invisible"%><%}%>" id="login-ready"><%= __("/ListX/UI/Howdy")%><%if(user){%><%=", "+user.name %><%}%></a>
+                    <a href="#" class="color-visible <%if(user){%><%="username-visible u-visible"%><%} else {%><%="username-invisible u-invisible"%><%}%>" id="login-ready"><%= __("/ListX/UI/Howdy")%><%if(user){%><%=", "+user.name %><%}%></a>
                     <a href="/login" class="color-visible <%if(user){%><%="username-invisible u-invisible"%><%} else {%><%="username-visible u-visible"%><%}%>" id="login-dropdown-link"><%= __("/ListX/UI/Index/logIn") %> <i class="fa fa-sign-in" aria-hidden="true"></i></a>
                 </li>
             </ul>

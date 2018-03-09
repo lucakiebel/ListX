@@ -710,7 +710,7 @@ app.post('/api/lists', requireAuthentication, (req, res) => {
 // let a user remove themselves from a list
 app.post("/api/lists/:id/removeMeFromList", requireAuthentication, (req, res) => {
 	User.findOneAndUpdate({_id: req.authentication.user._id}, {$pull: {lists: req.params.id}}, (err, user) => {
-		!!err && res.json({success: false, err: err});
+		err && res.json({success: false, err: err});
 		res.json({success: true});
 	});
 });
@@ -1022,7 +1022,7 @@ app.get('/api/users/:id/lists', requireAuthentication, (req, res) => {
 // get all lists per user that contain :query
 app.get('/api/users/:id/lists/:query', (req, res) => {
 	if (req.authentication.user._id.toString() === req.params.id.toString()) {
-		User.findOne({_id: req.params.id}, function (err, user) {
+		User.findOne({_id: req.authentication.user._id}, function (err, user) {
 			if (err) res.json({success: false, error: err, code: 202});
 			console.log(err);
 			let lists = [];

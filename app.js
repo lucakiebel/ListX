@@ -1296,11 +1296,12 @@ app.post("/api/user/emailInformation", requireAuthentication, (req, res) => {
 				});
 				information.lists = lists;
 				let filePath = path.join(__dirname, "data", "userInfo", user._id + "-information.json");
-				fs.writeFile(filePath, information, (err) => {
+				fs.writeFile(filePath, JSON.stringify(information), (err) => {
 					console.log("Information-writing error: ", err);
 					let mailData = {
 						to: user.email,
 						from: "userinformation",
+                        subject: "ListX Account Information",
 						text: `Hey ${user.name}! \nThe requested information about your account can be found in the attachment. \nListX Support`,
 						attachment: filePath,
 						send: true
@@ -1542,7 +1543,7 @@ app.post("/api/invitations/user/list/:list", requireAuthentication, (req, res) =
 function mail(data) {
 	if (data.send === true) {
 		let to = data.to;
-		let sub = data.subject; 
+		let sub = data.subject;
 		let body = data.body || data.text;
 		let html = data.html;
 		let from = data.from || "noreply";

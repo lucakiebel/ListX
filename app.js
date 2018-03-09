@@ -1716,7 +1716,7 @@ app.use(function (req, res) {
 	res.locals.error = req.app.get('env') === 'development' ? err : {};
 
 	// render the error page
-	res.render('error', {msg: err.message, url: req.get('Referrer') !== undefined ? req.get('Referrer') : "/"});
+	res.render('error', {msg: err.message, url: req.get('Referrer') !== undefined ? req.get('Referrer') : "/", user:(req.authentication.user||false)});
 });
 
 

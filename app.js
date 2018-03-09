@@ -1552,7 +1552,7 @@ function mail(data) {
 		let from = data.from || "noreply";
 
 		let msg = {
-			from: "ListX <" + from + "@listx.io>",
+			from: "ListX <" + from + "@"+config.domain+">",
 			to: to,
 			subject: sub,
 			text: body
@@ -1576,7 +1576,7 @@ function mail(data) {
 
 // authentication
 app.use(function (req, res, next) {
-	verifyJWT(req.cookie.token, (err, userId) => {
+	verifyJWT(req.cookies.token, (err, userId) => {
 		if (userId) {
 			User.findOne({_id: userId}, function (err, user) {
 				err && console.log(err);

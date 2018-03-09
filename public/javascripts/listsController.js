@@ -4,6 +4,8 @@ var shoppingList = angular.module('ShoppingList', []);
 function mainController($scope, $http) {
 	$scope.formData = {};
 
+    let refreshInterval = setInterval($scope.getItems, 10000);
+
 	$scope.getItems = function () {
 		$http.get('/api/items/'+listId)
 				.success(function(data) {
@@ -88,5 +90,7 @@ function mainController($scope, $http) {
         // Render KITT's interface
         SpeechKITT.vroom();
     }
+
+
 
 }

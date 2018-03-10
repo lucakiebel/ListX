@@ -4,6 +4,14 @@
 <meta name="description" content="<%=__("/ListX/UI/Index/SiteTitle") %>">
 <meta name="author" content="Klequex Software & UX">
 <meta name="keywords" content="List, Shopping List, Free, Grocery List, Holidays, Planing, Food, ListX">
+<script>window.doorbellOptions = {
+        hideEmail: true, // Optional, hides the email address field
+        email: "<%=user.email%>", // Optional, prepopulate the email address field
+        name: '<%=user.name%>', // Optional, the name of the user
+        properties: {
+            userId: "<%user._id%>";
+        }
+    };</script>
 <link rel="alternate" href="/language/en" hreflang="en-uk">
 <link rel="alternate" href="/language/en" hreflang="en-us">
 <link rel="alternate" href="/language/de" hreflang="de">

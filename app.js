@@ -917,7 +917,7 @@ app.post('/api/items/:id', requireAuthentication, (req, res) => {
  */
 
 // get all users
-app.get('/api/users', requireAuthentication, (req, res) => {
+app.get('/api/users', deprecate, requireAuthentication, (req, res) => {
 	if (req.app.get('env') === 'development') {
 		// use mongoose to get all users in the database
 		User.find(function (err, users) {

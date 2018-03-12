@@ -97,7 +97,7 @@ function getLists(query) {
                 let html = `<div class="col-md-6">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <h3 class="pull-left"><a href="/list/${list._id}" class="list-link">${list.name.substr(0,40)}</a></h3>
+                        <h4 class="pull-left"><a href="/list/${list._id}" class="list-link">${list.name.substr(0,40)}</a></h4>
                         <div class="input-group pull-right">
                             <a class="btn btn-default" href="/list/${list._id}/settings#deleteListBtn"><i class="glyphicon glyphicon-remove-circle"></i></a>
                             <a class="btn btn-default" href="/list/${list._id}/settings"><i class="glyphicon glyphicon-wrench"></i></a>

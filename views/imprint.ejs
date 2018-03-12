@@ -3,38 +3,16 @@
 
 <head>
 
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="<%=__("/ListX/UI/Index/SiteTitle") %>">
-    <meta name="author" content="Klequex Software & UX">
-    <meta name="keywords" content="List, Shopping List, Free, Grocery List, Holidays, Planing, Food, ListX">
-    <link rel="alternate" href="/language/en" hreflang="en">
-    <link rel="alternate" href="/language/de" hreflang="de">
-    <link rel="alternate" href="/language/fr" hreflang="fr">
-    <link rel="alternate" href="/language/nl" hreflang="nl">
-
-    <title><%=__("/ListX/UI/Index/SiteTitle") %></title>
-
-    <!-- Bootstrap Core CSS -->
-    <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Animate CSS -->
-    <link rel="stylesheet" href="/stylesheets/animate.css">
-
-    <!-- Custom Fonts -->
-    <link href="/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/css?family=Raleway:400,700" rel="stylesheet" type="text/css">
-
+    <% include partials/head.ejs %>
     <!-- Theme CSS -->
-    <link href="/stylesheets/index.css" rel="stylesheet">
+    <link href="/static/stylesheets/index.css" rel="stylesheet">
     <style>
         .intro {
             background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(/images/phones/PS1-<%=__("/ListX/UI/htmlLang") %>.png) no-repeat center center scroll;
         }
     </style>
+
+    <title><%=__("/ListX/UI/Index/imprint")%> - <%=__("/ListX/UI/Index/SiteTitle")%></title>
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -60,50 +38,7 @@
 
 <body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top" data-responsejs='{"create": [{"prop": "width", "prefix": "min-width- r src", "breakpoints": [0, 320, 481, 641, 961, 1025, 1281]}]}'>
 
-<!-- Navigation -->
-<nav class="navbar navbar-custom navbar-fixed-top" role="navigation">
-    <div class="container">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-main-collapse">
-                Menu <i class="fa fa-bars"></i>
-            </button>
-            <a class="navbar-brand page-scroll color-visible" href="/">
-                <img src="/images/favicon.png" alt="<%=__("/ListX/UI/SiteName") %>" class="navbar-brand-image"> &nbsp;&nbsp; List<span class="x">X</span>
-            </a>
-        </div>
-
-        <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse  navbar-main-collapse">
-            <ul class="nav navbar-nav navbar-center">
-                <!-- Hidden li included to remove active class from about link when scrolled up past about section -->
-                <li class="hidden">
-                    <a href="#page-top"></a>
-                </li>
-                <li>
-                    <a class="page-scroll color-visible" href="/#about"><%= __("/ListX/UI/Index/learnMore") %></a>
-                </li>
-                <li>
-                    <a href="/#pricing" class="page-scroll color-visible"><%= __("/ListX/UI/Index/Pricing") %></a>
-                </li>
-                <li>
-                    <a class="color-visible" href="/demo"><%= __("/ListX/UI/Index/demo") %> </a>
-                </li>
-            </ul>
-            <ul class="nav navbar-nav navbar-right" id="user-interaction-navbar" style="float: right">
-                <li>
-                    <a href="/dashboard" class=" color-visible <%if(user){%><%="username-visible u-visible"%><%} else {%><%="username-invisible u-invisible"%><%}%>"><%= __("/ListX/UI/Index/dashboard") %></a>
-                    <a href="/signup" class="color-visible <%if(user){%><%="username-invisible u-invisible"%><%} else {%><%="username-visible u-visible"%><%}%>"><%= __("/ListX/UI/Index/signUp") %> </a>
-                </li>
-                <li class="dropdown">
-                    <a href="/user/settings" class="color-visible <%if(user){%><%="username-visible u-visible"%><%} else {%><%="username-invisible u-invisible"%><%}%>" id="login-ready"><%= __("/ListX/UI/Howdy")%><%if(user){%><%=", "+user.name %><%}%></a>
-                    <a href="/login" class="color-visible <%if(user){%><%="username-invisible u-invisible"%><%} else {%><%="username-visible u-visible"%><%}%>" id="login-dropdown-link"><%= __("/ListX/UI/Index/logIn") %> <i class="fa fa-sign-in" aria-hidden="true"></i></a>
-                </li>
-            </ul>
-        </div>
-        <!-- /.navbar-collapse -->
-    </div>
-    <!-- /.container -->
-</nav>
+<% include partials/navigation.ejs %>
 <header class="intro" style="height: 50vh; min-height: 50vh;">
     <div class="intro-body">
         <div class="container">
@@ -139,7 +74,7 @@
     <div class="legal-logo">
         <div class="col-md-2 text-left" id="footer-brand">
             <a class="navbar-brand page-scroll brand-name" href="#page-top">
-                <img src="/images/favicon.png" alt="<%=__("/ListX/UI/Index/SiteName") %>" class="footer-brand-image text-white">&nbsp;&nbsp;<span style="color: white">List</span><span class="x">X</span>
+                <img src="/static/images/favicon.png" alt="<%=__("/ListX/UI/Index/SiteName") %>" class="footer-brand-image text-white">&nbsp;&nbsp;<span style="color: white">List</span><span class="x">X</span>
             </a>
         </div>
         <div class="col-md-2 vertical-divider-left" id="footer-links1">
@@ -180,16 +115,16 @@
 </footer>
 
 <!-- jQuery -->
-<script src="/vendor/jquery/jquery.js"></script>
+<script src="/static/vendor/jquery/jquery.js"></script>
 
 <!-- Bootstrap Core JavaScript -->
-<script src="/vendor/bootstrap/js/bootstrap.min.js"></script>
+<script src="/static/vendor/bootstrap/js/bootstrap.min.js"></script>
 
 <!-- Plugin JavaScript -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
 
 <!-- Theme JavaScript -->
-<script src="/javascripts/index.js"></script>
+<script src="/static/javascripts/index.js"></script>
 
 </body>
 </html>

@@ -20,7 +20,7 @@ const express = require('express')                        				// Express as a We
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 app.disable('x-powered-by');
-app.use(favicon(path.join(__dirname, 'public', 'images', 'favicon.png')));
+app.use(favicon(path.join(__dirname, 'public', "static" , 'images', 'favicon.png')));
 app.use(logger('short'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
@@ -956,6 +956,18 @@ app.get('/api/users/byMail/:mail', requireAuthentication, (req, res) => {
 		res.json(tmp);
 	});
 
+});
+
+app.get("/api/users/me", requireAuthentication, (req, res) => {
+	let user = req.authentication.user;
+	let tmp = {
+		_id: user._id,
+		name: user.name,
+		email: user.email,
+		lists: user.lists,
+		validated: user.validated
+	};
+	res.json(tmp);
 });
 
 // get all lists per user

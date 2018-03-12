@@ -5,13 +5,13 @@
     <%- include partials/head.ejs %>
     <title>Dashboard - <%=__("/ListX/UI/Index/SiteTitle") %></title>
 
-    <link rel="preload" href="/images/preloader.gif" as="image">
+    <link rel="preload" href="/static/images/preloader.gif" as="image">
 
-    <link rel="stylesheet" href="/stylesheets/dashboard.css">
-    <link rel="stylesheet" href="/vendor/bootstrap/tagsinput/tagsinput.css">
+    <link rel="stylesheet" href="/static/stylesheets/dashboard.css">
+    <link rel="stylesheet" href="/static/vendor/bootstrap/tagsinput/tagsinput.css">
 
     <!-- Theme JavaScript -->
-    <script src="/javascripts/dashboard.js"></script>
+    <script src="/static/javascripts/dashboard.js"></script>
     <script>
         const userId = "<%= user._id %>";
         const elements = "<%= __("/ListX/UI/List/Elements") %>";
@@ -91,13 +91,13 @@
 
 
 <!-- Bootstrap Core JavaScript -->
-<script src="/vendor/bootstrap/js/bootstrap.min.js"></script>
+<script src="/static/vendor/bootstrap/js/bootstrap.min.js"></script>
 
 <!-- Plugin JavaScript -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
-<script src="/vendor/bs-form-helpers/js/bootstrap-formhelpers-countries.js"></script>
-<script src="/vendor/bs-form-helpers/js/lang/<%=__("/ListX/UI/Links/JS/CountryPicker")%>"></script>
-<script src="/vendor/bootstrap/tagsinput/tagsinput.js"></script>
+<script src="/static/vendor/bs-form-helpers/js/bootstrap-formhelpers-countries.js"></script>
+<script src="/static/vendor/bs-form-helpers/js/lang/<%=__("/ListX/UI/Links/JS/CountryPicker")%>"></script>
+<script src="/static/vendor/bootstrap/tagsinput/tagsinput.js"></script>
 
 
 </body>

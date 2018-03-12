@@ -4,22 +4,28 @@
 <meta name="description" content="<%=__("/ListX/UI/Index/SiteTitle") %>">
 <meta name="author" content="Klequex Software & UX">
 <meta name="keywords" content="List, Shopping List, Free, Grocery List, Holidays, Planing, Food, ListX">
-<script>window.doorbellOptions = {
-        hideEmail: true, // Optional, hides the email address field
-        email: "<%=user.email%>", // Optional, prepopulate the email address field
-        name: '<%=user.name%>', // Optional, the name of the user
-        properties: {
-            userId: "<%user._id%>"
+<script>
+    $.getJSON("/api/users/me", function (data) {
+        if (data.success) {
+            window.doorbellOptions = {
+                hideEmail: true, // Optional, hides the email address field
+                email: data.user.email, // Optional, prepopulate the email address field
+                name: data.user.name, // Optional, the name of the user
+                properties: {
+                    userId: data.user._id
+                }
+            };
         }
-    };</script>
+    });
+    </script>
 <link rel="alternate" href="/language/en" hreflang="en-uk">
 <link rel="alternate" href="/language/en" hreflang="en-us">
 <link rel="alternate" href="/language/de" hreflang="de">
 <link rel="alternate" href="/language/fr" hreflang="fr">
 <link rel="alternate" href="/language/nl" hreflang="nl">
-<link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<link href="/static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 <!-- Custom Fonts -->
-<link href="/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+<link href="/static/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 <link href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css">
 <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
 <link href="https://fonts.googleapis.com/css?family=Raleway:400,700" rel="stylesheet" type="text/css">
@@ -33,4 +39,4 @@
 <![endif]-->
 
 <!-- jQuery -->
-<script src="/vendor/jquery/jquery.js"></script>
+<script src="/static/vendor/jquery/jquery.js"></script>

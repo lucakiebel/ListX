@@ -9,7 +9,7 @@
 
     <title><%=list.name%> | <%= __("/ListX/UI/SiteName")%></title>
 
-    <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <style>
         html                    {   overflow-y:scroll;   }
         body                    {   padding-top:2%;      }
@@ -20,12 +20,12 @@
     </style>
 
     <!-- jQuery -->
-    <script src="/vendor/jquery/jquery.js"></script>
+    <script src="/static/vendor/jquery/jquery.js"></script>
     <!-- AngularJS -->
-    <script src="/vendor/angular/angular-1.0.8.js"></script>
+    <script src="/static/vendor/angular/angular-1.0.8.js"></script>
     <!-- Angular App -->
     <script>const listId = "<%=list._id%>"</script>
-    <script src="/javascripts/listsController.js"></script>
+    <script src="/static/javascripts/listsController.js"></script>
 </head>
 <body ng-controller="mainController">
 <div class="container">

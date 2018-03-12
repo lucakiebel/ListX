@@ -712,7 +712,7 @@ app.post('/api/lists', requireAuthentication, (req, res) => {
 
 // let a user remove themselves from a list
 app.post("/api/lists/:id/removeMeFromList", requireAuthentication, (req, res) => {
-	User.findOneAndUpdate({_id: req.authentication.user._id}, {$pull: {lists: req.params.id}}, (err, user) => {
+	User.findOneAndUpdate({_id: req.authentication.user._id}, {$pull: {lists: req.params.id.toString()}}, {"new":true}, (err, user) => {
 		err && res.json({success: false, err: err});
 		res.json({success: true});
 	});
@@ -748,7 +748,7 @@ app.delete("/api/lists/:id/removeAllUsers", requireAuthentication, (req, res) =>
 						// keep user
 						console.log("keeping ", user.email);
 					} else {
-						User.update({_id: user._id}, {$pull: {lists: list._id}}, (err, update) => {
+						User.update({_id: user._id}, {$pull: {lists: list._id.toString()}}, {"new", true}, (err, update) => {
 							!!err && res.json({success: false, err: err});
 							console.log("deleting ", user.email, update.lists)
 						});
@@ -1135,7 +1135,7 @@ app.post('/api/users/:id/newList', requireAuthentication, (req, res) => {
 app.post("/api/users/:id/removeList", requireAuthentication, (req, res) => {
 	List.findOne({_id: req.body.list}, (err, list) => {
 		if (req.authentication.user._id.toString() === list.admin.toString()) {
-			User.findOneAndUpdate({_id: req.params.id}, {$pull: {lists: req.body.list}}, (err, update) => {
+			User.findOneAndUpdate({_id: req.params.id}, {$pull: {lists: req.body.list.toString()}}, {"new": true}, (err, update) => {
 				!!err && res.json({success: false, err: err});
 				res.json({success: true, user: update._id});
 			});

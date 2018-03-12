@@ -735,10 +735,7 @@ app.delete("/api/lists/:id/removeAllUsers", requireAuthentication, (req, res) =>
 						// keep user
 						console.log("keeping ", user.email);
 					} else {
-						User.update({_id: user._id}, {$pull: {lists: list._id.toString()}}, {
-							"new",
-							true
-						}, (err, update) => {
+						User.update({_id: user._id}, {$pull: {lists: list._id.toString()}}, {"new": true}, (err, update) => {
 							!!err && res.json({success: false, err: err});
 							console.log("deleting ", user.email, update.lists)
 						});

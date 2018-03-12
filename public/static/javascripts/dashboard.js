@@ -85,7 +85,7 @@ function getLists(query) {
     let listsDiv = $("#list-container");
 
     // show preloader gif
-    listsDiv.html('<div class="col-md-offset-5 col-md-1"><img src="/images/preloader.gif" alt="Loading...." height="20px"></div>');
+    listsDiv.html('<div class="col-md-offset-5 col-md-1"><img src="/static/images/preloader.gif" alt="Loading...." height="20px"></div>');
 
     let url;
 	let cookie = {};document.cookie.split("; ").forEach(c => {let a = c.split("="); cookie[a[0]]=a[1]});

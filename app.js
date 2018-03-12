@@ -1,20 +1,20 @@
-const express = require('express')                        // Express as a Webserver
-	, path = require('path')                              // path used for local file access
-	, favicon = require('serve-favicon')                  // Serve favicons for every request
-	, logger = require('morgan')                          // Morgan to log requests to the console
-	, cookieParser = require('cookie-parser')             // Cookie parser to, well, parse cookies
-	, bodyParser = require('body-parser')                 // Again, the name stands for the concept, parse HTTP POST bodies
-	, mongoose = require('bluebird').promisifyAll(require('mongoose'))                     // Mongoose is used to connect to the mongoDB server
-	, methodOverride = require('method-override')         // Method Override to use delete method for elemets
-	, i18n = require('i18n')                              // i18n for translations (German/English)
-	, session = require('client-sessions')                // Client-Sessions to be able to access the session variables
-	, bCrypt = require('bcryptjs')                   // bCrypt for secure Password hashing (on the server side)
+const express = require('express')                        				// Express as a Webserver
+	, path = require('path')                              				// path used for local file access
+	, favicon = require('serve-favicon')                  				// Serve favicons for every request
+	, logger = require('morgan')                          				// Morgan to log requests to the console
+	, cookieParser = require('cookie-parser')             				// Cookie parser to, well, parse cookies
+	, bodyParser = require('body-parser')                 				// Again, the name stands for the concept, parse HTTP POST bodies
+	, mongoose = require('bluebird').promisifyAll(require('mongoose'))  // Mongoose is used to connect to the mongoDB server
+	, methodOverride = require('method-override')         				// Method Override to use delete method for elemets
+	, i18n = require('i18n')                              				// i18n for translations (German/English)
+	, session = require('client-sessions')                				// Client-Sessions to be able to access the session variables
+	, bCrypt = require('bcryptjs')                   					// bCrypt for secure Password hashing (on the server side)
 	, app = express()
-	, mg = require('mailgun-js')
-	, request = require("request")
+	, mg = require('mailgun-js')										// Mailgun for handling emails
+	, request = require("request")										// request for reCaptcha validation
 	, fs = require("fs")
-	, jwt = require("jsonwebtoken")
-	, config = require(path.join(__dirname, "config.json"));
+	, jwt = require("jsonwebtoken")										// jwt as a means of authentication
+	, config = require(path.join(__dirname, "config.json"));			// config file
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -27,19 +27,6 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(methodOverride());
-// app.use(session({
-// 	cookieName: 'session',
-// 	secret: config.cookieSecret, // random cookie secret
-// 	duration: 15 * 86400000, // 15 days
-// 	activeDuration: 30 * 60000, // 30 minutes
-// 	httpOnly: true // prevent session from being intercepted
-// }));
-
-// app.use(function(req, res, next) {
-//   res.header("Access-Control-Allow-Origin", "*");
-//   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-//   next();
-// });
 
 const mailgun = mg({apiKey: config.mailgun.privateKey, domain: config.mailgun.domain});
 
@@ -206,7 +193,7 @@ app.post('/signup', (req, res) => {
 						}
 						EmailValidation.create({email: user.email, userId: user._id}, (err, valid) => {
 							if (err) res.json({success: false});
-                            const short = "http://" + config.domain + "/validate/" + valid._id;
+							const short = "http://" + config.domain + "/validate/" + valid._id;
 							let mailData = {};
 							mailData.to = user.email;
 							mailData.subject = "ListX Account Activation";
@@ -220,7 +207,7 @@ app.post('/signup', (req, res) => {
 				});
 			});
 		} else {
-			res.json({success: false, error: err, code:701});
+			res.json({success: false, error: err, code: 701});
 		}
 	});
 
@@ -346,7 +333,7 @@ app.post("/api/passwordreset", (req, res) => {
 				res.json({success: true});
 			});
 		});
-		
+
 	});
 });
 
@@ -365,7 +352,7 @@ app.post('/login', function (req, res) {
 			bCrypt.compare(req.body.password, user.password, function (err, bc) {
 				if (bc) {
 					// sets a cookie with the user's id
-					res.cookie('token', jwt.sign({id:user._id}, config.jwtSecret, {expiresIn:"90d"}), {});
+					res.cookie('token', jwt.sign({id: user._id}, config.jwtSecret, {expiresIn: "90d"}), {});
 					//req.cookies.token = jwt.sign({id:user._id}, config.jwtSecret, {expiresIn:"90d"});
 
 					console.info("User " + user.email + " successfully logged in!");
@@ -393,15 +380,15 @@ app.get('/login', (req, res) => {
 });
 
 app.get('/logout', (req, res) => {
-	res.cookie("token", "", {maxAge:new Date(0), domain: config.domain, path: "/"});
+	res.cookie("token", "", {maxAge: new Date(0), domain: config.domain, path: "/"});
 	res.clearCookie("token");
-	res.render("logout", {domain:config.domain});
+	res.render("logout", {domain: config.domain});
 });
 
 app.get("/auth/logout", (req, res) => {
-	res.cookie("token", "", {maxAge:new Date(0), domain: config.domain, path: "../"});
+	res.cookie("token", "", {maxAge: new Date(0), domain: config.domain, path: "../"});
 	res.clearCookie("token");
-	res.render("logout", {domain:config.domain});
+	res.render("logout", {domain: config.domain});
 });
 
 
@@ -437,24 +424,24 @@ app.get("/terms", (req, res) => {
 
 app.get("/legal/imprint", (req, res) => {
 	verifyJWT(req.cookies.token, (err, userId) => {
-		User.findOne({_id:userId}, (err, user) => {
-			res.render("imprint", {user: user||{}});
+		User.findOne({_id: userId}, (err, user) => {
+			res.render("imprint", {user: user || {}});
 		});
 	});
 });
 
 app.get("/legal/privacy", (req, res) => {
 	verifyJWT(req.cookies.token, (err, userId) => {
-		User.findOne({_id:userId}, (err, user) => {
-			res.render("privacy", {user: user||{}});
+		User.findOne({_id: userId}, (err, user) => {
+			res.render("privacy", {user: user || {}});
 		});
 	});
 });
 
 app.get("/legal/terms", (req, res) => {
 	verifyJWT(req.cookies.token, (err, userId) => {
-		User.findOne({_id:userId}, (err, user) => {
-			res.render("terms", {user: user||{}});
+		User.findOne({_id: userId}, (err, user) => {
+			res.render("terms", {user: user || {}});
 		});
 	});
 });
@@ -490,7 +477,7 @@ app.get('/list/:id', requireLogin, (req, res) => {
 			res.render('index', {error: 'List not found!'});
 		}
 		verifyJWT(req.cookies.token, (err, userId) => {
-			if(userId) {
+			if (userId) {
 				User.findOne({_id: userId}, (err, user) => {
 					if (user.lists.indexOf(list._id) >= 0) {
 						res.render('list', {
@@ -514,7 +501,7 @@ app.get('/list/:id/settings', requireLogin, function (req, res) {
 			res.render('index', {error: 'List not found!'});
 		}
 		verifyJWT(req.cookies.token, (err, userId) => {
-			User.findOne({_id:userId}, (err, user) => {
+			User.findOne({_id: userId}, (err, user) => {
 				if (user.lists.indexOf(list._id) >= 0) {
 					if (list.admin.toString() === user._id.toString()) {
 						res.render('list-settings-admin', {
@@ -542,7 +529,7 @@ app.get('/list/:id/settings', requireLogin, function (req, res) {
 // Users Dashboard
 app.get('/dashboard', requireLogin, (req, res) => {
 	verifyJWT(req.cookies.token, (err, userId) => {
-		User.findOne({_id:userId}, (err, user) => {
+		User.findOne({_id: userId}, (err, user) => {
 			res.render('dashboard', {user: user});
 		});
 	});
@@ -552,7 +539,7 @@ app.get('/dashboard', requireLogin, (req, res) => {
 // User Profile
 app.get('/user', requireLogin, (req, res) => {
 	verifyJWT(req.cookies.token, (err, userId) => {
-		User.findOne({_id:userId}, (err, user) => {
+		User.findOne({_id: userId}, (err, user) => {
 			res.render('settings-user', {user: user});
 		});
 	});
@@ -610,15 +597,15 @@ app.get("/language/:lang", (req, res) => {
  */
 
 app.all('/', (req, res) => {
-    if(req.cookies.token) {
-        verifyJWT(req.cookies.token, (err, userId) => {
-            err && res.render("index", {user:false});
-            User.findOne({_id:userId}, (err, user) => {
-                if (user) res.render('index', {user: user});
-                else res.render('index', {user: false});
-            });
-        });
-    } else res.render('index', {user: false});
+	if (req.cookies.token) {
+		verifyJWT(req.cookies.token, (err, userId) => {
+			err && res.render("index", {user: false});
+			User.findOne({_id: userId}, (err, user) => {
+				if (user) res.render('index', {user: user});
+				else res.render('index', {user: false});
+			});
+		});
+	} else res.render('index', {user: false});
 
 });
 
@@ -653,7 +640,7 @@ app.get('/api/lists', requireAuthentication, (req, res) => {
 // get single list
 app.get('/api/lists/:id', requireAuthentication, (req, res) => {
 	List.findOne({_id: req.params.id}, function (err, list) {
-		if(req.authentication.user.lists.indexOf(list._id) >= 0) {
+		if (req.authentication.user.lists.indexOf(list._id) >= 0) {
 			// if there is an error retrieving, send the error, nothing after res.send(err) will execute
 			if (err) {
 				res.json({success: false, error: 'List not found', code: 401})
@@ -669,7 +656,7 @@ app.get('/api/lists/:id', requireAuthentication, (req, res) => {
 // get item-count of a list
 app.get('/api/lists/:id/itemCount', requireAuthentication, (req, res) => {
 	List.findOne({_id: req.params.id}, function (err, list) {
-		if(req.authentication.user.lists.indexOf(list._id) >= 0) {
+		if (req.authentication.user.lists.indexOf(list._id) >= 0) {
 			if (err) {
 				res.json({success: false, error: 'List not found', code: 401})
 			}
@@ -686,7 +673,7 @@ app.get('/api/lists/:id/itemCount', requireAuthentication, (req, res) => {
 // get all invitaions for a list
 app.get('/api/lists/:id/invitations', requireAuthentication, (req, res) => {
 	Invitation.find({list: req.params.id}, function (err, invitations) {
-		if(req.authentication.user.lists.indexOf(req.params.id) >= 0) {
+		if (req.authentication.user.lists.indexOf(req.params.id) >= 0) {
 			if (err) {
 				res.json({success: false, error: 'No Invitations found for this List', code: 402});
 			}
@@ -712,7 +699,7 @@ app.post('/api/lists', requireAuthentication, (req, res) => {
 
 // let a user remove themselves from a list
 app.post("/api/lists/:id/removeMeFromList", requireAuthentication, (req, res) => {
-	User.findOneAndUpdate({_id: req.authentication.user._id}, {$pull: {lists: req.params.id.toString()}}, {"new":true}, (err, user) => {
+	User.findOneAndUpdate({_id: req.authentication.user._id}, {$pull: {lists: req.params.id.toString()}}, {"new": true}, (err, user) => {
 		err && res.json({success: false, err: err});
 		res.json({success: true});
 	});
@@ -748,7 +735,10 @@ app.delete("/api/lists/:id/removeAllUsers", requireAuthentication, (req, res) =>
 						// keep user
 						console.log("keeping ", user.email);
 					} else {
-						User.update({_id: user._id}, {$pull: {lists: list._id.toString()}}, {"new", true}, (err, update) => {
+						User.update({_id: user._id}, {$pull: {lists: list._id.toString()}}, {
+							"new",
+							true
+						}, (err, update) => {
 							!!err && res.json({success: false, err: err});
 							console.log("deleting ", user.email, update.lists)
 						});
@@ -806,7 +796,7 @@ app.post("/api/lists/update/country", requireAuthentication, (req, res) => {
 
 app.get("/api/lists/:id/userEmails", requireAuthentication, (req, res) => {
 	User.find({lists: req.params.id}, (err, users) => {
-		if(req.authentication.user.lists.indexOf(req.params.id) >= 0) {
+		if (req.authentication.user.lists.indexOf(req.params.id) >= 0) {
 			!!err && res.json({success: false, err: err});
 			res.json({
 				success: true, users: users.map(u=> {
@@ -819,7 +809,7 @@ app.get("/api/lists/:id/userEmails", requireAuthentication, (req, res) => {
 
 app.get("/api/lists/:id/invitationsForSettings", requireAuthentication, (req, res) => {
 	Invitation.find({list: req.params.id}, (err, invs) => {
-		if(req.authentication.user.lists.indexOf(req.params.id) >= 0) {
+		if (req.authentication.user.lists.indexOf(req.params.id) >= 0) {
 			!!err && res.json({success: false, err: err});
 			res.json({
 				success: true, invitations: invs.map(i=> {
@@ -851,7 +841,7 @@ app.post('/api/lists/:id', deprecate, (req, res) => {
 
 // get all items per list
 app.get('/api/items/:id', requireAuthentication, (req, res) => {
-	if(req.authentication.user.lists.indexOf(req.params.id) >= 0) {
+	if (req.authentication.user.lists.indexOf(req.params.id) >= 0) {
 		// use mongoose to get all items in the database
 		Item.find({list: req.params.id}, function (err, items) {
 
@@ -869,7 +859,7 @@ app.get('/api/items/:id', requireAuthentication, (req, res) => {
 
 // create item
 app.post('/api/items', requireAuthentication, (req, res) => {
-	if(req.authentication.user.lists.indexOf(req.body.list) >= 0) {
+	if (req.authentication.user.lists.indexOf(req.body.list) >= 0) {
 		Item.create({
 			list: req.body.list,
 			name: req.body.name,
@@ -888,8 +878,8 @@ app.post('/api/items', requireAuthentication, (req, res) => {
 // remove an item
 app.delete('/api/items/:id', requireAuthentication, (req, res) => {
 	Item.findOne({_id: req.params.id}, function (err, item) {
-		if(req.authentication.user.lists.indexOf(item.list.toString()) >= 0) {
-			Item.remove({_id:item._id}, (err, item) => {
+		if (req.authentication.user.lists.indexOf(item.list.toString()) >= 0) {
+			Item.remove({_id: item._id}, (err, item) => {
 				if (err) {
 					res.json({success: false, error: 'Item not removed', code: 302});
 				}
@@ -921,15 +911,11 @@ app.get('/api/users', deprecate, requireAuthentication, (req, res) => {
 	if (req.app.get('env') === 'development') {
 		// use mongoose to get all users in the database
 		User.find(function (err, users) {
-
 			// if there is an error retrieving, send the error. nothing after res.send(err) will execute
 			if (err) {
 				res.json({success: false, error: 'No users found', code: 200});
 			}
-
-
 			res.json(users); // return all users in JSON format
-
 		});
 	}
 });
@@ -937,12 +923,8 @@ app.get('/api/users', deprecate, requireAuthentication, (req, res) => {
 // get single user
 app.get('/api/users/:id', requireAuthentication, (req, res) => {
 	User.findOne({_id: req.params.id}, function (err, user) {
-
 		// if there is an error retrieving, send the error. nothing after res.send(err) will execute
-		if (err || !user) {
-			res.json({success: false, error: 'User not found', code: 201});
-		}
-
+		if (err || !user) res.json({success: false, error: 'User not found', code: 201});
 		let tmp = {
 			_id: user._id,
 			name: user.name,
@@ -950,13 +932,9 @@ app.get('/api/users/:id', requireAuthentication, (req, res) => {
 			lists: user.lists,
 			validated: user.validated
 		};
-
 		if (user.alphaTester) tmp.alphaTester = true;
 		if (user.betaTester) tmp.betaTester = true;
 		if (user.premium) tmp.premium = true;
-
-		console.log(tmp);
-
 		res.json(tmp); // return the user in JSON format
 	});
 });
@@ -964,10 +942,7 @@ app.get('/api/users/:id', requireAuthentication, (req, res) => {
 // get single user per mail
 app.get('/api/users/byMail/:mail', requireAuthentication, (req, res) => {
 	User.findOne({email: req.params.mail}, function (err, user) {
-		if (err) {
-			res.json({success: false, error: 'User not found', code: 201});
-		}
-
+		if (err) res.json({success: false, error: 'User not found', code: 201});
 		let tmp = {
 			_id: user._id,
 			name: user.name,
@@ -975,13 +950,9 @@ app.get('/api/users/byMail/:mail', requireAuthentication, (req, res) => {
 			lists: user.lists,
 			validated: user.validated
 		};
-
 		if (user.alphaTester) tmp.alphaTester = true;
 		if (user.betaTester) tmp.betaTester = true;
 		if (user.premium) tmp.premium = true;
-
-		console.log(tmp);
-
 		res.json(tmp);
 	});
 
@@ -992,17 +963,11 @@ app.get('/api/users/:id/lists', requireAuthentication, (req, res) => {
 	if (req.authentication.user._id.toString() === req.params.id.toString()) {
 		User.findOne({_id: req.params.id}, function (err, user) {
 			if (err) res.json({success: false, error: err, code: 202});
-			console.log(err);
-
 			let lists = [];
-
 			if (user.lists) {
-
 				// first off, make an Array from the Users "list" Object
 				lists = user.lists;
-
 				console.log("Lists");
-
 				// then use that Array to get all Lists in it
 				List.find({_id: {$in: lists}}).exec()
 					.then(function (gotLists) {
@@ -1016,10 +981,8 @@ app.get('/api/users/:id/lists', requireAuthentication, (req, res) => {
 					});
 			}
 			else res.json({success: false, error: 101});
-
-
 		});
-	} else res.json({success:false, msg:"You can only view your own Lists."});
+	} else res.json({success: false, msg: "You can only view your own Lists."});
 });
 
 // get all lists per user that contain :query
@@ -1054,7 +1017,7 @@ app.get('/api/users/:id/lists/:query', requireAuthentication, (req, res) => {
 			}
 			else res.json({success: false, error: 101});
 		});
-	} else res.json({success:false, msg:"You can only view your own Lists."});
+	} else res.json({success: false, msg: "You can only view your own Lists."});
 });
 
 // create user
@@ -1117,12 +1080,12 @@ app.get("/user/delete/:token", (req, res) => {
 });
 
 
-// update a user adding new lists TODO: This should not add lists, but rather make invitations
+// update a user adding new lists
 app.post('/api/users/:id/newList', requireAuthentication, (req, res) => {
 	User.findOne({_id: req.params.id}, function (err, user) {
 		if (err) res.json({success: false, error: 'Lists not added to User', code: 207});
 		else {
-			User.update({_id:user._id}, {$push:{lists:req.body.lists}}, (err, update) => {
+			User.update({_id: user._id}, {$push: {lists: req.body.lists}}, (err, update) => {
 				!err && res.json({success: true, id: update._id});
 
 			});
@@ -1143,7 +1106,6 @@ app.post("/api/users/:id/removeList", requireAuthentication, (req, res) => {
 	});
 });
 
-//TODO: This should not add lists, but rather make invitations
 // add a list to multiple users
 app.post("/api/users/addListBulk", (req, res) => {
 	let {emails, list} = req.body;
@@ -1151,7 +1113,7 @@ app.post("/api/users/addListBulk", (req, res) => {
 	if (emails) {
 		emails.forEach(e => {
 			createInvite(e, list, a, (err, list) => {
-				err && res.json({success:false, err:err});
+				err && res.json({success: false, err: err});
 			});
 		});
 	}
@@ -1167,7 +1129,7 @@ app.post("/api/user/changeEmail", requireAuthentication, (req, res) => {
 	const newEmail = req.body.newEmail;
 	const userId = req.authentication.user._id;
 	// send verification email to current email address
-	User.findOne({_id:userId}, (err, user) => {
+	User.findOne({_id: userId}, (err, user) => {
 		EmailReset.create({userId: user._id}, (err, reset) => {
 			let long = `http://${config.domain}/user/change-email/${reset._id}?newEmail=${newEmail}`;
 			linkShortener(long, null, (URL) => {
@@ -1189,12 +1151,12 @@ app.post("/api/user/changeEmail", requireAuthentication, (req, res) => {
 app.get("/user/change-email/:id", (req, res) => {
 	let newEmail = req.query.newEmail;
 	let resetId = req.params.id;
-	EmailReset.findOne({_id:resetId}, (err, er) => {
+	EmailReset.findOne({_id: resetId}, (err, er) => {
 		let userId = er.userId;
-		User.findOne({_id:userId}, (err, user) => {
+		User.findOne({_id: userId}, (err, user) => {
 			if (er.expiry >= Date.now()) {
 				// not expired
-				User.update({_id:user._id}, {$set: {email: newEmail}}, (err, update) => {
+				User.update({_id: user._id}, {$set: {email: newEmail}}, (err, update) => {
 					if (!err) res.render("email-change-end", {success: true});
 					else {
 						res.render("email-change-end", {success: false});
@@ -1286,7 +1248,7 @@ app.post("/api/user/deleteUser", requireAuthentication, (req, res) => {
 app.post("/api/user/emailInformation", requireAuthentication, (req, res) => {
 	let userId = req.authentication.user._id;
 	let information = {};
-	User.findOne({_id:userId}, (err, user) => {
+	User.findOne({_id: userId}, (err, user) => {
 		if (err) res.json({success: false});
 		information.user = user;
 		delete information.user.lists;
@@ -1300,21 +1262,20 @@ app.post("/api/user/emailInformation", requireAuthentication, (req, res) => {
 				information.lists = lists;
 				let filePath = path.join(__dirname, "data", "userInfo", user._id + "-information.json");
 				fs.writeFile(filePath, JSON.stringify(information), (err) => {
-					console.log("Information-writing error: ", err);
 					let mailData = {
 						to: user.email,
 						from: "userinformation",
-                        subject: "ListX Account Information",
+						subject: "ListX Account Information",
 						text: `Hey ${user.name}! \nThe requested information about your account can be found in the attachment. \nListX Support`,
 						attachment: filePath,
 						send: true
 					};
-					if(mailData.text === undefined) console.log("It's in the route");
+					if (mailData.text === undefined) console.log("It's in the route");
 					mail(mailData);
 					fs.unlink(filePath, (err) => {
-					    if (!(err)) res.json({success: true});
-                        else res.json({success:false, error:err, msg:"Deleting the file didn't work."})
-                    });
+						if (!(err)) res.json({success: true});
+						else res.json({success: false, error: err, msg: "Deleting the file didn't work."})
+					});
 				});
 			}).catch(err => {
 			res.json({success: false, error: err});
@@ -1392,7 +1353,7 @@ app.get('/api/invitations/:id', requireAuthentication, (req, res) => {
 app.post('/api/invitations/array', requireAuthentication, (req, res) => {
 	let inv = [] // invitation
 		, l = req.body.list;
-	if(req.authentication.user.lists.indexOf(req.body.list) >= 0) {
+	if (req.authentication.user.lists.indexOf(req.body.list) >= 0) {
 		if (req.body.invs) {
 			if (Array.isArray(req.body.invs)) {
 				req.body.invs.forEach(i => {
@@ -1404,13 +1365,13 @@ app.post('/api/invitations/array', requireAuthentication, (req, res) => {
 				if (req.body.email) {
 					console.log("List in array", l);
 					createInvite(req.body.email, l, inv);
-				} else res.json({success:true});
-				
+				} else res.json({success: true});
+
 			}
 		}
 
 		res.json({invs: inv, success: true});
-	} else res.json({success:false, msg:"You may only create Invitations for Lists that you are a member of!"})
+	} else res.json({success: false, msg: "You may only create Invitations for Lists that you are a member of!"})
 });
 
 // create a single invitation
@@ -1455,8 +1416,8 @@ function createInvite(email, list, arr, callback) {
 					greeting = `Howdy!`;
 					invite = `sign up, join ListX`;
 				}
-				List.findOne({_id:list}, (err, l) => {
-					User.findOne({_id:l.admin}, (err, admin) => {
+				List.findOne({_id: list}, (err, l) => {
+					User.findOne({_id: l.admin}, (err, admin) => {
 						let msg = {
 							to: email,
 							subject: `ListX - New Invitation to List ${l.name}!`,
@@ -1552,7 +1513,7 @@ function mail(data) {
 		let from = data.from || "noreply";
 
 		let msg = {
-			from: "ListX <" + from + "@"+config.domain+">",
+			from: "ListX <" + from + "@" + config.domain + ">",
 			to: to,
 			subject: sub,
 			text: body
@@ -1589,7 +1550,7 @@ app.use(function (req, res, next) {
 });
 
 function verifyJWT(jwt_token, callback) {
-	jwt.verify(jwt_token, config.jwtSecret, (e,u) => {
+	jwt.verify(jwt_token, config.jwtSecret, (e, u) => {
 		if (u && u.id) callback(e, u.id);
 		else callback(e);
 	});
@@ -1622,17 +1583,17 @@ function requireLogin(req, res, next) {
  */
 function requireAuthentication(req, res, next) {
 	let tk = req.body.token || req.query.token || req.headers['x-access-token'] || req.cookies.token;
-	if(!tk) res.json({success:false, msg:"Failed to authenticate with Token."});
+	if (!tk) res.json({success: false, msg: "Failed to authenticate with Token."});
 	verifyJWT(tk, (err, userId) => {
-		User.findOne({_id:userId}, (err, user) => {
+		User.findOne({_id: userId}, (err, user) => {
 			if (user) {
 				req.authentication = {
-					user:user,
-					token:tk
+					user: user,
+					token: tk
 				};
 				next();
 			} else {
-				res.end(JSON.stringify({success:false, msg:"Failed to authenticate with Token."}));
+				res.end(JSON.stringify({success: false, msg: "Failed to authenticate with Token."}));
 				console.log("API Access without Authentication. Token: ", tk)
 			}
 		});
@@ -1685,7 +1646,7 @@ function linkShortener(long, short, callback) {
 }
 
 function deprecate(req, res, next) {
-	res.json({"sucess":false, msg:"This Route/Function is deprecated, please refrain from using it."});
+	res.json({"sucess": false, msg: "This Route/Function is deprecated, please refrain from using it."});
 }
 
 function validateReCAPTCHA(gResponse, callback) {
@@ -1716,10 +1677,14 @@ app.use(function (req, res) {
 	res.locals.error = req.app.get('env') === 'development' ? err : {};
 
 	let user = false;
-	if (req.authentication) user = req.authentication.user ||false;
+	if (req.authentication) user = req.authentication.user || false;
 
 	// render the error page
-	res.render('error', {msg: err.message, url: req.get('Referrer') !== undefined ? req.get('Referrer') : "/", user:user});
+	res.render('error', {
+		msg: err.message,
+		url: req.get('Referrer') !== undefined ? req.get('Referrer') : "/",
+		user: user
+	});
 });
 
 

@@ -63,7 +63,11 @@ console.info("ListX Started on http://" + config.domain);
 
 // database setup
 mongoose.Promise = Promise;
-mongoose.connect('mongodb://' + config.mongo.address);	// sudo mongod --dbpath=/var/data --port=27070 --fork --logpath=./log.txt
+mongoose.connect('mongodb://' + config.mongo.address) // sudo mongod --dbpath=/var/data --port=27070 --fork --logpath=./log.txt
+	.then(
+		() => { console.info("Connected to mongoDB.") },
+		err => { console.log("Connection to mongoDB failed: "+err) }
+	);
 
 
 const Item = mongoose.model('Item', {
@@ -1510,6 +1514,15 @@ app.post("/api/invitations/user/list/:list", requireAuthentication, (req, res) =
 });
 
 /**
+ * Support API
+ */
+
+//app.use("/api/support", require("./routes/api/support.js"));
+//app.use("/support", require("./routes/support.js"));
+
+
+
+/**
  * MailGun API
  */
 
@@ -1538,6 +1551,7 @@ function mail(data) {
 		});
 	}
 }
+
 
 
 /**

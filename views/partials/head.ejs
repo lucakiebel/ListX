@@ -4,6 +4,8 @@
 <meta name="description" content="<%=__("/ListX/UI/Index/SiteTitle") %>">
 <meta name="author" content="Klequex Software & UX">
 <meta name="keywords" content="List, Shopping List, Free, Grocery List, Holidays, Planing, Food, ListX">
+<!-- jQuery -->
+<script src="/static/vendor/jquery/jquery.js"></script>
 <script>
     $.getJSON("/api/users/me", function (data) {
         if (data.success) {

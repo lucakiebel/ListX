@@ -923,7 +923,8 @@ app.get('/api/users', deprecate, requireAuthentication, (req, res) => {
 
 // get single user
 app.get('/api/users/:id', requireAuthentication, (req, res) => {
-	User.findOne({_id: req.params.id}, function (err, user) {
+	let userId = req.authentication.user._id || req.params.id
+	User.findOne({_id: userId}, function (err, user) {
 		// if there is an error retrieving, send the error. nothing after res.send(err) will execute
 		if (err || !user) res.json({success: false, error: 'User not found', code: 201});
 		let tmp = {

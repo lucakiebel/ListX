@@ -1,118 +1,31 @@
 <!DOCTYPE html>
 <html lang="<%=__("/ListX/UI/htmlLang") %>">
-
 <head>
 
-    <% include partials/head.ejs %>
-    <!-- Theme CSS -->
-    <link href="/static/stylesheets/index.css" rel="stylesheet">
-    <style>
-        .intro {
-            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(/images/phones/PS1-<%=__("/ListX/UI/htmlLang") %>.png) no-repeat center center scroll;
-        }
-    </style>
-
-    <title><%=__("/ListX/UI/Index/imprint")%> - <%=__("/ListX/UI/Index/SiteTitle")%></title>
-
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
-
-    <!-- Cookieconsent for everyone!!! -->
-    <script type="text/javascript">
-        window.cookieconsent_options = {
-            "message": "<%=__("/ListX/UI/Index/Cookieconsent/Message") %>",
-            "dismiss": "<%=__("/ListX/UI/Index/Cookieconsent/Dismiss") %>",
-            "learnMore": "<%=__("/ListX/UI/Index/Cookieconsent/learnMore") %>",
-            "link": "/privacy",
-            "theme": "light-floating"
-        };
-    </script>
-
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent2/1.0.9/cookieconsent.min.js"></script>
-
+    <%- include partials/head-index.ejs %>
+    <title><%=__("/ListX/UI/Index/imprint")%> - <%=__("/ListX/UI/Index/SiteTitle") %></title>
 </head>
-
-<body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top" data-responsejs='{"create": [{"prop": "width", "prefix": "min-width- r src", "breakpoints": [0, 320, 481, 641, 961, 1025, 1281]}]}'>
-
-<% include partials/navigation.ejs %>
+<body>
+<!-- Navigation -->
+<%- include partials/nav-index.ejs %>
 <header class="intro" style="height: 50vh; min-height: 50vh;">
     <div class="intro-body">
         <div class="container">
             <div class="row">
                 <div class="col-md-8 col-md-offset-1">
-                    <h1 class="brand-heading" style="text-align: left !important;">Imprint </h1>
+                    <h1 class="brand-heading" style="text-align: left !important;"><%=__("/ListX/UI/Index/imprint")%> </h1>
                 </div>
             </div>
         </div>
     </div>
 </header>
-<div class="container" id="legal">
-    <h1>Legal Disclosure</h1>Information in accordance with section 5 TMG<br /><br />
-    <p>Luca Kiebel<br />
-        Hermelinweg, 5<br />
-        48157 M&uuml;nster<br /></p>
-    <h2>Contact</h2>
-    <p>E-Mail: <a href="mailto:info@listx.io">info@listx.io</a><br />
-        Internetadress: <a href="https://listx.io" target="_blank">listx.io</a><br /></p>
-    <h2>Persons responsible for content in accordance with 55 Abs. 2 RStV</h2>
-    <p>Luca Kiebel <br />
-    </p>
-    <h2>Disclaimer</h2>
-    <h3>Accountability for content<br /></h3>
-    <p>The contents of our pages have been created with the utmost care. However, we cannot guarantee the contents' accuracy, completeness or topicality. According to statutory provisions, we are furthermore responsible for our own content on these web pages. In this context, please note that we are accordingly not obliged to monitor merely the transmitted or saved information of third parties, or investigate circumstances pointing to illegal activity. Our obligations to remove or block the use of information under generally applicable laws remain unaffected by this as per &sect;&sect; 8 to 10 of the Telemedia Act (TMG).</p><br /><br />
-    <h3>Accountability for links<br /></h3>
-    <p>Responsibility for the content of external links (to web pages of third parties) lies solely with the operators of the linked pages. No violations were evident to us at the time of linking. Should any legal infringement become known to us, we will remove the respective link immediately.<br /><br /></p>
-    <h3>Copyright<br /></h3>
-    <p>Our web pages and their contents are subject to German copyright law. Unless expressly permitted by law (&sect; 44a et seq. of the copyright law), every form of utilizing, reproducing or processing works subject to copyright protection on our web pages requires the prior consent of the respective owner of the rights. Individual reproductions of a work are allowed only for private use, so must not serve either directly or indirectly for earnings. Unauthorized utilization of copyrighted works is punishable (&sect; 106 of the copyright law).</p><br /><br />
+<div class="container">
+    <div class="listx-content">
+        <%- include("partials/imprint."+(__("/ListX/UI/htmlLang")||"EN").toLowerCase()+".ejs")%>
+    </div>
 </div>
-<!-- Footer -->
-<footer class="footer footer-desktop" id="footer">
-    <div class="legal-logo">
-        <div class="col-md-2 text-left" id="footer-brand">
-            <a class="navbar-brand page-scroll brand-name" href="#page-top">
-                <img src="/static/images/favicon.png" alt="<%=__("/ListX/UI/Index/SiteName") %>" class="footer-brand-image text-white">&nbsp;&nbsp;<span style="color: white">List</span><span class="x">X</span>
-            </a>
-        </div>
-        <div class="col-md-2 vertical-divider-left" id="footer-links1">
-            <h5 class="footer-heading color-red"><%= __("/ListX/UI/Index/About") %></h5>
-            <a class="footer-link" href="/imprint"><h6><%=__("/ListX/UI/Index/imprint") %></h6></a>
-            <a class="footer-link" href="/privacy"><h6><%=__("/ListX/UI/Index/privacy") %></h6></a>
-            <a class="footer-link" href="/terms"><h6><%=__("/ListX/UI/Index/terms") %></h6></a>
-            <div class="inline  ">
-                <a href="/language/de" class="btn btn-default">DE</a>
-                <a href="/language/en" class="btn btn-default">EN</a>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-2" id="footer-links2">
-        <h5 class="footer-heading"><a href="/developer" class="color-red"><%=__("/ListX/UI/Index/developers") %></a></h5>
-        <h6><a class="footer-link" href="/docs"><%=__("/ListX/UI/Index/ApiDocs") %></a></h6>
-        <h6><a class="footer-link" href="https://github.com/lucakiebel/ListX"><%=__("/ListX/UI/Index/sourceCode") %></a></h6>
-        <h6><a href="https://npmjs.com/package/listx" class="footer-link">NPM</a></h6>
-        <h6><a href="/faq-dev" class="footer-link"><%=__("/ListX/UI/Index/faqDev")%></a></h6>
-    </div>
-    <div class="col-md-2" id="footer-links3">
-        <h5 class="footer-heading"><%=__("/ListX/UI/Index/resources") %></h5>
-        <h6><a class="footer-link" href="/support"><%=__("/ListX/UI/Index/support") %></a></h6>
-        <h6><a class="footer-link" href="/blog"><%=__("/ListX/UI/Index/blog") %></a></h6>
-        <h6><a class="footer-link" href="/guides"><%=__n("/ListX/UI/Index/guide", 0) %></a></h6>
-    </div>
-    <div class="col-md-2" id="footer-links4">
-        <h5 class="footer-heading">Links</h5>
-        <h6><a href="https://twitter.com/listx.io" class="footer-link">Twitter</a></h6>
-        <h6><a href="/signup" class="footer-link"><%=__("/ListX/UI/Index/signUp") %></a></h6>
-        <h6><a href="/demo" class="footer-link"><%=__("/ListX/UI/Index/demo") %></a></h6>
-        <h6><a href="" class="footer-link"></a></h6>
-    </div>
-    <div class="col-md-2"></div>
-    <div class="col-md-12 text-right bottom" id="companyLogoDiv">
-        <h5><a style="color: white" href="https://luca-kiebel.de" class="pull-right copy" id="companyLogo">&copy; Bleurque Inc.</a></h5>
-    </div>
-</footer>
+
+<%- include partials/footer-index.ejs%>
 
 <!-- jQuery -->
 <script src="/static/vendor/jquery/jquery.js"></script>
@@ -122,8 +35,6 @@
 
 <!-- Plugin JavaScript -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
-
-<!-- Theme JavaScript -->
 <script src="/static/javascripts/index.js"></script>
 
 </body>

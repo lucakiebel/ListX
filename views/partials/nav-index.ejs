@@ -1,0 +1,41 @@
+<!-- Navigation -->
+<nav class="navbar navbar-custom navbar-fixed-top" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-main-collapse">
+                Menu <i class="fa fa-bars"></i>
+            </button>
+            <a class="navbar-brand page-scroll color-visible" href="#page-top">
+                <img src="/static/images/favicon.png" alt="<%=__("/ListX/UI/SiteName") %>" class="navbar-brand-image"> &nbsp;&nbsp; List<span class="x">X</span>
+            </a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse  navbar-main-collapse">
+            <ul class="nav navbar-nav navbar-center">
+                <!-- Hidden li included to remove active class from about link when scrolled up past about section -->
+                <li class="hidden">
+                    <a href="/#page-top"></a>
+                </li>
+                <li>
+                    <a class="page-scroll color-visible" href="/#about"><%= __("/ListX/UI/Index/learnMore") %></a>
+                </li>
+                <li>
+                    <a href="/#pricing" class="page-scroll color-visible"><%= __("/ListX/UI/Index/Pricing") %></a>
+                </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right" id="user-interaction-navbar" style="float: right">
+                <li>
+                    <a href="/dashboard" class=" color-visible <%if(user){%><%="username-visible u-visible"%><%} else {%><%="username-invisible u-invisible"%><%}%>"><%= __("/ListX/UI/Index/dashboard") %></a>
+                    <a href="/signup" class="color-visible <%if(user){%><%="username-invisible u-invisible"%><%} else {%><%="username-visible u-visible"%><%}%>"><%= __("/ListX/UI/Index/signUp") %> </a>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="color-visible <%if(user){%><%="username-visible u-visible"%><%} else {%><%="username-invisible u-invisible"%><%}%>" id="login-ready"><%= __("/ListX/UI/Howdy")%><%if(user){%><%=", "+user.name %><%}%></a>
+                    <a href="/login" class="color-visible <%if(user){%><%="username-invisible u-invisible"%><%} else {%><%="username-visible u-visible"%><%}%>" id="login-dropdown-link"><%= __("/ListX/UI/Index/logIn") %> <i class="fa fa-sign-in" aria-hidden="true"></i></a>
+                </li>
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>

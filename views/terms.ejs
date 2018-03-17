@@ -1,1 +1,41 @@
-<h1>Terms</h1>
+<!DOCTYPE html>
+<html lang="<%=__("/ListX/UI/htmlLang") %>">
+<head>
+
+    <%- include partials/head-index.ejs %>
+    <title><%=__("/ListX/UI/Index/terms")%> - <%=__("/ListX/UI/Index/SiteTitle") %></title>
+</head>
+<body>
+<!-- Navigation -->
+<%- include partials/nav-index.ejs %>
+<header class="intro" style="height: 50vh; min-height: 50vh;">
+    <div class="intro-body">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8 col-md-offset-1">
+                    <h1 class="brand-heading" style="text-align: left !important;"><%=__("/ListX/UI/Index/terms")%> </h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<div class="container">
+    <div class="listx-content">
+        <%- include("partials/terms."+(/*__("/ListX/UI/htmlLang")||*/"DE").toLowerCase()+".ejs")%>
+    </div>
+</div>
+
+<%- include partials/footer-index.ejs%>
+
+<!-- jQuery -->
+<script src="/static/vendor/jquery/jquery.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/static/vendor/bootstrap/js/bootstrap.min.js"></script>
+
+<!-- Plugin JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
+<script src="/static/javascripts/index.js"></script>
+
+</body>
+</html>

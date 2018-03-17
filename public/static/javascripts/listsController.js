@@ -65,12 +65,23 @@ function mainController($scope, $http) {
         annyang.setLanguage("de-DE");
         annyang.addCommands({
             'hallo': function() { alert('Hallo world!'); },
-            "guten tag": function() {alert("Ihnen auch!")},
-            "füge :q :q2 :a :n hinzu": function (q,q2,a,n){$scope.createTodoFrom({name:n, amount: q+" "+q2, art:a.substring(0, a.length - 1)})},
-            "schreib noch :n drauf": function(n){$scope.createTodoFrom({name:n})},
+            "guten tag": function() {alert("Dir auch!")},
+            ":q :q2 :a :n": addItem,
+            "schreib noch :n drauf": function(n){addItem(null, null, null, n)},
 			":n hab ich": removeItem,
 			"entferne :n": removeItem
         });
+
+		function addItem(q, q2, a, n) {
+			if (q && q2 && a) {
+				let sa = a.substring(0, a.length - 1),
+					se = a.substring(a.length-1, a.length);
+				$scope.createTodoFrom({name:n, amount: q+" "+q2, art:(se==="e" ? sa:a)})
+			} else {
+				$scope.createTodoFrom({name:n})
+			}
+
+		}
 
 
         function removeItem(n) {
@@ -83,7 +94,7 @@ function mainController($scope, $http) {
         SpeechKITT.annyang();
 
         // Define a stylesheet for KITT to use
-        SpeechKITT.setStylesheet('/stylesheets/annyang-listx.css');
+        SpeechKITT.setStylesheet('/static/stylesheets/annyang-listx.css');
 
         SpeechKITT.setInstructionsText('Einfach ausprobieren');
         SpeechKITT.setSampleCommands(['Füge 2 Liter fettarme Milch hinzu', 'Schreib noch Äpfel drauf']);

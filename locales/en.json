@@ -18,7 +18,7 @@
   "/ListX/UI/Index/password": "Password",
   "/ListX/UI/Index/enterPassword": "Enter Password",
   "/ListX/UI/Index/imprint": "Imprint",
-  "/ListX/UI/Index/privacy": "Privacy",
+  "/ListX/UI/Index/privacy": "Privacy Policy",
   "/ListX/UI/Index/terms": "Terms",
   "/ListX/UI/Index/item": {
     "one": "%s Item",
@@ -76,6 +76,8 @@
   "/ListX/UI/SignUp/enterYourPassword": "Your Password",
   "/ListX/UI/SignUp/alreadyAccount": "Already have an Account?",
   "/ListX/UI/SignUp/ErrorMessagePasswordMatch": "Password must match Requirements below!",
+  "/ListX/UI/signUp/agreeWithTerms": "I have read and I agree with the <a target=\"_blank\" href=\"/terms\">Terms</a> and the <a target=\"_blank\" href=\"/privacy\">Privacy Policy</a>.",
+  "/ListX/UI/SignUp/ErrorMessageAgreement": "You need to agree with the Terms and the Privacy Policy!",
   "/ListX/UI/PasswordRequirements/CharMin": "8 Characters Long",
   "/ListX/UI/PasswordRequirements/Uppercase": "One Uppercase Letter",
   "/ListX/UI/PasswordRequirements/Lowercase": "One Lowercase Letter",

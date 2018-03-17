@@ -1,6 +1,10 @@
 function signupValidation() {
 	let eV = emailValid($("#form_email").val());
 	if(eV.valid) {
+		if( document.getElementById("verify-agreement").checked === false ) {
+			$("#signup-error-agreement").css("display", "block");
+			return false;
+		}
 		let formData = {};
 		formData.email = $("#form_email").val();
 		formData.name = $("#form_name").val();
@@ -71,6 +75,7 @@ function emailValid(email) {
 		},
         async:false
     });
+
 	return valid;
 }
 

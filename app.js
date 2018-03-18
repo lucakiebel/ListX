@@ -78,7 +78,7 @@ const Item = mongoose.model('Item', {
 	art: String,
 	date: {
 		type: String, default: () => {
-			return (new Date(Date.now())).toString();
+			return (new Date(Date.now()).getTime()).toString();
 		}
 	},
 	remember: Boolean,
@@ -98,7 +98,12 @@ const User = mongoose.model('User', {
 	address: String,
 	zipCode: String,
 	country: String,
-	additionalFields: []
+	additionalFields: [],
+	date: {
+		type: String, default: () => {
+			return (new Date(Date.now()).getTime()).toString();
+		}
+	}
 });
 
 const EmailValidation = mongoose.model("EmailValidation", {
@@ -138,7 +143,12 @@ const List = mongoose.model('List', {
 	country: String,
 	language: String,
 	admin: mongoose.Schema.Types.ObjectId,
-	invitations: [] // 1 List => 0+ Open Invitations
+	invitations: [], // 1 List => 0+ Open Invitations
+	date: {
+		type: String, default: () => {
+			return (new Date(Date.now()).getTime()).toString();
+		}
+	}
 });
 
 const Invitation = mongoose.model('Invitation', {
@@ -465,6 +475,57 @@ app.get("/api/version", (req, res) => {
 			"version": require("./package.json").version
 		}
 	);
+});
+
+app.get("/api/stats", (req, res) => {
+	let statData = [];
+
+	statData.push(User.count({}));
+	statData.push(User.findOne().sort({created_at: 1}).exec());
+
+	statData.push(List.count({}));
+	statData.push(List.findOne().sort({created_at: 1}).exec());
+
+	statData.push(Item.count({}));
+	statData.push(Item.findOne().sort({created_at: 1}).exec());
+
+	Promise.all(statData)
+		.then((stats) => {
+			console.log(stats);
+			console.log(new Date(stats[1].date).getTime());
+			let displayStats = {
+				"info": "ListX API Version Manager. Copyright 2017 Bleurque, Inc.",
+				"date": new Date(Date.now()).toDateString(),
+				"version": require("./package.json").version,
+				"stats": [
+					{
+						"set": "Users",
+						"count": stats[0],
+						"latestAt": new Date(stats[1].date).getTime()
+					},
+					{
+						"set": "Lists",
+						"count": stats[2],
+						"latestAt": new Date(stats[3].date).getTime()
+					},
+					{
+						"set": "Items",
+						"count": stats[4],
+						"latestAt": new Date(stats[5].date).getTime()
+					}
+				]
+			};
+			res.json(displayStats);
+		});
+});
+
+// https://listx.io/api/stats/usercount
+app.get("/api/stats/usercount", (req, res) => {
+	User.count({}).then(userCount => {
+		res.json({
+			"usercount": userCount
+		});
+	});
 });
 
 app.get("/lists", (req, res) => {

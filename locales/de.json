@@ -18,7 +18,7 @@
   "/ListX/UI/Index/password": "Passwort",
   "/ListX/UI/Index/enterPassword": "Passwort eingeben",
   "/ListX/UI/Index/imprint": "Impressum",
-  "/ListX/UI/Index/privacy": "Datenschutzerklärung",
+  "/ListX/UI/Index/privacy": "Datenschutz&#x200b;erklärung",
   "/ListX/UI/Index/terms": "AGB",
   "/ListX/UI/Index/item": {
     "one": "%s Artikel",

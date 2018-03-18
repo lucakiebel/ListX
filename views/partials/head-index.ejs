@@ -40,15 +40,29 @@
 <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
 <![endif]-->
 
-<!-- Cookieconsent for everyone!!! -->
-<script type="text/javascript">
-    window.cookieconsent_options = {
-        "message": "<%=__("/ListX/UI/Index/Cookieconsent/Message") %>",
-        "dismiss": "<%=__("/ListX/UI/Index/Cookieconsent/Dismiss") %>",
-        "learnMore": "<%=__("/ListX/UI/Index/Cookieconsent/learnMore") %>",
-        "link": "/privacy",
-        "theme": "light-floating"
-    };
+<link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.css" />
+<script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.js"></script>
+<script>
+    window.addEventListener("load", function(){
+        window.cookieconsent.initialise({
+            "palette": {
+                "popup": {
+                    "background": "#eaf7f7",
+                    "text": "#333333"
+                },
+                "button": {
+                    "background": "#ff4c4c",
+                    "text": "#ffffff"
+                }
+            },
+            "position": "bottom-right",
+            "type": "opt-out",
+            "content": {
+                "message": "This website uses cookies to ensure you get the best experience on our website. ",
+                "dismiss": "Got it!",
+                "deny": "Decline",
+                "link": "Learn more",
+                "href": "/privacy"
+            }
+        })});
 </script>
-
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent2/1.0.9/cookieconsent.min.js"></script>

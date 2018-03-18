@@ -33,7 +33,7 @@
                     <div class="form-group col-md-4 input-group-lg pr30">
                         <label for="inputEmail"><%= __("/ListX/UI/Email")%></label>
                         <div class="input-group input-group-lg">
-                            <input type="email" class="form-control" id="inputEmail" placeholder="<%= __("/ListX/UI/Email")%>" value="<%=user.email%>" disabled title="Check your current email!" data-placement="top">
+                            <input type="email" class="form-control" id="inputEmail" placeholder="<%= __("/ListX/UI/Email")%>" value="<%=user.email%>" disabled title="<%=__("/ListX/UI/Dashboard/checkEmail")%>" data-trigger="manual" data-placement="top">
                             <div class="input-group-addon" id="email-change-button"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></div>
                         </div>
                     </div>
@@ -51,7 +51,7 @@
                     <div class="form-group col-md-4 input-group-lg pr30">
                         <label for="inputAddress"><%= __("/ListX/UI/Username")%></label>
                         <div class="input-group input-group-lg">
-                            <input type="text" class="form-control" id="inputUsername" placeholder="<%= __("/ListX/UI/Username")%>" value="<%=user.username%>" disabled data-container="body" data-toggle="popover" data-placement="top" data-trigger="click" data-content="You can only change your Username once a year.">
+                            <input type="text" class="form-control" id="inputUsername" placeholder="<%= __("/ListX/UI/Username")%>" value="<%=user.username%>" disabled data-container="body" data-toggle="popover" data-placement="top" data-trigger="manual" data-content="You can only change your Username once a year.">
                             <div class="input-group-addon" id="username-change-button"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></div>
                         </div>
                     </div>
@@ -85,7 +85,7 @@
                 <br>
                 <div class="form-row">
                     <div class="controls">
-                        <button type="button" class="btn btn-success" id="getInformationBtn" data-reset="Get all Information" data-loadingText="<i class='fa fa-spinner fa-spin '></i> Getting Information"><%= __("/ListX/UI/UserSettings/SaveInfo") %></button>
+                        <button type="button" class="btn btn-success" id="getInformationBtn" data-reset="<%= __("/ListX/UI/UserSettings/SaveInfo") %>" data-loadingText="<i class='fa fa-spinner fa-spin '></i> <%=__("/ListX/UI/Dashboard/loadingInformationTooltip")%>" title="<%=__("/ListX/UI/Dashboard/checkEmail")%>" data-trigger="manual" data-placement="top"><%= __("/ListX/UI/UserSettings/SaveInfo") %></button>
                         <p class="help-block"><%= __("/ListX/UI/UserSettings/SaveInfoHelper") %></p>
                     </div>
                     <div class="controls">

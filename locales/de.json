@@ -181,5 +181,7 @@
   "/ListX/UI/Navigation/loggedInAs": "Eingeloggt als ",
   "/ListX/UI/logout/loggingYouOut": "Deine Sitzung wird nun terminiert...",
   "/ListX/UI/Navigation/MenuName": "Menü",
-  "/ListX/UI/Footer/OnGooglePlay": "Jetzt bei Google Play"
+  "/ListX/UI/Footer/OnGooglePlay": "Jetzt bei Google Play",
+  "/ListX/UI/Dashboard/loadingInformationTooltip": "Lade Informationen",
+  "/ListX/UI/Dashboard/checkEmail": "Überprüfe dein Postfach!"
 }

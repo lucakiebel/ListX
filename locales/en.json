@@ -181,5 +181,7 @@
   "/ListX/UI/Navigation/loggedInAs": "Logged in as ",
   "/ListX/UI/logout/loggingYouOut": "Logging you out....",
   "/ListX/UI/Navigation/MenuName": "Menu",
-  "/ListX/UI/Footer/OnGooglePlay": "Get it on Google Play"
+  "/ListX/UI/Footer/OnGooglePlay": "Get it on Google Play",
+  "/ListX/UI/Dashboard/loadingInformationTooltip": "Getting Information",
+  "/ListX/UI/Dashboard/checkEmail": "Check your email!"
 }

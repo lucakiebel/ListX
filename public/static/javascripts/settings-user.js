@@ -11,11 +11,13 @@ $(document).ready(function() {
 			$('b', this).toggleClass("caret caret-up");
 		});
 	$("#getInformationBtn").click(() => {
-		$(this).html($(this).data("loadingText"));
-		console.log($(this).data("loadingText"));
+		$("#getInformationBtn").html($("#getInformationBtn").data("loadingtext"));
+		console.log($("#getInformationBtn").data("loadingtext"));
+		$("#getInformationBtn").tooltip('show');
 		$.post("/api/user/emailInformation", {userId:userId}, (data) => {
 			if (data.success) {
-				$(this).html($(this).data("reset"));
+				$("#getInformationBtn").html($("#getInformationBtn").data("reset"));
+				setTimeout(() => {$("#getInformationBtn").tooltip('destroy');}, 3000);
 			}
 		});
 	});

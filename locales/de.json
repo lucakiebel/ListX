@@ -180,5 +180,6 @@
   "/ListX/UI/ListSettings/LeaveListHelper": "Dies wird dich von der Liste entfernen.",
   "/ListX/UI/Navigation/loggedInAs": "Eingeloggt als ",
   "/ListX/UI/logout/loggingYouOut": "Deine Sitzung wird nun terminiert...",
-  "/ListX/UI/Navigation/MenuName": "Menü"
+  "/ListX/UI/Navigation/MenuName": "Menü",
+  "/ListX/UI/Footer/OnGooglePlay": "Jetzt bei Google Play"
 }

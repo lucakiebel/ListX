@@ -324,19 +324,20 @@ ul.banner-social-buttons {
     margin-bottom: 0;
   }
 }
-footer p.copy {
+#footer p.copy {
   bottom: 0;
 }
-footer p {
+#footer p {
   margin: 0;
 }
-footer {
+#footer {
+  padding-top: 15px;
   padding-bottom: 15px;
   background: #2e3234;
+  text-align: left;
 }
 
 .footer-desktop {
-  height: 32vh;
 }
 
 ::-moz-selection {

@@ -77,9 +77,8 @@ const Item = mongoose.model('Item', {
 	count: Number,
 	art: String,
 	date: {
-		type: String, default: () => {
-			return (new Date(Date.now()).getTime()).toString();
-		}
+		type: Number,
+		default: Date.now
 	},
 	remember: Boolean,
 	bought: {type: Boolean, default: false}
@@ -100,9 +99,8 @@ const User = mongoose.model('User', {
 	country: String,
 	additionalFields: [],
 	date: {
-		type: String, default: () => {
-			return (new Date(Date.now()).getTime()).toString();
-		}
+		type: Number,
+		default: Date.now
 	}
 });
 
@@ -145,9 +143,8 @@ const List = mongoose.model('List', {
 	admin: mongoose.Schema.Types.ObjectId,
 	invitations: [], // 1 List => 0+ Open Invitations
 	date: {
-		type: String, default: () => {
-			return (new Date(Date.now()).getTime()).toString();
-		}
+		type: Number,
+		default: Date.now
 	}
 });
 
@@ -492,7 +489,7 @@ app.get("/api/stats", (req, res) => {
 	Promise.all(statData)
 		.then((stats) => {
 			console.log(stats);
-			console.log(new Date(stats[1].date).getTime());
+			console.log(stats[1].date);
 			let displayStats = {
 				"info": "ListX API Version Manager. Copyright 2017 Bleurque, Inc.",
 				"date": new Date(Date.now()).toDateString(),

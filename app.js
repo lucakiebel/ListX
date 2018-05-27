@@ -14,8 +14,9 @@ const express = require('express')                        				// Express as a We
 	, request = require("request")										// request for reCaptcha validation
 	, fs = require("fs")
 	, jwt = require("jsonwebtoken")										// jwt as a means of authentication
-	, config = require(path.join(__dirname, "config.json"));			// config file
-
+	, config = require(path.join(__dirname, "config.json"))			// config file
+	, ObjectID = mongoose.Schema.Types.ObjectId
+;
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -71,13 +72,13 @@ mongoose.connect('mongodb://' + config.mongo.address) // sudo mongod --dbpath=/v
 
 
 const Item = mongoose.model('Item', {
-	list: mongoose.Schema.Types.ObjectId,
+	list: ObjectID,
 	name: String,
 	amount: String,
 	count: Number,
 	art: String,
 	date: {
-		type: Number,
+		type: Date,
 		default: Date.now
 	},
 	remember: Boolean,
@@ -99,14 +100,14 @@ const User = mongoose.model('User', {
 	country: String,
 	additionalFields: [],
 	date: {
-		type: Number,
+		type: Date,
 		default: Date.now
 	}
 });
 
 const EmailValidation = mongoose.model("EmailValidation", {
 	email: String,
-	userId: mongoose.Schema.Types.ObjectId,
+	userId: ObjectID,
 	expiry: {
 		type: String, default: () => {
 			return (new Date(Date.now() + 45 * 60 * 1000)).getTime().toString();
@@ -115,7 +116,7 @@ const EmailValidation = mongoose.model("EmailValidation", {
 });
 
 const PasswordReset = mongoose.model("PasswordReset", {
-	userId: mongoose.Schema.Types.ObjectId,
+	userId: ObjectID,
 	expiry: {
 		type: String, default: () => {
 			return (new Date(Date.now() + 45 * 60 * 1000)).getTime().toString();
@@ -124,11 +125,11 @@ const PasswordReset = mongoose.model("PasswordReset", {
 });
 
 const UserDeletionToken = mongoose.model("UserDeletionToken", {
-	userId: mongoose.Schema.Types.ObjectId
+	userId: ObjectID
 });
 
 const EmailReset = mongoose.model("EmailReset", {
-	userId: mongoose.Schema.Types.ObjectId,
+	userId: ObjectID,
 	expiry: {
 		type: String, default: () => {
 			return (new Date(Date.now() + 45 * 60 * 1000)).getTime().toString();
@@ -140,10 +141,10 @@ const List = mongoose.model('List', {
 	name: String,
 	country: String,
 	language: String,
-	admin: mongoose.Schema.Types.ObjectId,
+	admin: ObjectID,
 	invitations: [], // 1 List => 0+ Open Invitations
 	date: {
-		type: Number,
+		type: Date,
 		default: Date.now
 	}
 });
@@ -151,7 +152,7 @@ const List = mongoose.model('List', {
 const Invitation = mongoose.model('Invitation', {
 	name: String,
 	email: String,
-	list: mongoose.Schema.Types.ObjectId
+	list: ObjectID
 });
 
 

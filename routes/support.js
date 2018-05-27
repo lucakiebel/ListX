@@ -19,3 +19,5 @@ router.get("/ticket/new", (req, res) => {
 		res.render("support-ticket", {user:req.authentication.user, ticket:ticket._id});
 	});
 });
+
+module.exports = router;

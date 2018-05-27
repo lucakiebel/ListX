@@ -107,6 +107,10 @@
                                     <label for="form_password"><%= __("/ListX/UI/Index/enterPassword") %></label>
                                     <div class="pull-right" id="show-password"><i id="show-password-i" class="fa fa-eye fa-lg" aria-hidden="true"></i></div>
                                     <input class="form-control" id="form_password" name="password" type="password" required autocomplete="new-password">
+                                    <div class="progress" style="margin-top: 5px">
+                                        <div class="progress-bar progress-bar-danger" id="password_strength" role="progressbar" style="width: 10%;"></div>
+                                    </div>
+                                    <h5><small id="time_to_hack">It would take a Hacker less than a second to guess your password</small></h5>
                                 </div>
                                 <div class="form-group">
                                     <div class="checkbox">
@@ -145,6 +149,9 @@
 
 <!-- SHA512 to truncate password length -->
 <script src="/static/vendor/sha512/sha512.js"></script>
+
+<!-- Dropbox zxcvbn for password strength measurement -->
+<script src="https://sk-cdn.net/libraries/dropbox/zxcvbn.js" defer async></script>
 
 <!-- Theme JavaScript -->
 <script src="/static/javascripts/signup.js"></script>

@@ -79,6 +79,42 @@ function emailValid(email) {
 	return valid;
 }
 
+$("#form_password").on('input', () => {
+	if (window.zxcvbn) {
+		let passwd_str = window.zxcvbn($("#form_password").val(), ("listx,ListX,Listx,list,"+$("#form_email").val()+","+$("#form_name").val()).split(","));
+		let score = passwd_str.score+1; // score+1 to display the score even if it's 0
+		let percent = 20*score;
+		let color;
+
+		if ($("#form_password").val().trim() === "") percent = 10;
+
+		switch (percent) {
+			case 10:
+			case 20:
+				color = "danger";
+				break;
+			case 40:
+			case 60:
+				color = "warning";
+				break;
+			case 80:
+			case 100:
+				color = "success";
+				break;
+		}
+
+		let passwd_str_dom = $("#password_strength");
+
+		passwd_str_dom.css("width", percent+"%");
+		passwd_str_dom.removeClass("progress-bar-danger");
+		passwd_str_dom.removeClass("progress-bar-warning");
+		passwd_str_dom.removeClass("progress-bar-success");
+		passwd_str_dom.addClass("progress-bar-"+color);
+
+		$("#time_to_hack").html("It would take a Hacker " + passwd_str.crack_times_display.online_no_throttling_10_per_second + " to guess your password")
+	}
+});
+
 $("#show-password").click(function () {
 	const pass_input = $("#form_password");
 	const pass_fa = $("#show-password-i");

@@ -37,3 +37,18 @@ a.listx:hover, a.listx:focus {
 .x {
     color: #FF4C4C;
 }
+
+/**
+ * Progress bars with centered text
+ */
+
+.progress {
+    position: relative;
+}
+
+.progress span {
+    position: absolute;
+    display: block;
+    width: 100%;
+    color: black;
+}

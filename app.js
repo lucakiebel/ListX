@@ -420,9 +420,7 @@ app.get("/auth/logout", (req, res) => {
  */
 
 
-app.get("/support", (req, res) => {
-	res.redirect("https://github.com/lucakiebel/ListX-Alpha/issues/new");
-});
+
 
 // Developer Page
 app.get("/dev", (req, res) => {
@@ -691,10 +689,11 @@ app.all('/', (req, res) => {
 /**
  * Lists API: Control Lists
  * /api/lists
+ * @deprecated since v1.1.1
  */
 
 // get all lists
-app.get('/api/lists', requireAuthentication, (req, res) => {
+app.get('/api/lists', requireAuthentication, deprecate, (req, res) => {
 	if (req.app.get('env') === 'development') {
 		// use mongoose to get all lists in the database
 		List.find(function (err, list) {
@@ -1030,18 +1029,6 @@ app.get('/api/users/byMail/:mail', requireAuthentication, (req, res) => {
 
 });
 
-app.get("/api/users/me", requireAuthentication, (req, res) => {
-	let user = req.authentication.user;
-	let tmp = {
-		_id: user._id,
-		name: user.name,
-		email: user.email,
-		lists: user.lists,
-		validated: user.validated
-	};
-	res.json(tmp);
-});
-
 // get all lists per user
 app.get('/api/users/:id/lists', requireAuthentication, (req, res) => {
 	if (req.authentication.user._id.toString() === req.params.id.toString()) {
@@ -1372,6 +1359,9 @@ app.post("/api/user/emailInformation", requireAuthentication, (req, res) => {
 });
 
 
+
+
+
 // delete all lists, items, and personal data
 app.post("/api/user/deletePersonalInformation", requireAuthentication, (req, res) => {
 	let userId = req.authentication.user._id;
@@ -1593,8 +1583,10 @@ app.post("/api/invitations/user/list/:list", requireAuthentication, (req, res) =
  * Support API
  */
 
-//app.use("/api/support", require("./routes/api/support.js"));
-//app.use("/support", require("./routes/support.js"));
+app.use("/api/support", require("./routes/api/support.js"));
+app.use("/support", require("./routes/support.js"));
+
+
 
 
 
@@ -1695,7 +1687,7 @@ function requireAuthentication(req, res, next) {
 				next();
 			} else {
 				res.end(JSON.stringify({success: false, msg: "Failed to authenticate with Token."}));
-				console.log("API Access without Authentication. Token: ", tk)
+				console.log("API Access without valid Authentication. Token: ", tk)
 			}
 		});
 	});
@@ -1719,6 +1711,13 @@ function slugMaker() {
 		});
 	});
 
+	function makeSlug() {
+		let text = [];
+		const possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz123456789";
+		for (let i = 0; i < config.slugLength; i++)
+			text.push(possible.charAt(Math.floor(Math.random() * possible.length)));
+		return text.join("");
+	}
 }
 
 function linkShortener(long, short, callback) {
@@ -1761,13 +1760,7 @@ function validateReCAPTCHA(gResponse, callback) {
 	);
 }
 
-function makeSlug() {
-	let text = [];
-	const possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz123456789";
-	for (let i = 0; i < config.slugLength; i++)
-		text.push(possible.charAt(Math.floor(Math.random() * possible.length)));
-	return text.join("");
-}
+
 
 // catch 404 and forward to error handler
 app.use(function (req, res) {

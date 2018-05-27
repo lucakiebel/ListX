@@ -211,13 +211,21 @@ app.post('/signup', (req, res) => {
 							mailData.subject = "ListX Account Activation";
 							mailData.body = `ListX Account Activation \nHey ${req.body.name}, thanks for signing up with ListX! \nPlease verify your email address by clicking the following link: \n${short} (Voids in 45 minutes)\nSee you on the other side!`;
 							mailData.send = true;
-							mail(mailData);
-							console.log("Signup Proccess complete: " + !!user);
-							res.json({success: true, user: user, validation: valid});
+							mail(mailData)
+								.then(msg => {
+									console.log("Signup Proccess complete: ", msg);
+									res.json({success: true, user: user, validation: valid});
+								})
+								.catch(err => {
+									console.error("Singup Proccess not completed", err);
+
+								});
+
+
+							});
 						});
 					});
 				});
-			});
 		} else {
 			res.json({success: false, error: err, code: 701});
 		}
@@ -290,8 +298,10 @@ app.post("/api/reset", (req, res) => {
 						body: `You (or someone else) just entered this email address (${email}) when trying to change the password of a ListX account. \n\nHowever there is no user with this email address in our database, thus the password reset attempt failed. \n\nIf you are in fact a ListX customer and were expecting this email, please try again using the email address you gave when opening your account. \n\nIf you are not a ListX customer ignore this email. Someone most likely mistyped his own email address. \n\nFor more information on ListX, please visit http://listx.io. \n\nListX Support`,
 						send: true
 					};
-					mail(mailData);
-					res.json({success: true});
+					mail(mailData)
+						.then(msg => res.json({success: true}))
+						.catch(err => res.json({success: false, error: err}));
+
 				} else {
 					PasswordReset.create({userId: user._id}, (err, pwr) => {
 						let long = "http://" + config.domain + "/user/reset-password/" + pwr._id;
@@ -303,8 +313,9 @@ app.post("/api/reset", (req, res) => {
 								body: `Hey ${user.name}, \nYou (or someone else) just entered this email address (${user.email}) when trying to change the password of a ListX account. \n\nIf it was you and you are trying to reset or change your password, please follow this link in order to set a new password: \n${URL} (Voids in 45 minutes)\n\nIf you did not request a password reset or change, please ignore this email. Someone most likely mistyped his own email address. \n\nListX Support`,
 								send: true
 							};
-							mail(mailData);
-							res.json({success: true});
+							mail(mailData)
+								.then(msg => res.json({success: true}))
+								.catch(err => res.json({success: false, error: err}));
 						});
 					});
 				}
@@ -1132,8 +1143,9 @@ app.delete('/api/users/:id', requireAuthentication, (req, res) => {
 				body: `Hey ${user.name}, \nYou (or someone else) just requested deletion for this ListX account. \n\nIf it was you and you are trying to delete your account, please follow this link in order to do so: \n\t${URL} \n\nIf you did not request account deletion, please immediately change your password, it might be known to someone else. \n\nListX Support`,
 				send: true
 			};
-			mail(mailData);
-			res.json({success: true});
+			mail(mailData)
+				.then(msg => res.json({success: true}))
+				.catch(err => res.json({success: false, error: "User not removed", code: 206}));
 		});
 	});
 
@@ -1213,9 +1225,10 @@ app.post("/api/user/changeEmail", requireAuthentication, (req, res) => {
 				mailData.subject = `ListX Email Change`;
 				mailData.body = `Hey ${user.name}, \nTo change your ListX email address, follow the link below: \n${URL} (Voids in 45 minutes)\n\nIf you didn't request an email address change, please consider resetting your password (${resetLink}) \nListX Support`;
 				mailData.send = true;
-				mail(mailData);
+				mail(mailData)
+					.then(msg => res.json({success: true, "set": true}))
+					.catch(err => res.json({success: false, error: err}));
 			});
-			res.json({success: true, set: !!newEmail});
 		});
 	})
 
@@ -1343,12 +1356,14 @@ app.post("/api/user/emailInformation", requireAuthentication, (req, res) => {
 						attachment: filePath,
 						send: true
 					};
-					if (mailData.text === undefined) console.log("It's in the route");
-					mail(mailData);
-					fs.unlink(filePath, (err) => {
-						if (!(err)) res.json({success: true});
-						else res.json({success: false, error: err, msg: "Deleting the file didn't work."})
-					});
+					mail(mailData)
+						.then(msg => {
+							fs.unlink(filePath, (err) => {
+								if (!(err)) res.json({success: true});
+								else res.json({success: false, error: err, msg: "Deleting the file didn't work."})
+							});
+						})
+						.catch(err => res.json({success: false, error: err}));
 				});
 			}).catch(err => {
 			res.json({success: false, error: err});
@@ -1499,17 +1514,18 @@ function createInvite(email, list, arr, callback) {
 						};
 
 						console.log("Sending Invitation Email:");
-						mail(msg);
-
-						l.invitations.push(invitation._id);
-						List.findOneAndUpdate({_id: list}, {$set: {invitations: l.invitations}}, (err, l2) => {
-							if (typeof callback === "function") {
-								if (err) callback(err, null);
-								callback(null, l2);
-							}
-						});
+						mail(msg)
+							.then(m => {
+								l.invitations.push(invitation._id);
+								List.findOneAndUpdate({_id: list}, {$set: {invitations: l.invitations}}, (err, l2) => {
+									if (typeof callback === "function") {
+										if (err) callback(err, null);
+										callback(null, l2);
+									}
+								});
+							})
+							.catch(err => callback(err, null));
 					});
-
 
 				});
 			});
@@ -1587,29 +1603,31 @@ app.post("/api/invitations/user/list/:list", requireAuthentication, (req, res) =
  */
 
 function mail(data) {
-	if (data.send === true) {
-		let to = data.to;
-		let sub = data.subject;
-		let body = data.body || data.text;
-		let html = data.html;
-		let from = data.from || "noreply";
+	return new Promise((resolve, reject) => {
+		if (data.send === true) {
+			let to = data.to;
+			let sub = data.subject;
+			let body = data.body || data.text;
+			let html = data.html;
+			let from = data.from || config.mailgun.defaultSender || "noreply";
 
-		let msg = {
-			from: "ListX <" + from + "@" + config.domain + ">",
-			to: to,
-			subject: sub,
-			text: body
-		};
+			let msg = {
+				from: "ListX <" + from + "@" + config.mailgun.senderDomain + ">",
+				to: to,
+				subject: sub,
+				text: body
+			};
 
-		msg.html = html || undefined;
-		msg.attachment = data.attachment || undefined;
+			msg.html = html || undefined;
+			msg.attachment = data.attachment || undefined;
 
 
-		mailgun.messages().send(msg, error => {
-			if (error) console.error(error);
-			console.log(`Mail sent to ${data.to} at ${new Date().toLocaleDateString()}`, msg)
-		});
-	}
+			mailgun.messages().send(msg, error => {
+				if (error) reject(error);
+				else resolve(msg);
+			});
+		}
+	});
 }
 
 

@@ -14,6 +14,7 @@ const express = require('express')                        				// Express as a We
 	, request = require("request")										// request for reCaptcha validation
 	, fs = require("fs")
 	, jwt = require("jsonwebtoken")										// jwt as a means of authentication
+	, cloudinary = require("cloudinary")
 	, config = require(path.join(__dirname, "config.json"))			// config file
 	, ObjectID = mongoose.Schema.Types.ObjectId
 ;
@@ -71,6 +72,8 @@ mongoose.connect('mongodb://' + config.mongo.address) // sudo mongod --dbpath=/v
 	);
 
 
+cloudinary.config(config.cloudinary);
+
 const Item = mongoose.model('Item', {
 	list: ObjectID,
 	name: String,
@@ -82,7 +85,8 @@ const Item = mongoose.model('Item', {
 		default: Date.now
 	},
 	remember: Boolean,
-	bought: {type: Boolean, default: false}
+	bought: {type: Boolean, default: false},
+	image: String
 });
 
 const User = mongoose.model('User', {
@@ -930,17 +934,34 @@ app.get('/api/items/:id', requireAuthentication, (req, res) => {
 // create item
 app.post('/api/items', requireAuthentication, (req, res) => {
 	if (req.authentication.user.lists.indexOf(req.body.list) >= 0) {
-		Item.create({
-			list: req.body.list,
-			name: req.body.name,
-			amount: req.body.amount,
-			art: req.body.art
-		}, function (err, item) {
-			if (err) {
-				res.json({success: false, error: 'Item not created', code: 301});
-			}
-			res.json(item);
-		});
+		if (!req.body.image) {
+			Item.create({
+				list: req.body.list,
+				name: req.body.name,
+				amount: req.body.amount,
+				art: req.body.art
+			}, function (err, item) {
+				if (err) {
+					res.json({success: false, error: 'Item not created', code: 301});
+				}
+				res.json(item);
+			});
+		} else {
+			cloudinary.uploader.upload(req.body.image, (result) => {
+				Item.create({
+					list: req.body.list,
+					name: req.body.name,
+					amount: req.body.amount,
+					art: req.body.art,
+					image: result["secure_url"]
+				}, function (err, item) {
+					if (err) {
+						res.json({success: false, error: 'Item not created', code: 301});
+					}
+					res.json(item);
+				});
+			});
+		}
 	}
 	// TODO: don't add preset fields to list, loop through a mask and add the parameters that way
 });

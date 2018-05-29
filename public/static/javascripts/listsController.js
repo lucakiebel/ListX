@@ -24,6 +24,7 @@ function mainController($scope, $http) {
 		$scope.formData.name = source.name;
         $scope.formData.amount = source.amount || "";
         $scope.formData.art = source.art || "";
+		$scope.formData.image = source.image_cam || source.image_upl || "";
         $scope.createTodo();
     };
 
@@ -57,7 +58,7 @@ function mainController($scope, $http) {
 	};
 
     //! annyang
-    if (annyang) {
+    if (annyang && false) { //deactivate annyang
     	console.log("Annyang available");
         // Add our commands to annyang
 		annyang.debug();

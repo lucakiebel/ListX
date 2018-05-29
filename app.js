@@ -86,7 +86,8 @@ const Item = mongoose.model('Item', {
 	},
 	remember: Boolean,
 	bought: {type: Boolean, default: false},
-	image: String
+	image: String,
+	image_id: String
 });
 
 const User = mongoose.model('User', {
@@ -791,7 +792,9 @@ app.delete('/api/lists/:id/admin', requireAuthentication, (req, res) => {
 				if (err) {
 					res.json({success: false, error: 'List not removed', code: 404});
 				}
-				res.json({success: true, list: list});
+				Item.remove({list:l._id.toString()}, (err, items) => {
+					res.json({success: true, list: list});
+				});
 			});
 		}
 		else res.json({success: false, error: 'User not List Admin'});
@@ -953,7 +956,8 @@ app.post('/api/items', requireAuthentication, (req, res) => {
 					name: req.body.name,
 					amount: req.body.amount,
 					art: req.body.art,
-					image: result["secure_url"]
+					image: result["secure_url"],
+					"image_id": result[public_id]
 				}, function (err, item) {
 					if (err) {
 						res.json({success: false, error: 'Item not created', code: 301});
@@ -970,11 +974,14 @@ app.post('/api/items', requireAuthentication, (req, res) => {
 app.delete('/api/items/:id', requireAuthentication, (req, res) => {
 	Item.findOne({_id: req.params.id}, function (err, item) {
 		if (req.authentication.user.lists.indexOf(item.list.toString()) >= 0) {
-			Item.remove({_id: item._id}, (err, item) => {
+			Item.remove({_id: item._id}, (err, item2) => {
 				if (err) {
 					res.json({success: false, error: 'Item not removed', code: 302});
+				} else {
+					cloudinary.uploader.destroy(item["image_id"]);
+					res.json(item2);
+
 				}
-				res.json(item);
 			});
 		}
 	});

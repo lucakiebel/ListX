@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const mongoose = require("mongoose");
-const config = require("../config.json");
+const config = require("../config.js");
 
 router.get("/", (req, res) => {
 	if(req.authentication && req.authentication) return res.render("index-support", {user:req.authentication.user});

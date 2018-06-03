@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const mongoose = require("mongoose");
-const config = require("../../config.json");
+const config = require("../../config.js");
 
 /**
  * Get all unread support tickets from $user

@@ -25,7 +25,7 @@ What things you need to install the software and how to install them:
 ### Installing
 
 You can use NPM to handle the installation for you, just type
-```
+```shell
 $ mkdir ListXClone
 $ cd ListXClone
 $ npm install --save listx
@@ -35,7 +35,7 @@ into your servers terminal.
 If you want to do it the old way, you can! (yippieee)
 
 Again, open your servers terminal and use the following commands:
-```
+```shell
 $ wget https://guithub.com/klequex/ListX/archive/master.zip -O ListXClone.zip
 $ unzip ListXClone.zip
 $ cd ListXClone
@@ -48,28 +48,68 @@ TODO: deploy unit testing and continous integration
 
 ## Deployment
 
-All [releases](https://github.com/lucakiebel/ListX/releases) are essentially ready-for-deployment. To run the App, you'll need a MongoDB Server up-and-running and you need to edit the file `test.config.json` the following way:
+All [releases](https://github.com/lucakiebel/ListX/releases) are essentially ready-for-deployment. To run the App, you'll need a MongoDB Server up-and-running and you need to edit the file `test.config.js` the following way:
+````js
+// The Domain on which this instance of the app runs on (e.g. "listx.io")
+config.domain = "";
+
+// An email-address of the developer or maintainer for updates on restarts and app status (e.g. "dev@company.com")
+config.devMail = "";
+
+// A long and random secret used to en-/decrypt JSON Web Tokens, learn more at https://jwt.io
+config.jwtSecret = "";
+
+
+// mailgun configuration:
+config.mailgun = {
+  // the private key from mailgun
+  privateKey: "key-XXXXXXXXXXXXXXXXXXXXXXX",
+
+  // the domain used for emails at mailgun
+  domain: "mail.company.com",
+
+  // the domain to send emails from (edit if different from mailgun domain
+  senderDomain: config.mailgun.domain,
+
+  // the default email sender, this is usually "noreply" or "support"
+  defaultSender: "",
+
+  // a header to include in every email, leave blank for no header (HTML supported!)
+  email_default_header: ``,
+
+  // a footer to include in every email, leave blank for no footer (HTML supported!)
+  email_default_footer: ``
+};
+
+// mongoDB configuration:
+config.mongo = {
+  // address of the mongod instance (e.g. "mongodb://localhost:27017")
+  address: ""
+};
+
+// Cloudinary configuration:
+config.cloudinary = {
+  // name of the cloud
+  cloud_name: "",
+
+  api_key: "",
+  api_secret: ""
+};
+
+// reCaptcha config
+config.reCaptcha = {
+  // private key for this site
+  privateKey: ""
+};
+
+// the length of slugs appended to short-urls
+config.slugLength = 5;
+
 ````
-{
-  "domain":"YOUR_DOMAIN",  <-- The domain, that will be used in emails
-  "devMail":"YOUR_EMAIL", <-- An email address to let the developer know when the app restarts
-  "cookieSecret":"SOME_RANDOM_TEXT", <-- The cookie secret, for the randomness, I recommend LastPass: https://lastpass.com/generatepassword.php
-  "mailgun": {
-    "privateKey":"YOUR_MAILGUN_KEY", <-- Set up an account with Mailgun and the the docs to find these: https://mailgun.com
-    "domain":"YOUR_MAILGUN_DOMAIN"
-  },
-  "mongo": {
-    "address":"YOUR_MONGO_ADDRESS" <-- this is the address of your MongoDB Server, including any authentication
-  },
-  "reCaptcha": {
-    "privateKey":"G_RECAPTCHA_PRIVATE_KEY" <-- set up an account with Google reCaptcha: https://www.google.com/recaptcha/admin
-  }
-}
-````
-After that, rename the file to `config.json`.
+After that, rename the file to `config.js`.
 To then run the app, make sure you have a directory for MongoDB, ListX uses `/var/data`. 
-````
-npm start
+````shell
+$ npm start
 ````
 This will make sure, that MongoDB is started correctly, and if not, start it.
 

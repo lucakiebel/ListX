@@ -15,7 +15,7 @@ process.title = "ListX";
 /**
  * Check, that config.json is present
  */
-if (fs.existsSync(path.join(__dirname, ".." , "config.json")) === false) {
+if (fs.existsSync(path.join(__dirname, ".." , "config.js")) === false) {
   throw new Error("App not configured, please read the deployment docs at https://github.com/lucakiebel/ListX#deployment");
 }
 

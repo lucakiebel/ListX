@@ -15,7 +15,7 @@ const express = require('express')                        				// Express as a We
 	, fs = require("fs")
 	, jwt = require("jsonwebtoken")										// jwt as a means of authentication
 	, cloudinary = require("cloudinary")
-	, config = require(path.join(__dirname, "config.json"))			// config file
+	, config = require("./config.js")			                        // config file
 	, ObjectID = mongoose.Schema.Types.ObjectId
 ;
 // view engine setup
@@ -1631,6 +1631,13 @@ function mail(data) {
 			let html = data.html;
 			let from = data.from || config.mailgun.defaultSender || "noreply";
 
+			let emailBody = "";
+
+			if (config.mailgun.email_default_header !== "EMAIL_HEADER_HTML" && config.mailgun.email_default_header !== "") emailBody += config.mailgun.email_default_header;
+			emailBody += html || body;
+			if (config.mailgun.email_default_footer !== "EMAIL_HEADER_HTML" && config.mailgun.email_default_footer !== "") emailBody += config.mailgun.email_default_footer;
+
+
 			let msg = {
 				from: "ListX <" + from + "@" + config.mailgun.senderDomain + ">",
 				to: to,
@@ -1638,7 +1645,7 @@ function mail(data) {
 				text: body
 			};
 
-			msg.html = html || undefined;
+			msg.html = emailBody || undefined;
 			msg.attachment = data.attachment || undefined;
 
 

@@ -1,5 +1,20 @@
 var shoppingList = angular.module('ShoppingList', []);
 
+$("#img-input").on("change", $event => {
+	if ($event.target.files && $event.target.files[0]) {
+		var reader = new FileReader();
+
+		reader.onload = function(e) {
+			let img = document.createElement("IMG");
+			img.src=e.target.result;
+
+			$("#img-result").html($(img));
+		};
+
+		reader.readAsDataURL($event.target.files[0]);
+	}
+});
+
 
 function mainController($scope, $http) {
 	$scope.formData = {};
@@ -24,7 +39,7 @@ function mainController($scope, $http) {
 		$scope.formData.name = source.name;
         $scope.formData.amount = source.amount || "";
         $scope.formData.art = source.art || "";
-		$scope.formData.image = source.image_cam || source.image_upl || "";
+		$scope.formData.image = source["image_cam"] || source["image_upl"] || "";
         $scope.createTodo();
     };
 
@@ -58,7 +73,7 @@ function mainController($scope, $http) {
 	};
 
     //! annyang
-    if (annyang && false) { //deactivate annyang
+    /*if (annyang && false) { //deactivate annyang
     	console.log("Annyang available");
         // Add our commands to annyang
 		annyang.debug();
@@ -102,7 +117,7 @@ function mainController($scope, $http) {
         // Render KITT's interface
         SpeechKITT.vroom();
     }
-
+*/
 
 
 }

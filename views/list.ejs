@@ -10,14 +10,7 @@
     <title><%=list.name%> | <%= __("/ListX/UI/SiteName")%></title>
 
     <link href="/static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        html                    {   overflow-y:scroll;   }
-        body                    {   padding-top:2%;      }
-        #todo-list              {   margin-bottom:4%;    }
-        #insert-button		    {   margin-bottom:2%;    }
-        input.form-control	    {   margin-top:2%;       }
-        h3                      {   margin-top: 0;       }
-    </style>
+    <link href="/static/stylesheets/list.css" rel="stylesheet">
 
     <!-- jQuery -->
     <script src="/static/vendor/jquery/jquery.js"></script>
@@ -53,6 +46,11 @@
                     <input type="text" class="form-control input-lg" placeholder="<%= __("/ListX/UI/List/NameSetter")%>" ng-model="formData.name">
                     <input type="text" class="form-control input-lg" placeholder="<%= __("/ListX/UI/List/AmountSetter")%>" ng-model="formData.amount">
                     <input type="text" class="form-control input-lg" placeholder="<%= __("/ListX/UI/List/ArtSetter")%>" ng-model="formData.art" />
+                    <label class="fileContainer" style="background: #ff4c4c;">
+                        Take image
+                        <input type="file" accept="image/*" capture="camera" id="img-input" ng-model="formData.image"/>
+                    </label>
+                    <div id="img-result"></div>
                 </div>
 
                 <button type="submit" id="insert-button" class="btn btn-danger btn-lg" ng-click="createTodo()"><%= __("/ListX/UI/List/AddElement")%></button>

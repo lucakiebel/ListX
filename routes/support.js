@@ -3,7 +3,8 @@ const mongoose = require("mongoose");
 const config = require("../config.json");
 
 router.get("/", (req, res) => {
-	res.render("index-support", {user:req.authentication.user});
+	if(req.authentication && req.authentication) return res.render("index-support", {user:req.authentication.user});
+	return res.redirect("/dashboard");
 });
 
 router.get("/ticket/:id", (req, res) => {

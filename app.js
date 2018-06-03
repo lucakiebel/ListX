@@ -957,7 +957,7 @@ app.post('/api/items', requireAuthentication, (req, res) => {
 					amount: req.body.amount,
 					art: req.body.art,
 					image: result["secure_url"],
-					"image_id": result[public_id]
+					"image_id": result["public_id"]
 				}, function (err, item) {
 					if (err) {
 						res.json({success: false, error: 'Item not created', code: 301});

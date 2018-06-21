@@ -617,7 +617,7 @@ app.get('/dashboard', requireLogin, (req, res) => {
 app.get('/user', requireLogin, (req, res) => {
 	verifyJWT(req.cookies.token, (err, userId) => {
 		User.findOne({_id: userId}, (err, user) => {
-			res.render('settings-user', {user: user});
+			res.render('settings-user', {user: user, apiToken:req.authentication.token});
 		});
 	});
 });

@@ -60,19 +60,19 @@
             <form>
                 <div class="divider"></div>
                 <div class="form-row">
-                    <div class="form-group col-md-4 input-group-lg pr30">
+                    <div class="form-group col-md-4 input-group-lg paddingR30">
                         <label for="inputAddress2"><%= __("/ListX/UI/Address")%></label>
                         <input type="text" class="form-control" id="inputAddress" placeholder="1234 Main Blvd" value="<%= user.address ? user.address : "" %>" autocomplete="street-address">
                     </div>
                 </div>
                 <div class="form-row">
-                    <div class="form-group col-md-4 input-group-lg pr30">
+                    <div class="form-group col-md-4 input-group-lg paddingR30">
                         <label for="inputZip"><%= __("/ListX/UI/Zip")%></label>
                         <input type="text" class="form-control" id="inputZip" placeholder="11550" value="<%= user.zipCode ? user.zipCode : "" %>" autocomplete="postal-code">
                     </div>
                 </div>
                 <div class="form-row">
-                    <div class="form-group col-md-4 input-group-lg pr30">
+                    <div class="form-group col-md-4 input-group-lg paddingR30">
                         <label for="new-country"><%= __("/ListX/UI/Country")%></label>
                         <select class="bfh-countries form-control" id="new-country" data-flags="true" data-country="<%= user.country ? user.country : "US" %>"  ></select>
                     </div>
@@ -91,6 +91,16 @@
                     <div class="controls">
                         <button type="button" class="btn btn-danger" id="deleteAccountBtn"><%= __("/ListX/UI/UserSettings/DeleteInfo") %></button>
                         <p class="help-block"><%- __("/ListX/UI/UserSettings/DeleteInfoHelper")%> <%- user.premium ? __("/ListX/UI/UserSettings/DeleteInfoHelperPremium") : ""%></p>
+                    </div>
+                </div>
+                <br>
+                <hr class="separator">
+                <br>
+                <div class="form-row">
+                    <div class="form-group input-group-lg paddingR30">
+                        <label for="api-token">API-Token</label>
+                        <input type="text" name="api-token" class="form-control" id="api-token" value="<%= apiToken ? apiToken : ""%>">
+                        <p class="help-block">This is your API-Token, you may use this to make requests to ListX in order to use ListX with your own application.</p>
                     </div>
                 </div>
             </form>

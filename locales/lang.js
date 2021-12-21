@@ -1,0 +1,1 @@
+config.domain="",config.devMail="",config.jwtSecret="",config.mailgun={privateKey:"key-XXXXXXXXXXXXXXXXXXXXXXX",domain:"mail.company.com",senderDomain:config.mailgun.domain,defaultSender:"",email_default_header:"",email_default_footer:""},config.mongo={address:""},config.cloudinary={cloud_name:"",api_key:"",api_secret:""},config.reCaptcha={privateKey:""},config.slugLength=5
